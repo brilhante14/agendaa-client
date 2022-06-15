@@ -42,7 +42,7 @@ export function Login() {
                     <TextButton onClick={() => { navigate('/forgotPassword') }} title={"Esqueceu a senha?"} />
                 </div>
                 <Separator />
-                <Button title={"Entrar"} onClick={() => { }} size={{ width: 500, height: 50 }} />
+                <Button title={"Entrar"} onClick={() => { }} size={{ width: 400, height: 50 }} />
                 <RegisterContainer>
                     Ainda não possui uma conta? <TextButton onClick={() => { navigate('/register') }} title={"Registre-se"} />
                 </RegisterContainer>

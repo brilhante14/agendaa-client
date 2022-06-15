@@ -47,7 +47,7 @@ export function Register() {
                 <Separator />
                 <TextInput title={"Confirme sua senha:"} placeholder={"Repita sua senha"} onChange={(e: any) => { setConfirmPassword(e.target.value) }} value={confirmPassword} isSecure />
                 <Separator />
-                <Button title={"Registrar"} onClick={() => { }} size={{ width: 500, height: 50 }} />
+                <Button title={"Registrar"} onClick={() => { }} size={{ width: 400, height: 50 }} />
                 <RegisterContainer>
                     Já possui uma conta? <TextButton onClick={() => { navigate('/login') }} title={"Login"} />
                 </RegisterContainer>

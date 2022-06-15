@@ -11,7 +11,7 @@ export const Input = styled.input`
     border: 1px solid var(--purple);
     background: none;
     height: 50px;
-    min-width: 500px;
+    min-width: 400px;
     padding: 10px;
     margin-top: 10px;
     ::placeholder {

@@ -26,7 +26,7 @@ export function ForgotPassword() {
                 <Separator />
                 <TextInput title={"Email ou Usuário:"} placeholder={"Digite seu email ou usuário"} onChange={(e: any) => { setAuthInfo(e.target.value) }} value={authInfo} />
                 <Separator />
-                <Button title={"Recuperar senha"} onClick={() => { navigate('/login') }} size={{ width: 500, height: 50 }} />
+                <Button title={"Recuperar senha"} onClick={() => { navigate('/login') }} size={{ width: 400, height: 50 }} />
             </Container>
         } />
     );
