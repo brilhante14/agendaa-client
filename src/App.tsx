@@ -1,18 +1,11 @@
-import React from 'react';
+// Styles
+import { GlobalStyle } from "./styles/global";
 
-import './App.css';
-
-import Routes from './routes';
-
-const App = () => {
+// Renderer
+export function App() {
   return (
-    <div className="page-container">
-      <div className="content">
-        <Routes />
-      </div>
-      {/* <Footer /> */}
+    <div className="App">
+      <GlobalStyle />
     </div>
   );
 }
-
-export default App;
