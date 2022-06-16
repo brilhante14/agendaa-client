@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ProfileModal from "../ProfileModal";
 import styles from "./header.module.css";
 
 interface userProfile {
@@ -16,6 +17,7 @@ interface userProfile {
  */
 const Header = (props: { profile: userProfile }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   return (
     <header className={styles.header}>
@@ -41,7 +43,11 @@ const Header = (props: { profile: userProfile }) => {
            * @todo Implementar funções para navegar de volta ao login e acessar modal de edição de perfil
            */}
           <li className={styles.menu_item}>
-            <button tabIndex={0} className={styles.menu_button}>
+            <button
+              tabIndex={0}
+              onClick={() => setModalOpen(true)}
+              className={styles.menu_button}
+            >
               Editar perfil
             </button>
           </li>
@@ -55,6 +61,7 @@ const Header = (props: { profile: userProfile }) => {
           </li>
         </menu>
       </div>
+      <ProfileModal isOpen={isModalOpen} />
     </header>
   );
 };
