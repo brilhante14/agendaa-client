@@ -15,7 +15,7 @@ interface userProfile {
  * @todo aceitar um objeto de perfil mais completo
  * @todo implementar o "Actions Menu Button" conforme ARIA APG
  */
-const Header = (props: { profile: userProfile }) => {
+const Header = (props: { profile?: userProfile }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -29,15 +29,17 @@ const Header = (props: { profile: userProfile }) => {
         onMouseLeave={() => setMenuOpen(false)}
         onBlur={() => setMenuOpen(false)}
       >
-        <button type="button" className={styles.profileButton}>
-          <img className={styles.profileImg} src={props.profile.img} alt="" />
-          <h2>
-            {props.profile.name}
-            <span role="img" aria-label="toggle menu">
-              {isMenuOpen ? " ▲" : " ▼"}
-            </span>
-          </h2>
-        </button>
+        {props.profile && (
+          <button type="button" className={styles.profileButton}>
+            <img className={styles.profileImg} src={props.profile.img} alt="" />
+            <h2>
+              {props.profile.name}
+              <span role="img" aria-label="toggle menu">
+                {isMenuOpen ? " ▲" : " ▼"}
+              </span>
+            </h2>
+          </button>
+        )}
         <menu className={`${styles.menu}  ${!isMenuOpen && styles.invisible}`}>
           {/**
            * @todo Implementar funções para navegar de volta ao login e acessar modal de edição de perfil
