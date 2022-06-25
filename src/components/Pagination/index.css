@@ -1,0 +1,54 @@
+.pagination_container {
+   display: flex;
+   list-style-type: none;
+   align-items: center;
+   margin-top: 60px;
+}
+
+.pagination_item {
+   background-color: transparent;
+   display: flex;
+   box-sizing: border-box;
+   justify-content: center;
+   align-items: center;
+   height: 44px;
+   margin: auto 4px;
+   color: #5616AA;
+   border-radius: 12px;
+   font-size: 13px;
+   min-width: 32px;
+   border: 1px solid #5616AA;
+}
+
+.selected{
+   background-color: #5616AA;
+   color: #FFF;
+}
+
+
+.pagination_item:hover {
+   background-color: rgba(0, 0, 0, 0.04);
+   cursor: pointer;
+}
+.selected:hover {
+   background-color: rgba(86, 22, 170, 0.96);
+   cursor: pointer;
+}
+
+
+.dots:hover {
+   background-color: transparent;
+   cursor: default;
+}
+
+
+.arrowDisabled{
+   background-color: rgba(255, 255, 255, 0.37);
+   border-color: rgba(86, 22, 170, 0.199);
+   color: grey;
+}
+
+
+.arrowDisabled:hover{
+   cursor: default;
+}
