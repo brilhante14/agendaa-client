@@ -1,18 +1,13 @@
-import React from 'react';
+// Styles
+import UserRoutes from "./routes";
+import { GlobalStyle } from "./styles/global";
 
-import './App.css';
-
-import Routes from './routes';
-
-const App = () => {
+// Renderer
+export function App() {
   return (
-    <div className="page-container">
-      <div className="content">
-        <Routes />
-      </div>
-      {/* <Footer /> */}
+    <div className="App">
+      <GlobalStyle />
+      <UserRoutes />
     </div>
   );
 }
-
-export default App;
