@@ -1,7 +1,9 @@
 import React from "react";
-import { createPortal } from "react-dom";
 import styles from "./profileModal.module.css";
-import edit_icon from "../../assets/svg/edit.svg";
+import edit_icon from "../../../assets/svg/edit.svg";
+import Modal from "..";
+import { TextInput } from "../../TextInput";
+import { TextButton } from "../../TextButton";
 
 interface props {
   isOpen: boolean;
@@ -15,8 +17,8 @@ interface props {
  * @todo receber objeto contendo perfil do usuário
  */
 const ProfileModal = ({ isOpen }: props) => {
-  const modal = (
-    <dialog className={styles.dialog} open={isOpen}>
+  return (
+    <Modal isOpen={isOpen}>
       <form>
         <div className={styles.inputs}>
           <label className={styles.imgLabel} htmlFor="profile-img">
@@ -45,31 +47,32 @@ const ProfileModal = ({ isOpen }: props) => {
               <input id="mail" name="mail" type="text" />
             </div>
 
-            <div className={styles.textInput}>
-              <label htmlFor="password">Senha:</label>
-              <input id="password" name="password" type="text" />
-            </div>
+            <TextInput
+              title="Senha"
+              placeholder="********"
+              onChange={() => ""}
+            />
 
-            <div className={styles.textInput}>
-              <label htmlFor="confirmPassword">Confirmar Senha:</label>
-              <input id="confirmPassword" name="confirmPassword" type="text" />
-            </div>
+            <TextInput
+              title="Confirmar Senha"
+              placeholder="********"
+              onChange={() => ""}
+            />
           </div>
         </div>
-
         <div className={styles.buttons}>
-          <button className={`${styles.button} | ${styles.warning}`}>
-            Deletar Perfil
-          </button>
-          <button className={`${styles.button} | ${styles.main}`} type="submit">
-            Confirmar Alterações
-          </button>
+          <TextButton
+            title="Deletar Perfil"
+            onClick={() => alert("Perfil deletado.")}
+          />
+          <TextButton
+            title="Confirmar Alterações"
+            onClick={() => alert("Perfil alterado")}
+          />
         </div>
       </form>
-    </dialog>
+    </Modal>
   );
-
-  return createPortal(modal, document.body);
 };
 
 export default ProfileModal;

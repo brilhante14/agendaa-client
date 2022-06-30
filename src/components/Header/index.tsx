@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ProfileModal from "../ProfileModal";
+import ProfileModal from "../Modal/ProfileModal/index";
 import styles from "./header.module.css";
 
 interface userProfile {
