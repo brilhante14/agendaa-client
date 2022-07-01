@@ -1,15 +1,8 @@
-.dialog {
-  background: #D9DBFF;
-  border: 0;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 1rem 2rem;
-}
-
 .inputs {
   align-items: center;
   display: flex;
-  gap: 2rem
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .profileImg {
@@ -44,45 +37,9 @@
   gap: 1rem;
 }
 
-.textInput {
-  display: flex;
-  flex-direction: column;
-  width: 40ch;
-}
-
-.textInput > label {
-  font-family: sans-serif;
-  font-weight: 600;
-}
-
-.textInput > input {
-  appearance: none;
-  background: #D9DBFF;
-  border: 1px solid #5616AA;
-  border-radius: 4px;
-  color: rgba(0, 0, 0, 0.75);
-  padding: 8px 12px;
-}
-
 .buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
   width: 100%;
-}
-
-.button {
-  appearance: none;
-  border: 0;
-  border-radius: 9999px;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-}
-.button.warning {
-  background-color: rgb(151, 22, 22);
-  color: white;
-}
-.button.main {
-  background-color: #656ED3;
-  color: white;
 }

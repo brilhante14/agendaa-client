@@ -3,7 +3,7 @@ import styles from "./profileModal.module.css";
 import edit_icon from "../../../assets/svg/edit.svg";
 import Modal from "..";
 import { TextInput } from "../../TextInput";
-import { TextButton } from "../../TextButton";
+import { Button } from "../../Button";
 
 interface props {
   isOpen: boolean;
@@ -32,20 +32,23 @@ const ProfileModal = ({ isOpen }: props) => {
           <input type="file" name="profile-img" id="profile-img"></input>
 
           <div className={styles.texts}>
-            <div className={styles.textInput}>
-              <label htmlFor="name">Nome:</label>
-              <input id="name" name="name" type="text" />
-            </div>
+            <TextInput
+              title="Nome"
+              placeholder="Fulano de Tal"
+              onChange={() => ""}
+            />
 
-            <div className={styles.textInput}>
-              <label htmlFor="username">Usuário:</label>
-              <input id="username" name="username" type="text" />
-            </div>
+            <TextInput
+              title="Usuário"
+              placeholder="fulano123"
+              onChange={() => ""}
+            />
 
-            <div className={styles.textInput}>
-              <label htmlFor="mail">Endereço Eletrônico:</label>
-              <input id="mail" name="mail" type="text" />
-            </div>
+            <TextInput
+              title="Endereço Eletrônico"
+              placeholder="mail@example.com"
+              onChange={() => ""}
+            />
 
             <TextInput
               title="Senha"
@@ -61,13 +64,21 @@ const ProfileModal = ({ isOpen }: props) => {
           </div>
         </div>
         <div className={styles.buttons}>
-          <TextButton
+          <Button
             title="Deletar Perfil"
             onClick={() => alert("Perfil deletado.")}
+            size={{
+              width: 180,
+              height: 48,
+            }}
           />
-          <TextButton
+          <Button
             title="Confirmar Alterações"
             onClick={() => alert("Perfil alterado")}
+            size={{
+              width: 260,
+              height: 48,
+            }}
           />
         </div>
       </form>
