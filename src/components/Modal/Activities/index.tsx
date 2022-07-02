@@ -1,6 +1,5 @@
 // Libs
 import React from 'react';
-import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -9,12 +8,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // Styles
 import {
     Container,
-    SliderContainer,
-    Title,
     Separator,
-    DaysContainer,
-    Day,
-    Days,
     DateContainer,
     DateSelector,
     ButtonContainer
