@@ -1,27 +1,24 @@
 import React, { MouseEventHandler } from "react";
 import styles from "./Turma.module.css";
 
-interface Turma {
-  nome: string;
-  professor: string;
-  participantes: number;
+interface Props {
+  turma: {
+    nome: string;
+    professor: string;
+    participantes: number;
+  };
+  onClick: MouseEventHandler;
 }
 
 /**
  * Componente para ser mostrado na seleção de turmas
  *
  * @component
- * @param {Turma} turma objeto contendo detalhes da turma
+ * @param turma objeto contendo detalhes da turma
  * @todo obter as imagens dos participantes e do professor dinamicamente
  */
-const Turma = ({
-  turma,
-  onClick,
-}: {
-  turma: Turma;
-  onClick: MouseEventHandler;
-}) => {
-  const participantes = ["#", "#", "#"];
+const Turma: React.FC<Props> = ({ turma, onClick }) => {
+  const participantes = ["#a", "#b", "#c"];
   const imagemProfessor = "#";
 
   return (
@@ -37,7 +34,10 @@ const Turma = ({
           <h1 className={styles.name}>{turma.nome}</h1>
           <div className={styles.participantes}>
             {participantes.map((participante) => (
-              <div className={styles.imgWrapper + " " + styles.aluno}>
+              <div
+                className={styles.imgWrapper + " " + styles.aluno}
+                key={participante}
+              >
                 <img src={participante} alt="" />
               </div>
             ))}
