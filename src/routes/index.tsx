@@ -25,7 +25,6 @@ export default function UserRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
-          {/* TEMPORÁRIO, APENAS PARA VER OS COMPONENTES */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
