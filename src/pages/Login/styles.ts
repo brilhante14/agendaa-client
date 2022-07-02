@@ -18,7 +18,7 @@ export const RegisterContainer = styled.div`
 `;
 
 export const ErrorText = styled.div`
-    color: #f00;
+    color: #A50000;
     font-size: 14px;
     align-self: center;
 `;

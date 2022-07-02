@@ -1,7 +1,6 @@
 // Libs
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../../api/api';
 
 // Assets
 import Image from '../../assets/svg/login.svg';
