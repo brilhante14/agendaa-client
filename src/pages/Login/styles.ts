@@ -16,3 +16,9 @@ export const RegisterContainer = styled.div`
     white-space: pre;
     margin-top: 10px;
 `;
+
+export const ErrorText = styled.div`
+    color: #f00;
+    font-size: 14px;
+    align-self: center;
+`;
