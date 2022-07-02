@@ -27,46 +27,8 @@ interface props {
     isOpen: boolean;
 }
 
-const allDays = [
-    {
-        initial: 'S',
-        name: 'Segunda',
-        active: false
-    },
-    {
-        initial: 'T',
-        name: 'Terça',
-        active: false
-    },
-    {
-        initial: 'Q',
-        name: 'Quarta',
-        active: false
-    },
-    {
-        initial: 'Q',
-        name: 'Quinta',
-        active: false
-    },
-    {
-        initial: 'S',
-        name: 'Sexta',
-        active: false
-    },
-    {
-        initial: 'S',
-        name: 'Sábado',
-        active: false
-    },
-    {
-        initial: 'D',
-        name: 'Domingo',
-        active: false
-    }]
 // Renderer
 export function Activities({ isOpen }: props) {
-    const [days, setDays] = React.useState(allDays);
-    const [startDate, setStartDate] = React.useState<Date | null>(null);
     const [endDate, setEndDate] = React.useState<Date | null>(null);
     return (
         <Modal isOpen={isOpen}>
@@ -94,7 +56,7 @@ export function Activities({ isOpen }: props) {
                 </DateContainer>
                 <Separator />
                 <ButtonContainer>
-                    <Button onClick={() => { }} size={{ width: 117, height: 39 }} title={"Criar atividade"} />
+                    <Button onClick={() => { }} size={{ width: 138, height: 39 }} title={"Criar atividade"} />
                 </ButtonContainer>
             </Container>
         </Modal>

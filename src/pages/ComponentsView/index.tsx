@@ -1,6 +1,7 @@
 // Libs
 import { Activities } from '../../components/Modal/Activities';
 import { ClassModal } from '../../components/Modal/ClassModal';
+import { Material } from '../../components/Modal/Material';
 
 // Styles
 
@@ -9,7 +10,8 @@ export function ComponentsView() {
     return (
         <>
             <ClassModal isOpen={false} />
-            <Activities isOpen={true} />
+            <Activities isOpen={false} />
+            <Material isOpen={true} />
         </>
     );
 }
