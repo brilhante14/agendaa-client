@@ -1,5 +1,5 @@
 // Libs
-import React from 'react';
+import { Activities } from '../../components/Modal/Activities';
 import { ClassModal } from '../../components/Modal/ClassModal';
 
 // Styles
@@ -8,7 +8,8 @@ import { ClassModal } from '../../components/Modal/ClassModal';
 export function ComponentsView() {
     return (
         <>
-            <ClassModal isOpen={true} />
+            <ClassModal isOpen={false} />
+            <Activities isOpen={true} />
         </>
     );
 }
