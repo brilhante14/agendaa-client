@@ -16,6 +16,7 @@ export default function UserRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* TODO: Ao autenticar, passar o usuário logado para as rotas (e redirecionar de acordo com a autenticação) */}
         <Route path="/turma" element={<SelecaoTurma />} />
         <Route path="/turmas" element={<Turmas />} />
         <Route path="/login" element={<Login />} />
