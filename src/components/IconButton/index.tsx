@@ -12,13 +12,18 @@ interface Props {
 
 const IconButton: React.FC<Props> = ({
   icon,
+  onClick,
   showTitle,
   title,
   type = "button",
   variant,
 }) => {
   return (
-    <button className={styles.button + " | " + styles[variant]} type={type}>
+    <button
+      className={styles.button + " | " + styles[variant]}
+      type={type}
+      onClick={onClick}
+    >
       <>
         <img src={icon} alt={title} />
         {showTitle && <span>{title}</span>}
