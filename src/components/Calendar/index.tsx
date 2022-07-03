@@ -1,35 +1,43 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
 import styles from "./Calendar.module.css";
 import Day from "./Day";
 
+type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 interface Props {
-  year: number;
-  month:
-    | "01"
-    | "02"
-    | "03"
-    | "04"
-    | "05"
-    | "06"
-    | "07"
-    | "08"
-    | "09"
-    | "10"
-    | "11"
-    | "12";
+  initialYear: number;
+  initialMonth: Month;
   navigate: (d: Date) => void;
 }
 
-function daysInMonth(month: string): number {
-  if (["01", "03", "05", "07", "08", "10", "12"].includes(month)) return 31;
-  else if (["04", "06", "09", "11"].includes(month)) return 30;
+function daysInMonth(month: number): number {
+  if ([0, 2, 4, 6, 7, 9, 11].includes(month)) return 31;
+  else if ([3, 5, 8, 10].includes(month)) return 30;
   else return 28;
 }
 
-const Calendar: React.FC<Props> = ({ year, month, navigate }) => {
+const Calendar: React.FC<Props> = ({ initialYear, initialMonth, navigate }) => {
   const [selectedDay, setSelectedDay] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState<number>(initialMonth);
+  const [currentYear, setCurrentYear] = useState<number>(initialYear);
   const weekdaysClasses = [1, 5];
+
+  function nextMonth() {
+    if (currentMonth === 11) {
+      setCurrentYear(currentYear + 1);
+      setCurrentMonth(0);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  }
+
+  function previousMonth() {
+    if (currentMonth === 0) {
+      setCurrentYear(currentYear - 1);
+      setCurrentMonth(11);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+  }
 
   function select(d: Date) {
     if (weekdaysClasses.includes(d.getUTCDay())) {
@@ -38,18 +46,20 @@ const Calendar: React.FC<Props> = ({ year, month, navigate }) => {
     }
   }
 
-  const firstDayOfMonth = new Date(year, parseInt(month), 1, 12);
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
   const allDaysInMonth: Array<Date> = [];
-  for (let i = 1; i <= daysInMonth(month); i++) {
-    allDaysInMonth.push(new Date(year, parseInt(month), i, 12));
+  for (let i = 1; i <= daysInMonth(currentMonth); i++) {
+    allDaysInMonth.push(new Date(currentYear, currentMonth, i));
   }
   return (
     <div className={styles.calendar}>
       <div className={styles.calendarHeader}>
+        <button onClick={previousMonth}>⬅️</button>
         {firstDayOfMonth.toLocaleString("default", {
           month: "long",
           year: "numeric",
         })}
+        <button onClick={nextMonth}>➡️</button>
       </div>
       <div className={styles.calendarGrid}>
         {["D", "S", "T", "Q", "Q", "S", "S"].map((d, idx) => (

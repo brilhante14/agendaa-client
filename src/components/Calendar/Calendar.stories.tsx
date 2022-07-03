@@ -5,12 +5,33 @@ import Calendar from ".";
 export default {
   title: "Calendário",
   component: Calendar,
+  argTypes: {
+    year: {
+      control: {
+        type: "range",
+        min: 2000,
+        max: 2022,
+        step: 1,
+      },
+    },
+  },
 } as ComponentMeta<typeof Calendar>;
 
-export const Abril2020: ComponentStory<typeof Calendar> = () => (
-  <Calendar
-    year={2020}
-    month="04"
-    navigate={(d) => alert(`You have selected ${d.getUTCDate()}`)}
-  />
-);
+const Template: ComponentStory<typeof Calendar> = ({
+  initialYear,
+  initialMonth,
+}) => {
+  return (
+    <Calendar
+      initialYear={initialYear}
+      initialMonth={initialMonth}
+      navigate={(d) => alert(d)}
+    />
+  );
+};
+
+export const Calendário = Template.bind({});
+Calendário.args = {
+  initialYear: 2020,
+  initialMonth: 4,
+};
