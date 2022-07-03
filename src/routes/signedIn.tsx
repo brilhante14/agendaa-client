@@ -6,19 +6,17 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 // Components
 import Turmas from "../pages/Turmas";
-import { ComponentsView } from "../pages/ComponentsView";
+import SelecaoTurma from "../pages/SelecaoTurma";
 
 // Renderer
 export default function SignedRoutes() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/turmas" element={<Turmas />} />
-                {/* TEMPORÁRIO, APENAS PARA VER OS COMPONENTES */}
-                <Route path="/componentsView" element={<ComponentsView />} />
-                {/* REDIRECIONAR PARA PAGINA INICIAL */}
-                <Route path="*" element={<Navigate to="/turmas" replace />} />
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SelecaoTurma />} />
+        <Route path="/turmas" element={<Turmas />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
