@@ -1,0 +1,32 @@
+.button {
+  align-items: center;
+  appearance: none;
+  border: 1px solid;
+  border-radius: 4px;
+  box-shadow: 0 0.5vmin 1vmin rgba(0, 0, 0, 0.2);
+  display: flex;
+  gap: 0.5em;
+  padding: 0.5em;
+}
+.button img {
+  height: 1em;
+  object-fit: contain;
+  width: 1em;
+}
+.button.primary {
+  background-color: #656ED3;
+  border-color: #656ED3;
+  color: white;
+}
+.button.secondary {
+  background-color: #D9DBFF;
+  border-color: #656ED3;
+  color: #656ED3;
+  font-weight: 500;
+}
+.button.alert {
+  background-color: #FB6262;
+  border-color: #FB6262;
+  color: white;
+  font-weight: 600;
+}

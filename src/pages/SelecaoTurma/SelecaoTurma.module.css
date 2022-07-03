@@ -1,0 +1,33 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.mainContent {
+  align-items: stretch;
+  display: flex;
+  flex: 1;
+}
+.sidebar {
+  border-right: solid 1px #827AA0;
+  width: max-content;
+}
+.sideheader {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 2rem;
+}
+.sidebar h2 {
+  color: #5616AA;
+}
+.classList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+.emptyWarning {
+  text-align: center;
+  width: 40ch;
+}
