@@ -25,7 +25,7 @@ const Day: React.FC<Props> = ({
     <button
       className={className}
       style={{
-        gridColumnStart: column,
+        gridColumnStart: column + 1,
       }}
       onClick={onClick}
     >

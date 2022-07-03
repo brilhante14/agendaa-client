@@ -28,11 +28,14 @@ function daysInMonth(month: string): number {
 }
 
 const Calendar: React.FC<Props> = ({ year, month, navigate }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState(new Date());
+  const weekdaysClasses = [1, 5];
 
   function select(d: Date) {
-    setSelectedDate(d);
-    navigate(d);
+    if (weekdaysClasses.includes(d.getUTCDay())) {
+      setSelectedDay(d);
+      navigate(d);
+    }
   }
 
   const firstDayOfMonth = new Date(year, parseInt(month), 1, 12);
@@ -43,10 +46,13 @@ const Calendar: React.FC<Props> = ({ year, month, navigate }) => {
   return (
     <div className={styles.calendar}>
       <div className={styles.calendarHeader}>
-        {firstDayOfMonth.toLocaleString("default", { month: "long" })}
+        {firstDayOfMonth.toLocaleString("default", {
+          month: "long",
+          year: "numeric",
+        })}
       </div>
       <div className={styles.calendarGrid}>
-        {["S", "T", "Q", "Q", "S", "S", "D"].map((d, idx) => (
+        {["D", "S", "T", "Q", "Q", "S", "S"].map((d, idx) => (
           <div className={styles.weekDay} key={idx}>
             {d}
           </div>
@@ -59,10 +65,10 @@ const Calendar: React.FC<Props> = ({ year, month, navigate }) => {
             <Day
               day={dayOfMonth}
               // TODO: Replace by real weekdays
-              hasClass={dayOfWeek in [1, 5]}
-              isSelected={day === selectedDate}
+              hasClass={weekdaysClasses.includes(dayOfWeek)}
+              isSelected={day.getTime() === selectedDay.getTime()}
               onClick={() => select(day)}
-              column={day.getUTCDay()}
+              column={dayOfWeek}
               key={day.toDateString()}
             />
           );
