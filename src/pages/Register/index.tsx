@@ -1,6 +1,7 @@
 // Libs
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../../api/api';
 
 // Assets
 import Image from '../../assets/svg/register.svg';
@@ -27,11 +28,30 @@ interface AuthInfos {
 
 // Renderer
 export function Register() {
-    const [authInfo, setAuthInfo] = React.useState({} as AuthInfos);
+    const [authInfo, setAuthInfo] = React.useState({ name: '', username: '', email: '', password: '' } as AuthInfos);
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const navigate = useNavigate();
     function handleValue(value: string, key: string) {
         setAuthInfo({ ...authInfo, [key]: value });
+    }
+    function handleRegister() {
+        api.post('/usuarios/signup', {
+            user: authInfo.username,
+            nome: authInfo.name,
+            email: authInfo.email,
+            password: authInfo.password
+        }).then((res) => {
+            if (res.status === 200) {
+                localStorage.setItem('token', res.data.token);
+                // TODO: Enviar para home
+                navigate('/turmas');
+            }
+            else {
+                if (res.status === 404) {
+                    // TODO: Usuário já existe
+                }
+            }
+        })
     }
     return (
         <Auth title={"Registre-se"} image={Image} formSide={'right'} children={
@@ -47,7 +67,7 @@ export function Register() {
                 <Separator />
                 <TextInput title={"Confirme sua senha:"} placeholder={"Repita sua senha"} onChange={(e: any) => { setConfirmPassword(e.target.value) }} value={confirmPassword} isSecure />
                 <Separator />
-                <Button title={"Registrar"} onClick={() => { }} size={{ width: 400, height: 50 }} />
+                <Button title={"Registrar"} onClick={handleRegister} size={{ width: 400, height: 50 }} />
                 <RegisterContainer>
                     Já possui uma conta? <TextButton onClick={() => { navigate('/login') }} title={"Login"} />
                 </RegisterContainer>
