@@ -1,0 +1,15 @@
+.day {
+  background: transparent;
+  border-radius: 9999px;
+  border: 1px solid #5616AA;
+  color: #5616AA;
+  height: 2em;
+  width: 2em;
+}
+.day.hasClass {
+  background-color: #5616AA;
+  color: white;
+}
+.day.selected {
+  box-shadow: 0 1vmin 1vmin #0003;
+}

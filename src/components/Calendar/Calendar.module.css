@@ -1,0 +1,28 @@
+.calendar {
+  border-radius: 1em;
+  border: 1px solid var(--purple_dark);
+}
+.calendarHeader {
+  align-items: center;
+  background-color: var(--purple_dark);
+  border-radius: 1em 1em 0 0;
+  color: white;
+  display: flex;
+  font-weight: 600;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+  text-align: center;
+}
+.calendarGrid {
+  align-items: center;
+  display: grid;
+  gap: 0.5em;
+  grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
+  margin: 0.5em 1em;
+}
+.weekDay {
+  color: var(--purple_dark);
+  font-weight: bold;
+  text-align: center;
+}
