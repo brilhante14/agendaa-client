@@ -3,6 +3,7 @@
   border: 1px solid var(--purple_dark);
 }
 .calendarHeader {
+  align-items: center;
   background-color: var(--purple_dark);
   border-radius: 1em 1em 0 0;
   color: white;

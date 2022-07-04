@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styles from "./Calendar.module.css";
 import Day from "./Day";
+import navigate_next from "../../assets/svg/navigate_next.svg";
+import navigate_before from "../../assets/svg/navigate_before.svg";
+import IconButton from "../IconButton";
 
 type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 interface Props {
@@ -54,12 +57,24 @@ const Calendar: React.FC<Props> = ({ initialYear, initialMonth, navigate }) => {
   return (
     <div className={styles.calendar}>
       <div className={styles.calendarHeader}>
-        <button onClick={previousMonth}>⬅️</button>
+        <IconButton
+          title="Mês Anterior"
+          icon={navigate_before}
+          onClick={previousMonth}
+          showTitle={false}
+          variant="primary"
+        />
         {firstDayOfMonth.toLocaleString("default", {
           month: "long",
           year: "numeric",
         })}
-        <button onClick={nextMonth}>➡️</button>
+        <IconButton
+          title="Próximo Mês"
+          icon={navigate_next}
+          onClick={nextMonth}
+          showTitle={false}
+          variant="primary"
+        />
       </div>
       <div className={styles.calendarGrid}>
         {["D", "S", "T", "Q", "Q", "S", "S"].map((d, idx) => (
