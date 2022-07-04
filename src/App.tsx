@@ -1,13 +1,16 @@
 // Styles
+import AuthContext, { AuthProvider } from "./context/auth";
 import UserRoutes from "./routes";
 import { GlobalStyle } from "./styles/global";
 
 // Renderer
 export function App() {
   return (
-    <div className="App">
-      <GlobalStyle />
-      <UserRoutes />
-    </div>
+    <AuthProvider>
+      <div className="App">
+        <GlobalStyle />
+        <UserRoutes />
+      </div>
+    </AuthProvider>
   );
 }

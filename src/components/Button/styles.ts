@@ -5,15 +5,18 @@ interface sizeProps {
     height: number;
 }
 
-export const Container = styled.button<{ size: sizeProps }>`
-    background: var(--purple);
+export const Container = styled.button<{ size: sizeProps, textColor?: string, backgroundColor?: string, align?: string }>`
+    background: ${props => props.backgroundColor ? props.backgroundColor : 'var(--purple)'};
     width: ${props => props.size.width}px;
     height: ${props => props.size.height}px;
     border-radius: 12px;
     border: 0;
     :hover {
-        background: var(--purple_dark);
+        background: ${props => props.backgroundColor ? props.backgroundColor : 'var(--purple_dark)'};
     }
     font-size: 16px;
-    color: var(--white);
+    color: ${props => props.textColor ? props.textColor : 'var(--white)'};
+    display: flex;
+    align-items: center;
+    justify-content: ${props => props.align ? props.align : 'center'};
 `;
