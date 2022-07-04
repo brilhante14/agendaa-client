@@ -1,9 +1,11 @@
 import { Outlet, useNavigate } from "react-router-dom";
+import api from "../../api/api";
 import styles from "./SelecaoTurma.module.css";
 import Header from "../../components/Header";
 import IconButton from "../../components/IconButton";
 import add from "../../assets/svg/add.svg";
 import Turma from "../../components/Turma";
+import { useEffect, useState } from "react";
 
 interface Props {
   user?: {
@@ -12,11 +14,14 @@ interface Props {
   };
 }
 
-function fakeClass(id: string) {
+async function getClassById(id: string) {
+  const res = await api.get(`/turmas/${id}`);
+  console.log(res);
   return {
-    nome: "Turma",
-    professor: "Fulano de Tal",
-    participantes: 120,
+    nome: res.data.nome,
+    professor: res.data.professor,
+    participantes: res.data.participantes.length,
+    id: res.data._id,
   };
 }
 
@@ -27,10 +32,27 @@ function fakeClass(id: string) {
 const SelecaoTurma: React.FC<Props> = ({
   user = {
     isProfessor: true,
-    turmasMatriculadas: ["123", "FA41", "14"],
+    turmasMatriculadas: [
+      "62c1d72f1de31d9a6d66e7ff",
+      "62c31b3cb9554f098d0907fe",
+    ],
   },
 }) => {
   let navigate = useNavigate();
+  let [turmas, setTurmas] = useState<
+    Array<{
+      nome: string;
+      professor: string;
+      participantes: number;
+      id: string;
+    }>
+  >([]);
+
+  useEffect(() => {
+    Promise.all(user.turmasMatriculadas.map(getClassById)).then((res) => {
+      setTurmas(res);
+    });
+  }, [user.turmasMatriculadas]);
 
   return (
     <>
@@ -57,12 +79,12 @@ const SelecaoTurma: React.FC<Props> = ({
               />
             </div>
             <div className={styles.classList}>
-              {user.turmasMatriculadas.length > 0 ? (
-                user?.turmasMatriculadas.map((id_turma) => (
+              {turmas.length > 0 ? (
+                turmas.map((turma) => (
                   <Turma
-                    turma={fakeClass(id_turma)}
-                    onClick={() => navigate(`./${id_turma}`)}
-                    key={id_turma}
+                    turma={turma}
+                    onClick={() => navigate(`./${turma.id}`)}
+                    key={turma.id}
                   />
                 ))
               ) : (
