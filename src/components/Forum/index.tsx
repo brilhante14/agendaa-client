@@ -78,7 +78,6 @@ export function Forum() {
     useEffect(() => {
         api.get('/turmas/62c1d72f1de31d9a6d66e7ff/getComments').then(res => {
             setComments(res.data);
-            console.log(res.data);
         });
         api.get('/usuarios/getAll').then(res => {
             setUsers(res.data);
@@ -96,9 +95,6 @@ export function Forum() {
             {
                 comments.map((comment: any, index) => (
                     <div key={index}>
-                        {
-                            console.log(comment)
-                        }
                         <Comment key={index}>
                             <CommentHeader>
                                 <CommentHeaderInfo>
