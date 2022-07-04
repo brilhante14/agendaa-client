@@ -3,14 +3,14 @@ import api from "../../api/api";
 
 import "./index.css";
 
-import searchIcon from "../../assets/icon-search.svg";
+import searchIcon from "../../assets/svg/iconSearch.svg";
 import Pagination from "../../components/Pagination";
 
-type turmasInfo = {
+type turmasPaged = {
   data: {
     nome: string;
     professor: string;
-    participantes: number;
+    participantes: string[];
     comments: string[];
     id: string;
   }[];
@@ -21,7 +21,7 @@ type turmasInfo = {
 const Turmas = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [turmas, setTurmas] = useState<turmasInfo>();
+  const [turmas, setTurmas] = useState<turmasPaged>();
 
   useEffect(() => {
     async function fetchData() {
@@ -76,7 +76,7 @@ const Turmas = () => {
               <p title={turma.nome}>{turma.nome}</p>
               <hr color="#DBCCCC" />
               <div className="turmas_cardFooter">
-                <span>{`${turma.participantes} Participantes`}</span>
+                {/* <span>{`${turma.participantes.length} Participantes`}</span> */}
                 <button className="turmas_cardButton">Entrar</button>
               </div>
             </div>
