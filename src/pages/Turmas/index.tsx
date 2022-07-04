@@ -43,7 +43,6 @@ const Turmas = () => {
 
   if (!turmas) return <div>Loading</div>;
 
-  console.log(turmas);
   return (
     <div className="turmas_container">
       <h1 className="turmas_title">Turmas Cadastradas</h1>
