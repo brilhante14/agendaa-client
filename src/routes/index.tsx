@@ -9,6 +9,7 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { ForgotPassword } from "../pages/ForgotPassword";
 import Turmas from "../pages/Turmas";
+import { ComponentsView } from "../pages/ComponentsView";
 
 // Renderer
 export default function UserRoutes() {
@@ -19,6 +20,8 @@ export default function UserRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
+        {/* TEMPORÁRIO, APENAS PARA VER OS COMPONENTES */}
+        <Route path="/componentsView" element={<ComponentsView />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

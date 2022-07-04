@@ -7,8 +7,10 @@ export const GlobalStyle = createGlobalStyle`
         --background: #EBEFFF;
         --purple: #656ED3;
         --purple_dark: #5616AA;
+        --purple_light: #D9DBFF;
         --white: #FFFFFF;
         --black: #000000;
+
     }
 
     /* Default Patterns */
