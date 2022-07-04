@@ -8,6 +8,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { ForgotPassword } from "../pages/ForgotPassword";
+import Turma from "../pages/Turma";
 import Turmas from "../pages/Turmas";
 
 // Renderer
@@ -16,6 +17,7 @@ export default function UserRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/turmas" element={<Turmas />} />
+        <Route path="/turmas/:id" element={<Turma />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />

@@ -1,0 +1,41 @@
+.turma_container{
+   margin: 30px 85px;
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.turma_titleContainer {
+   display: flex;
+   justify-content: center;
+   gap: 1rem;
+}
+
+.turma_titleButton{
+   background-color: transparent;
+   border: none;
+   margin: auto 0;
+}
+
+.turma_title {
+   text-align: center;
+   color: #5616AA;
+}
+
+.cardParticipante_editIcon:hover{
+   opacity: 0.95;
+}
+
+.turma_categories {
+   font-size: 24px;
+}
+
+.participantes {
+   margin-top: 30px;
+}
+
+.turma_gridContainer {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+   row-gap: 30px;
+}

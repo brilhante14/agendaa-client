@@ -1,0 +1,48 @@
+.cardParticipante_container{
+   width: 345px;
+   height: 57px;
+   background-color: #D9DBFF;
+   border-radius: 8px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0 1rem;
+}
+
+.cardParticipante_profileContainer{
+   align-items: center;
+   display: flex;
+   gap: 0.5rem;
+   flex: 1;
+}
+
+.cardParticipante_profilePic {
+   height: 25px;
+   width: 25px;
+   background-color: #bbb;
+   border-radius: 50%;
+   display: inline-block;
+}
+
+.cardParticipante_info{
+   display: flex;
+   flex-direction: column;
+}
+
+.cardParticipante_name {
+   color: #334253;
+}
+
+.cardParticipante_email {
+   color: #827AA0;
+}
+
+.cardParticipante_iconContainer{
+   display: flex;
+   gap: 1rem;
+}
+
+.cardParticipante_icon:hover{
+   cursor: pointer;
+   opacity: 0.9;
+}
