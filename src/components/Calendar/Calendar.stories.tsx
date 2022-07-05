@@ -26,6 +26,7 @@ const Template: ComponentStory<typeof Calendar> = ({
       initialYear={initialYear}
       initialMonth={initialMonth}
       navigate={(d) => alert(d)}
+      weekdays={[0, 3]}
     />
   );
 };

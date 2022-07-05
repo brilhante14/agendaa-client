@@ -7,6 +7,7 @@ import { Button } from "../../Button";
 
 interface props {
   isOpen: boolean;
+  handleOpen: (status: boolean) => void;
 }
 /**
  * Modal contendo o formulário de edição de perfil
@@ -16,9 +17,9 @@ interface props {
  * @todo realizar o envio das infromações
  * @todo receber objeto contendo perfil do usuário
  */
-const ProfileModal = ({ isOpen }: props) => {
+const ProfileModal = ({ isOpen, handleOpen }: props) => {
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} handleOpen={handleOpen}>
       <form>
         <div className={styles.inputs}>
           <label className={styles.imgLabel} htmlFor="profile-img">

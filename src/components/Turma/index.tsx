@@ -23,19 +23,26 @@ const Turma: React.FC<Props> = ({ turma, onClick }) => {
       <div>
         <header className={styles.header}>
           <div className={styles.imgWrapper}>
-            <img src={`https://i.pravatar.cc/150?img=${Math.round(Math.random() * 50)}`} alt={turma.professor} />
+            <img
+              src={`https://i.pravatar.cc/150?img=${Math.round(
+                Math.random() * 50
+              )}`}
+              alt={turma.professor}
+            />
           </div>
-          <h2>Professor: {turma.professor}</h2>
+          <h2 style={{ color: "black" }}>Professor: {turma.professor}</h2>
         </header>
         <main>
           <h1 className={styles.name}>{turma.nome}</h1>
           <div className={styles.participantes}>
             {turma.participantes.map((participante) => (
-              <div
-                className={styles.imgWrapper}
-                key={participante}
-              >
-                <img src={`https://i.pravatar.cc/150?img=${Math.round(Math.random() * 50)}`} alt="" />
+              <div className={styles.imgWrapper} key={participante}>
+                <img
+                  src={`https://i.pravatar.cc/150?img=${Math.round(
+                    Math.random() * 50
+                  )}`}
+                  alt=""
+                />
               </div>
             ))}
           </div>
@@ -44,8 +51,8 @@ const Turma: React.FC<Props> = ({ turma, onClick }) => {
           <h3>{turma.participantes.length} participantes</h3>
           <button onClick={onClick}>Acessar</button>
         </footer>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 

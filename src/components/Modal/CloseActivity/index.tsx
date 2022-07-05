@@ -14,14 +14,15 @@ import Switch from '@mui/material/Switch';
 
 interface props {
     isOpen: boolean;
+    handleOpen: (status: boolean) => void;
 }
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 // Renderer
-export function CloseActivity({ isOpen }: props) {
+export function CloseActivity({ isOpen, handleOpen }: props) {
     return (
-        <Modal isOpen={isOpen}>
+        <Modal isOpen={isOpen} handleOpen={handleOpen}>
             <Container>
                 <Row>
                     <Title>

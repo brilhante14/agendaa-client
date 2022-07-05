@@ -7,7 +7,8 @@ interface Props {
   showTitle: boolean;
   title: string;
   type?: "button" | "submit" | "reset";
-  variant: "primary" | "secondary" | "alert";
+  variant: "primary" | "secondary" | "alert" | "noBackground";
+  width?: number;
 }
 
 const IconButton: React.FC<Props> = ({
@@ -17,13 +18,14 @@ const IconButton: React.FC<Props> = ({
   title,
   type = "button",
   variant,
+  width
 }) => {
   return (
     <button
       className={styles.button + " | " + styles[variant]}
       type={type}
       onClick={onClick}
-      style={{ width: 95, display: "flex", justifyContent: "center" }}
+      style={{ width: width ? width : 100, display: "flex", justifyContent: "center" }}
     >
       <>
         <img src={icon} alt={title} />

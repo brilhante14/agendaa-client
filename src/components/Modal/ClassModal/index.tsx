@@ -17,15 +17,16 @@ import { allDays } from '../../../utils/date';
 
 interface props {
     isOpen: boolean;
+    handleOpen: (status: boolean) => void;
 }
 
 // Renderer
-export function ClassModal({ isOpen }: props) {
+export function ClassModal({ isOpen, handleOpen }: props) {
     const [days, setDays] = React.useState(allDays);
     const [startDate, setStartDate] = React.useState<Date | null>(null);
     const [endDate, setEndDate] = React.useState<Date | null>(null);
     return (
-        <Modal isOpen={isOpen}>
+        <Modal isOpen={isOpen} handleOpen={handleOpen}>
             <Container>
                 <TextInput onChange={() => { }} placeholder={"Ex.: Matématica discreta"} title={"Nome da turma:"} />
                 <Separator />

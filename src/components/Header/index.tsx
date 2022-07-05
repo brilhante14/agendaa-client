@@ -62,7 +62,7 @@ const Header = (props: { profile?: userProfile }) => {
           </menu>
         </div>
       )}
-      <ProfileModal isOpen={isModalOpen} />
+      {/* <ProfileModal isOpen={isModalOpen} /> */}
     </header>
   );
 };

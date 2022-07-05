@@ -26,16 +26,45 @@ import {
 } from './styles';
 import api from '../../api/api';
 
+interface Props {
+    id?: string;
+}
+
 // Renderer
-export function Forum() {
-    const [comments, setComments] = React.useState([]);
-    const [users, setUsers] = React.useState([] as any);
-    const [isEdit, setIsEdit] = React.useState(false);
+export function Forum({ id }: Props) {
     const [isEditReply, setIsEditReply] = React.useState(-1);
+    const [isCommentReply, setIsCommentReply] = React.useState(-1);
     const [editText, setEditText] = React.useState("");
     const [isReply, setIsReply] = React.useState(false);
     const [commentReply, setCommentReply] = React.useState("");
     const [newTopic, setNewTopic] = React.useState(false);
+    const [comments, setComments] = React.useState([] as any);
+    const [users, setUsers] = React.useState([] as any);
+    const [user, setUser] = React.useState({} as any);
+    const [isPublished, setIsPublished] = React.useState(false);
+    const bottomRef = React.useRef<null | HTMLDivElement>(null);
+    useEffect(() => {
+        api.get('/usuarios/getAll').then(res => {
+            setUsers(res.data);
+        });
+        const storage = localStorage.getItem("user");
+        if (storage) {
+            const user = JSON.parse(storage);
+            setUser(user);
+        }
+    }, [])
+
+
+    useEffect(() => {
+        async function fetchComments() {
+            await api.get(`/turmas/${id}/getComments`).then(res => {
+                setComments(res.data);
+            });
+        }
+
+        fetchComments();
+    }, [id, comments])
+
     function handleEditReply(index: number) {
         setIsEditReply(index);
     }
@@ -47,7 +76,7 @@ export function Forum() {
             ...(isReply && { isReply: true })
         })
     }
-    function handleDelete(commentID: string, classID: string, parentID?: string, isReply?: boolean) {
+    function handleDelete(commentID: string, classID?: string, parentID?: string, isReply?: boolean) {
         if (window.confirm("Tem certeza que deseja excluir?")) {
             api.delete(`/turmas/${classID}/deleteComment`, {
                 data: {
@@ -65,37 +94,35 @@ export function Forum() {
             userId: userID,
             text: text
         })
+        setEditText("")
     }
-    function handleNewTopic(text: string, userID: string, classID: string) {
+    function handleNewTopic(text: string, userID: string, classID?: string) {
         api.post(`/turmas/${classID}/commentForum`, {
             text: text,
             userId: userID
         })
+        setEditText("")
+        setNewTopic(false);
     }
-    useEffect(() => {
-        api.get('/turmas/62c1d72f1de31d9a6d66e7ff/getComments').then(res => {
-            setComments(res.data);
-        });
-        api.get('/usuarios/getAll').then(res => {
-            setUsers(res.data);
-        });
-    }, [])
+    function scrollToBottom() {
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
     return (
         <Container>
             <Header>
                 <Title>
                     Fórum
                 </Title>
-                <Button onClick={() => { setNewTopic(true) }} size={{ width: 141, height: 28 }} title={"Novo tópico"} icon={Image} textColor={'#FFFFFF'} />
+                <Button onClick={() => { setNewTopic(true); scrollToBottom() }} size={{ width: 141, height: 28 }} title={"Novo tópico"} icon={Image} textColor={'#FFFFFF'} />
             </Header>
             <Separator />
             {
-                comments.map((comment: any, index) => (
+                comments.map((comment: any, index: any) => (
                     <div key={index}>
                         <Comment key={index}>
                             <CommentHeader>
                                 <CommentHeaderInfo>
-                                    <ProfileImage src={"https://i.imgur.com/yDCpZpQ.jpg"} />
+                                    <ProfileImage src={users.find((element: { _id: any; }) => element._id === comment.userId)?.photo} />
                                     <ProfileName>
                                         {users.find((element: { _id: any; }) => element._id === comment.userId)?.nome}
                                     </ProfileName>
@@ -104,17 +131,18 @@ export function Forum() {
                                     </DateText>
                                 </CommentHeaderInfo>
                                 {
-                                    isEdit ?
-                                        <Button title={"Deletar"} onClick={() => { handleDelete(comment._id, "62c1d72f1de31d9a6d66e7ff") }} size={{ width: 144, height: 28 }} icon={TrashImage} textColor={'#FB6262'} backgroundColor={'none'} align={'flex-end'} />
+                                    isCommentReply === index ?
+                                        <Button title={"Deletar"} onClick={() => { handleDelete(comment._id, id) }} size={{ width: 144, height: 28 }} icon={TrashImage} textColor={'#FB6262'} backgroundColor={'none'} align={'flex-end'} />
                                         :
+                                        comment.userId === user._id &&
                                         <ButtonArea>
-                                            <Button title={"Editar"} onClick={() => { setIsEdit(!isEdit); setEditText(comment.text) }} size={{ width: 120, height: 28 }} icon={PencilImage} textColor={'#5357B6'} backgroundColor={'none'} align={'flex-end'} />
-                                            <Button title={"Responder"} onClick={() => { setIsReply(true); setCommentReply(comment._id) }} size={{ width: 120, height: 28 }} icon={ReplyImage} textColor={'#5357B6'} backgroundColor={'none'} align={'flex-end'} />
+                                            <Button title={"Editar"} onClick={() => { setEditText(comment.text); setIsCommentReply(index); }} size={{ width: 120, height: 28 }} icon={PencilImage} textColor={'#5357B6'} backgroundColor={'none'} align={'flex-end'} />
+                                            <Button title={"Responder"} onClick={() => { setIsReply(true); setCommentReply(comment._id); }} size={{ width: 120, height: 28 }} icon={ReplyImage} textColor={'#5357B6'} backgroundColor={'none'} align={'flex-end'} />
                                         </ButtonArea>
                                 }
                             </CommentHeader>
                             {
-                                isEdit ?
+                                isCommentReply === index ?
                                     <>
                                         <Separator />
                                         <ReplyText onChange={(e: any) => { setEditText(e.target.value) }}>
@@ -128,9 +156,9 @@ export function Forum() {
                             }
                             <Separator />
                             {
-                                isEdit &&
+                                isCommentReply === index &&
                                 <EditButtonArea>
-                                    <Button title={"Editar"} size={{ width: 121, height: 48 }} onClick={() => { handleEditText(editText, comment._id); handleEditReply(-1); setEditText("") }} />
+                                    <Button title={"Editar"} size={{ width: 121, height: 48 }} onClick={() => { handleEditText(editText, comment._id); setIsCommentReply(-1); setEditText("") }} />
                                 </EditButtonArea>
                             }
                         </Comment>
@@ -141,7 +169,7 @@ export function Forum() {
                                     <Reply>
                                         <CommentHeader>
                                             <CommentHeaderInfo>
-                                                <ProfileImage src={"https://i.pravatar.cc/150?img=3"} />
+                                                <ProfileImage src={reply.userId === user._id ? user.photo : users.find((element: { _id: any; }) => element._id === comment.userId)?.photo} />
                                                 <ProfileName>
                                                     {users.find((element: { _id: any; }) => element._id === reply.userId)?.nome}
                                                 </ProfileName>
@@ -151,8 +179,9 @@ export function Forum() {
                                             </CommentHeaderInfo>
                                             {
                                                 isEditReply === index ?
-                                                    <Button title={"Deletar"} onClick={() => { handleDelete(reply._id, "62c1d72f1de31d9a6d66e7ff", comment._id, true) }} size={{ width: 144, height: 28 }} icon={TrashImage} textColor={'#FB6262'} backgroundColor={'none'} align={'flex-end'} />
+                                                    <Button title={"Deletar"} onClick={() => { handleDelete(reply._id, id, comment._id, true) }} size={{ width: 144, height: 28 }} icon={TrashImage} textColor={'#FB6262'} backgroundColor={'none'} align={'flex-end'} />
                                                     :
+                                                    reply.userId === user._id &&
                                                     <ButtonArea>
                                                         <Button title={"Editar"} onClick={() => { handleEditReply(index); setEditText(reply.text) }} size={{ width: 120, height: 28 }} icon={PencilImage} textColor={'#5357B6'} backgroundColor={'none'} align={'flex-end'} />
                                                     </ButtonArea>
@@ -162,7 +191,7 @@ export function Forum() {
                                             isEditReply === index ?
                                                 <>
                                                     <Separator />
-                                                    <ReplyText onChange={(e: any) => { setEditText(e.target.value) }} placeholder={"Escreva sua resposta"}>
+                                                    <ReplyText onChange={(e: any) => { setEditText(e.target.value) }} placeholder={"Escreva sua resposta"} value={editText}>
                                                         {editText}
                                                     </ReplyText>
                                                 </>
@@ -189,26 +218,23 @@ export function Forum() {
                                     <Reply>
                                         <CommentHeader>
                                             <CommentHeaderInfo>
-                                                <ProfileImage src={"https://i.pravatar.cc/150?img=3"} />
+                                                <ProfileImage src={user.photo} />
                                                 <ProfileName>
-                                                    {"João da silva"}
+                                                    {user.nome}
                                                 </ProfileName>
-                                                <DateText>
-                                                    {"3213123131"}
-                                                </DateText>
                                             </CommentHeaderInfo>
                                         </CommentHeader>
                                         {
                                             <>
                                                 <Separator />
-                                                <ReplyText onChange={(e: any) => { setEditText(e.target.value) }} placeholder={"Escreva sua resposta"}>
+                                                <ReplyText onChange={(e: any) => { setEditText(e.target.value) }} placeholder={"Escreva sua resposta"} value={editText}>
                                                     {editText}
                                                 </ReplyText>
                                             </>
                                         }
                                         <Separator />
                                         <EditButtonArea>
-                                            <Button title={"Editar"} size={{ width: 121, height: 48 }} onClick={() => { handleReply(commentReply, "62c0898828f95cedccb4f7e8", editText) }} />
+                                            <Button title={"Responder"} size={{ width: 121, height: 48 }} onClick={() => { handleReply(commentReply, user._id, editText); setIsReply(false); }} />
                                         </EditButtonArea>
                                     </Reply>
                                     <Separator />
@@ -224,27 +250,25 @@ export function Forum() {
                     <Comment>
                         <CommentHeader>
                             <CommentHeaderInfo>
-                                <ProfileImage src={"https://i.pravatar.cc/150?img=3"} />
+                                <ProfileImage src={user.photo} />
                                 <ProfileName>
-                                    {"João da silva"}
+                                    {user.nome}
                                 </ProfileName>
-                                <DateText>
-                                    {"3213123131"}
-                                </DateText>
                             </CommentHeaderInfo>
                         </CommentHeader>
                         {
                             <>
                                 <Separator />
-                                <ReplyText onChange={(e: any) => { setEditText(e.target.value) }} placeholder={"Escreva sua resposta"}>
+                                <ReplyText onChange={(e: any) => { setEditText(e.target.value) }} placeholder={"Escreva sua resposta"} value={editText}>
                                     {editText}
                                 </ReplyText>
                             </>
                         }
                         <Separator />
                         <EditButtonArea>
-                            <Button title={"Publicar"} size={{ width: 121, height: 48 }} onClick={() => { handleNewTopic(editText, "62c0898828f95cedccb4f7e8", "62c1d72f1de31d9a6d66e7ff") }} />
+                            <Button title={"Publicar"} size={{ width: 121, height: 48 }} onClick={() => { handleNewTopic(editText, user._id, id); setIsPublished(state => !state); }} />
                         </EditButtonArea>
+                        <div ref={bottomRef} />
                     </Comment>
                 )
             }

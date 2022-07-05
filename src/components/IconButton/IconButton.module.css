@@ -31,3 +31,8 @@
   color: white;
   font-weight: 600;
 }
+
+.button.noBackground {
+  background-color: transparent;
+  border-color: transparent;
+}

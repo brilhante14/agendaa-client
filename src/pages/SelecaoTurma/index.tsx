@@ -100,7 +100,7 @@ const SelecaoTurma: React.FC<Props> = ({
         </nav>
         <Outlet />
       </main>
-      <ClassModal isOpen={modalTurmasIsOpen} />
+      {/* <ClassModal isOpen={modalTurmasIsOpen} /> */}
     </div>
   );
 };
