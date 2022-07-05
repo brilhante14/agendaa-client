@@ -7,8 +7,9 @@ interface Props {
   showTitle: boolean;
   title: string;
   type?: "button" | "submit" | "reset";
-  variant: "primary" | "secondary" | "alert" | "noBackground" | "success";
+  variant: "primary" | "secondary" | "alert" | "noBackground" | "toggleable";
   width?: number;
+  isToggled?: boolean;
 }
 
 const IconButton: React.FC<Props> = ({
@@ -18,11 +19,12 @@ const IconButton: React.FC<Props> = ({
   title,
   type = "button",
   variant,
-  width
+  width,
+  isToggled = false,
 }) => {
   return (
     <button
-      className={styles.button + " | " + styles[variant]}
+      className={styles.button + " | " + styles[variant] + " | " + (isToggled ? styles.toggled : "")}
       type={type}
       onClick={onClick}
       style={{ width: width ? width : 100, display: "flex", justifyContent: "center" }}

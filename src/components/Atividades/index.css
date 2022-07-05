@@ -29,6 +29,13 @@
 .atividades_carrosselContainer{
 }
 
+.atividades__empty {
+   align-items: center;
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+}
+
 .switch {
    position: relative;
    display: inline-block;

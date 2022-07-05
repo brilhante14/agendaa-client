@@ -3,6 +3,7 @@ import Atividade from "../Atividade";
 import { CloseActivity } from "../Modal/CloseActivity";
 
 import Image from '../../assets/new_topic_black.png'
+import SemAtividade from '../../assets/sem_atividade.png';
 
 import "./index.css";
 import IconButton from "../IconButton";
@@ -10,13 +11,14 @@ import { Activities } from "../Modal/Activities";
 import api from "../../api/api";
 import { useParams } from "react-router-dom";
 
+interface Atividade {
+    nome: string,
+    prazo: Date,
+    nota?: string,
+    _id: string,
+}
 interface Props {
-    atividades?: Array<{
-        nome: string,
-        prazo: Date,
-        nota?: string,
-        _id: string,
-    }>;
+    atividades?: Array<Atividade>;
     data?: Date,
 }
 
@@ -47,15 +49,6 @@ const Atividades: React.FC<Props> = () => {
         <div className="atividades_Container">
             <div className="atividades_headerContainer">
                 <h1 className="atividades_day">3 de Maio</h1>
-                {user.role !== "professor" &&
-                    <div style={{ display: "flex", gap: "1rem" }}>
-                        <label className="switch">
-                            <input type="checkbox" />
-                            <span className="slider round"></span>
-                        </label>
-                        <h2 className="atividades_subtitle">Presença</h2>
-                    </div>
-                }
             </div>
             <div className="atividades_carrosselContainer">
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -71,7 +64,19 @@ const Atividades: React.FC<Props> = () => {
                         />
                     }
                 </div>
-                {activities.map((atividade: { nome: string; prazo: Date; nota: string | undefined; _id: string }) => <Atividade nome={atividade.nome} prazo={atividade.prazo} nota={atividade.nota} onClick={() => { handleModal(atividade._id) }} />)}
+                {activities.length > 0 ?
+                    activities.map(
+                        (atividade: Atividade) => {
+                            return <Atividade nome={atividade.nome}
+                                prazo={atividade.prazo}
+                                nota={!!atividade.nota}
+                                onClick={() => handleModal(atividade._id)} />
+                        })
+                    :
+                    <div className="atividades__empty">
+                        <img src={SemAtividade} alt="" />
+                        <h3>Não existem atividades neste dia</h3>
+                    </div>}
             </div>
             {
                 isModalOpen && <CloseActivity isOpen={isModalOpen} handleOpen={setModal} />

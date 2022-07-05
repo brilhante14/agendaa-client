@@ -103,3 +103,9 @@ export const EditButtonArea = styled.div`
     display: flex;
     justify-content: flex-end;
 `;
+
+export const EmptyForum = styled.div`
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+`

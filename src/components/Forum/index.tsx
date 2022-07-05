@@ -5,6 +5,7 @@ import Image from '../../assets/new_topic.png';
 import ReplyImage from '../../assets/reply.png';
 import TrashImage from '../../assets/trash.png';
 import PencilImage from '../../assets/pencil.png';
+import ForumVazio from '../../assets/forum_vazio.png';
 import { handleData } from '../../utils/formatDate';
 // Styles
 import {
@@ -22,7 +23,8 @@ import {
     ReplyText,
     CommentHeader,
     ButtonArea,
-    EditButtonArea
+    EditButtonArea,
+    EmptyForum
 } from './styles';
 import api from '../../api/api';
 
@@ -38,11 +40,12 @@ export function Forum({ id }: Props) {
     const [isReply, setIsReply] = React.useState(false);
     const [commentReply, setCommentReply] = React.useState("");
     const [newTopic, setNewTopic] = React.useState(false);
-    const [comments, setComments] = React.useState([] as any);
+    const [comments, setComments] = React.useState<Array<Comment>>([]);
     const [users, setUsers] = React.useState([] as any);
     const [user, setUser] = React.useState({} as any);
-    const [isPublished, setIsPublished] = React.useState(false);
+
     const bottomRef = React.useRef<null | HTMLDivElement>(null);
+
     useEffect(() => {
         api.get('/usuarios/getAll').then(res => {
             setUsers(res.data);
@@ -107,6 +110,11 @@ export function Forum({ id }: Props) {
     function scrollToBottom() {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
+    if (!comments)
+        return (
+            <div>Loading</div>
+        );
+
     return (
         <Container>
             <Header>
@@ -117,6 +125,7 @@ export function Forum({ id }: Props) {
             </Header>
             <Separator />
             {
+                (comments.length > 0) &&
                 comments.map((comment: any, index: any) => (
                     <div key={index}>
                         <Comment key={index}>
@@ -269,11 +278,22 @@ export function Forum({ id }: Props) {
                         }
                         <Separator />
                         <EditButtonArea>
-                            <Button title={"Publicar"} size={{ width: 121, height: 48 }} onClick={() => { handleNewTopic(editText, user._id, id); setIsPublished(state => !state); }} />
+                            <Button title={"Publicar"} size={{ width: 121, height: 48 }} onClick={() => {
+                                handleNewTopic(editText, user._id, id);
+                                setNewTopic(false);
+                                setEditText("");
+                            }} />
                         </EditButtonArea>
                         <div ref={bottomRef} />
                     </Comment>
                 )
+            }
+            {
+                (comments.length <= 0 && !newTopic) &&
+                <EmptyForum>
+                    <img src={ForumVazio} alt="" />
+                    <h3>Fórum Vazio! Crie uma postagem acima</h3>
+                </EmptyForum>
             }
         </Container>
     );

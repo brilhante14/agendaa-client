@@ -8,12 +8,13 @@ import { handleData } from "../../utils/formatDate";
 interface Props {
     nome: string;
     prazo: Date;
-    nota?: string;
+    nota?: boolean;
     onClick: () => void;
 }
 
 const Atividade: React.FC<Props> = ({ nome, prazo, nota, onClick }) => {
     const [isProfessor, setIsProfessor] = React.useState(false);
+    const [isFinished, setFinished] = React.useState(!!nota);
 
     useEffect(() => {
         const storage = localStorage.getItem("user");
@@ -27,12 +28,13 @@ const Atividade: React.FC<Props> = ({ nome, prazo, nota, onClick }) => {
         <div className={styles.atividadeFooter}>
             <div>{`Prazo: ${handleData(prazo)}`}</div>
             <IconButton
-                title={isProfessor ? "Editar Atividade" : nota ?? "Marcar como Concluída"}
+                title={isProfessor ? "Editar Atividade" : isFinished ? "Concluída" : "Marcar como Concluída"}
                 icon={isProfessor ? edit : check_circle}
                 showTitle
-                variant={(nota && !isProfessor) ? "success" : "primary"}
+                variant={"toggleable"}
+                isToggled={isFinished && !isProfessor}
                 width={250}
-                onClick={onClick}
+                onClick={() => setFinished(!isFinished)}
             />
         </div>
     </div>)

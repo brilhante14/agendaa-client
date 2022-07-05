@@ -31,7 +31,13 @@
   color: white;
   font-weight: 600;
 }
-.button.success {
+.button.toggleable {
+  background-color: #656ED3;
+  border-color: #656ED3;
+  color: white;
+  transition: all 0.4s;
+}
+.button.toggleable.toggled {
   background-color: green;
   border-color: green;
   color: white;
