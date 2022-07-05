@@ -9,6 +9,7 @@ interface Props {
   initialYear: number;
   initialMonth: number;
   navigate: (d: Date) => void;
+  weekdays: Array<number>;
 }
 
 function daysInMonth(month: number): number {
@@ -17,11 +18,16 @@ function daysInMonth(month: number): number {
   else return 28;
 }
 
-const Calendar: React.FC<Props> = ({ initialYear, initialMonth, navigate }) => {
+const Calendar: React.FC<Props> = ({
+  initialYear,
+  initialMonth,
+  navigate,
+  weekdays,
+}) => {
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState<number>(initialMonth);
   const [currentYear, setCurrentYear] = useState<number>(initialYear);
-  const weekdaysClasses = [1, 5];
+  // const weekdaysClasses = [1, 5];
 
   function nextMonth() {
     if (currentMonth === 11) {
@@ -42,7 +48,7 @@ const Calendar: React.FC<Props> = ({ initialYear, initialMonth, navigate }) => {
   }
 
   function select(d: Date) {
-    if (weekdaysClasses.includes(d.getUTCDay())) {
+    if (weekdays && weekdays.includes(d.getUTCDay())) {
       setSelectedDay(d);
       navigate(d);
     }
@@ -88,8 +94,7 @@ const Calendar: React.FC<Props> = ({ initialYear, initialMonth, navigate }) => {
           return (
             <Day
               day={dayOfMonth}
-              // TODO: Replace by real weekdays
-              hasClass={weekdaysClasses.includes(dayOfWeek)}
+              hasClass={weekdays && weekdays.includes(dayOfWeek)}
               isSelected={day.getTime() === selectedDay.getTime()}
               onClick={() => select(day)}
               column={dayOfWeek}

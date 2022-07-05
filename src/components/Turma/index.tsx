@@ -18,14 +18,17 @@ interface Props {
  * @todo obter as imagens dos participantes e do professor dinamicamente
  */
 const Turma: React.FC<Props> = ({ turma, onClick }) => {
-  const imagemProfessor = "#";
-
   return (
     <div className={styles.turma}>
       <div>
         <header className={styles.header}>
           <div className={styles.imgWrapper}>
-            <img src={`https://i.pravatar.cc/150?img=${Math.round(Math.random() * 50)}`} alt={turma.professor} />
+            <img
+              src={`https://i.pravatar.cc/150?img=${Math.round(
+                Math.random() * 50
+              )}`}
+              alt={turma.professor}
+            />
           </div>
           <h2>Professor: {turma.professor}</h2>
         </header>
@@ -33,11 +36,13 @@ const Turma: React.FC<Props> = ({ turma, onClick }) => {
           <h1 className={styles.name}>{turma.nome}</h1>
           <div className={styles.participantes}>
             {turma.participantes.map((participante) => (
-              <div
-                className={styles.imgWrapper}
-                key={participante}
-              >
-                <img src={`https://i.pravatar.cc/150?img=${Math.round(Math.random() * 50)}`} alt="" />
+              <div className={styles.imgWrapper} key={participante}>
+                <img
+                  src={`https://i.pravatar.cc/150?img=${Math.round(
+                    Math.random() * 50
+                  )}`}
+                  alt=""
+                />
               </div>
             ))}
           </div>
@@ -46,8 +51,8 @@ const Turma: React.FC<Props> = ({ turma, onClick }) => {
           <h3>{turma.participantes.length} participantes</h3>
           <button onClick={onClick}>Acessar</button>
         </footer>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 
