@@ -5,7 +5,6 @@ import { createPortal } from "react-dom";
 import { ModalHandler, Container, CloseButton, Button } from './styles'
 
 interface props {
-  isOpen: boolean;
   children: ReactNodeLike;
   root?: HTMLElement;
   handleOpen: (status: boolean) => void;
@@ -13,7 +12,7 @@ interface props {
 
 
 
-const Modal: React.FC<props> = ({ isOpen, children, root, handleOpen }) => {
+const Modal: React.FC<props> = ({ children, root, handleOpen }) => {
   // const modal = (
   //   <div className={styles.modal}>
   //     <dialog open={isOpen} className={styles.dialog}>

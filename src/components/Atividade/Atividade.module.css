@@ -1,0 +1,14 @@
+.atividade {
+  background: var(--purple_light);
+  border-radius: 4px;
+  box-shadow: 0 4px 4px #0003;
+  padding: 0.5rem;
+  margin: 10px 0;
+}
+.atividadeFooter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}

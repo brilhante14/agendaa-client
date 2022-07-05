@@ -36,8 +36,8 @@ export function Login() {
         setAuthInfo({ ...authInfo, [key]: value });
     }
 
-    function handleLogin() {
-        const status = context.handleLogin(authInfo.auth, authInfo.password);
+    async function handleLogin() {
+        const status = await context.handleLogin(authInfo.auth, authInfo.password);
         if (status !== 200 && status !== 500) {
             setError('Usuário ou senha inválidos');
             setAuthInfo({ auth: '', password: '' });

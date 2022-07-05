@@ -47,9 +47,7 @@ export function DateComponent({ days, startDate, endDate, handleDays, handleStar
                                 <Day key={index} selected={day.active} onClick={
                                     () => {
                                         const newDays = [...days];
-                                        console.log("a", newDays)
                                         newDays[index].active = !newDays[index].active;
-                                        console.log("d", newDays)
                                         handleDays(newDays);
                                     }
                                 }>

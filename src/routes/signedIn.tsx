@@ -14,14 +14,19 @@ import NenhumaTurma from "../pages/NenhumaTurma";
 
 // Renderer
 export default function SignedRoutes() {
+  const storage = localStorage.getItem("user");
+  const user = storage ? JSON.parse(storage) : null;
   return (
     <BrowserRouter>
-      <Header />
+      <Header profile={{
+        name: user.nome,
+        img: user.photo,
+      }} />
       <Routes>
         <Route path="/home/" element={<SelecaoTurma />}>
           <Route path="" element={<NenhumaTurma />} />
           <Route path=":id/" element={<TurmaSelecionada />}>
-            <Route path="" element={"selecione um dia"} />
+            <Route path="" element={<></>} />
             <Route path=":date" element={<NenhumaTurma />} />
           </Route>
         </Route>

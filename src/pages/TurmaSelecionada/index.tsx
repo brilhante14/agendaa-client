@@ -8,6 +8,7 @@ import Atividades from "../../components/Atividades";
 import Material from "../../components/Material";
 import { Forum } from "../../components/Forum";
 import { ModalMaterial } from "../../components/Modal/ModalMaterial";
+import settingIcon from "../../assets/svg/settings.svg";
 
 interface Mat {
   nome: string;
@@ -19,6 +20,7 @@ interface Mat {
 const TurmaSelecionada: React.FC = () => {
   const [nome, setNome] = useState("Carregando...");
   const [diasAula, setDiasAula] = useState<Array<number>>([]);
+  const [faltas, setFaltas] = useState(0);
   const [materials, setMaterials] = useState<Array<Mat>>([]);
   const [addMaterial, setAddMaterial] = React.useState(false);
   const [apiCalled, setApiCalled] = useState(false);
@@ -32,6 +34,7 @@ const TurmaSelecionada: React.FC = () => {
           .map((x: boolean, i: number) => (x ? i + 1 : x))
           .filter((x: boolean) => x)
       );
+      setFaltas(res.data.faltasPermitidas);
       setNome(res.data.nome);
       api.get(`/materiais/${id}`).then((res) => {
         setMaterials(res.data)
@@ -57,13 +60,23 @@ const TurmaSelecionada: React.FC = () => {
   const today = new Date();
   return (
     <div className={styles.container}>
-      <h1 className={styles.className}>{nome}</h1>
-      <h1 className={styles.subtitle}>Faltas Atuais: 3/12 | Média atual: 2.0 </h1>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h1 className={styles.className}>{nome}</h1>
+        <button style={{ backgroundColor: "transparent", border: "none" }} onClick={() => navigate(`/turma/${id}`)}>
+          <img
+            src={settingIcon}
+            alt="Setting Button"
+            className="turmaSelecionada_settingIcon"
+          />
+        </button>
+      </div>
+      <h1 className={styles.subtitle}>Faltas Permitidas: {faltas} </h1>
+      <div style={{ display: "flex", width: '100%' }}>
         <Calendar
           initialYear={today.getFullYear()}
           initialMonth={today.getMonth()}
           navigate={(d: Date) =>
+
             navigate(`./${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`)
           }
           weekdays={diasAula}
@@ -81,15 +94,17 @@ const TurmaSelecionada: React.FC = () => {
             <img src={add} alt="" />
             Adicionar Material
           </button>
-          {materials.map((material, index) => (
-            <Material
-              nome={material.nome}
-              link={material.link}
-              autor={material.author}
-              deleteItem={() => handleDelete(material._id)}
-              key={index}
-            />
-          ))}
+          <div className={styles.materialsCarousel}>
+            {materials.map((material, index) => (
+              <Material
+                nome={material.nome}
+                link={material.link}
+                autor={material.author}
+                deleteItem={() => handleDelete(material._id)}
+                key={index}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <Forum id={id} />

@@ -8,7 +8,7 @@ import { Container } from './styles';
 interface Props {
     title?: string;
     onClick: () => void;
-    size: { width: number, height: number };
+    size: { width: any, height: number };
     icon?: string;
     textColor?: string;
     backgroundColor?: string;

@@ -37,6 +37,14 @@ export function Register() {
         setAuthInfo({ ...authInfo, [key]: value });
     }
     function handleRegister() {
+        if (!authInfo.name || !authInfo.username || !authInfo.email || !authInfo.password || !confirmPassword) {
+            setError('Preencha todos os campos para continuar');
+            return;
+        }
+        if (authInfo.password !== confirmPassword) {
+            setError('As senhas não conferem');
+            return;
+        }
         api.post('/usuarios/signup', {
             user: authInfo.username,
             nome: authInfo.name,
@@ -45,11 +53,10 @@ export function Register() {
         }).then((res) => {
             if (res.status === 200) {
                 localStorage.setItem('token', res.data.token);
-                // TODO: Enviar para home
-                navigate('/turmas');
+                navigate('/home');
             }
-        }).catch(() => {
-            setError('Usuário já existe!');
+        }).catch((res) => {
+            setError(res.response.data.message);
         })
     }
     return (

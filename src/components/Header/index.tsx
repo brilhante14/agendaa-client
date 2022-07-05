@@ -17,28 +17,24 @@ interface userProfile {
 const Header = (props: { profile?: userProfile }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
-
   return (
     <header className={styles.header}>
       <h1 className={styles.headerTitle}>AGENDAA</h1>
       {props.profile && (
         <div
           className={styles.profileMenu}
-          onMouseEnter={() => setMenuOpen(true)}
-          onFocus={() => setMenuOpen(true)}
-          onMouseLeave={() => setMenuOpen(false)}
-          onBlur={() => setMenuOpen(false)}
+          onClick={() => setMenuOpen(!isMenuOpen)}
         >
           <button type="button" className={styles.profileButton}>
             <img className={styles.profileImg} src={props.profile.img} alt="" />
-            <h2>
+            <h2 style={{ color: 'white', fontSize: 14 }}>
               {props.profile.name}
               <span role="img" aria-label="toggle menu">
                 {isMenuOpen ? " ▲" : " ▼"}
               </span>
             </h2>
           </button>
-          <menu className={`${styles.menu}  ${!isMenuOpen && styles.invisible}`}>
+          {isMenuOpen && (<menu className={styles.menu}>
             {/**
            * @todo Implementar funções para navegar de volta ao login e acessar modal de edição de perfil
            */}
@@ -55,14 +51,21 @@ const Header = (props: { profile?: userProfile }) => {
               <button
                 tabIndex={0}
                 className={`${styles.menu_button} ${styles.sair}`}
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  localStorage.removeItem('user');
+                  window.location.reload();
+                }}
               >
                 Sair do AGENDAA
               </button>
             </li>
-          </menu>
+          </menu>)}
         </div>
       )}
-      {/* <ProfileModal isOpen={isModalOpen} /> */}
+      {
+        isModalOpen && <ProfileModal isOpen={isModalOpen} handleOpen={setModalOpen} />
+      }
     </header>
   );
 };

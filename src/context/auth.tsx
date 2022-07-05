@@ -4,7 +4,7 @@ import api from '../api/api';
 
 interface AuthContextData {
     signed: boolean;
-    handleLogin(user: string, password: string): number;
+    handleLogin(user: string, password: string): Promise<number>;
     token: string;
 }
 
@@ -18,21 +18,20 @@ export const AuthProvider = ({ children }: any) => {
             setToken(token);
         }
     }, []);
-    function handleLogin(user: string, password: string) {
-        api.post('/usuarios/signin', {
+    async function handleLogin(user: string, password: string) {
+        let status = 200;
+        await api.post('/usuarios/signin', {
             user: user,
             password: password
         }).then((res) => {
-            if (res.status === 200) {
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('user', JSON.stringify(res.data.result));
-                setToken(res.data.token);
-            }
-            else {
-                return res.status
-            }
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', JSON.stringify(res.data.result));
+            setToken(res.data.token);
+            return 200
+        }).catch((res) => {
+            status = res.status;
         })
-        return 500
+        return status
     }
     return (
         <AuthContext.Provider value={{ signed: Boolean(token), handleLogin, token }}>

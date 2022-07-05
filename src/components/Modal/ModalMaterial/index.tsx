@@ -32,7 +32,7 @@ export function ModalMaterial({ isOpen, id, handleOpen }: props) {
         }
     }
     return (
-        <Modal isOpen={isOpen} handleOpen={handleOpen}>
+        <Modal handleOpen={handleOpen}>
             <Container>
                 <TextInput onChange={(e: any) => { setName(e.target.value) }} placeholder={"Ex.: Anotações"} title={"Nome do material"} value={name} />
                 <Separator />

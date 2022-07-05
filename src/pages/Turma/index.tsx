@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import CardParticipante from "../../components/CardParticipante";
 
@@ -42,6 +42,8 @@ const Turma = () => {
    const [editedName, setEditedName] = React.useState("");
    const [startDate, setStartDate] = React.useState<Date | null>(null);
    const [endDate, setEndDate] = React.useState<Date | null>(null);
+   const navigate = useNavigate();
+
    const { id } = useParams();
 
    let user;
@@ -94,6 +96,8 @@ const Turma = () => {
          cronograma,
          nome: editedName ? editedName : turmaInfo?.nome
       })
+
+      navigate(`/home/${id}`)
    }
 
    const handleFinishClass = () => {
@@ -101,7 +105,6 @@ const Turma = () => {
    }
 
    if (!turmaInfo || !professor || !participantes) return (<p>Loading</p>)
-
    return (
       <div className="turma_container">
          <div className="turma_titleContainer">
@@ -123,15 +126,17 @@ const Turma = () => {
                   </button>
                }
             </div>
-            <div style={{ width: 500, display: 'flex' }}>
-               <div>
-                  <DateComponent days={days} startDate={startDate} endDate={endDate} handleDays={setDays} handleStartDate={setStartDate} handleEndDate={setEndDate} />
+            {user.role !== "aluno" &&
+               <div style={{ width: 500, display: 'flex' }}>
+                  <div>
+                     <DateComponent days={days} startDate={startDate} endDate={endDate} handleDays={setDays} handleStartDate={setStartDate} handleEndDate={setEndDate} />
+                  </div>
+                  <div style={{ marginLeft: 20, gap: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                     <Button onClick={handlePatchingClass} title={"Salvar alteração"} size={{ width: 148, height: 38 }} backgroundColor={"#656ED3"} />
+                     <Button onClick={handleFinishClass} title={"Finalizar turma"} size={{ width: 148, height: 38 }} backgroundColor={"#FB6262"} />
+                  </div>
                </div>
-               <div style={{ marginLeft: 20, gap: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <Button onClick={handlePatchingClass} title={"Salvar alteração"} size={{ width: 148, height: 38 }} backgroundColor={"#656ED3"} />
-                  <Button onClick={handleFinishClass} title={"Finalizar turma"} size={{ width: 148, height: 38 }} backgroundColor={"#FB6262"} />
-               </div>
-            </div>
+            }
          </div>
 
          <span className="turma_categories">Professor</span>
@@ -139,7 +144,6 @@ const Turma = () => {
          <span className="turma_categories participantes">Participantes</span>
          <div className="turma_gridContainer">
             {participantes.map((participante, index) => {
-               console.log(participante)
                return (
                   <CardParticipante
                      key={index}

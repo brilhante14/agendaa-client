@@ -7,7 +7,7 @@ interface Props {
   showTitle: boolean;
   title: string;
   type?: "button" | "submit" | "reset";
-  variant: "primary" | "secondary" | "alert" | "noBackground";
+  variant: "primary" | "secondary" | "alert" | "noBackground" | "success";
   width?: number;
 }
 

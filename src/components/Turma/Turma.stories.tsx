@@ -11,8 +11,20 @@ export const Default: ComponentStory<typeof Turma> = () => (
   <Turma
     turma={{
       nome: "Desenvolvimento de Software para Web",
-      professor: "Fernando Trinta",
-      participantes: ["a", "b", "c"],
+      professor: {
+        nome: "Fernando Trinta",
+        img: "#",
+      },
+      participantes: [
+        {
+          nome: "a",
+          img: "#"
+        },
+        {
+          nome: "b",
+          img: "#"
+        }
+      ]
     }}
     onClick={() => alert("Elemento clicado!")}
   />

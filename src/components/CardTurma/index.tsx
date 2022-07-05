@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import api from '../../api/api';
 import "./index.css";
 interface Props {
@@ -14,26 +13,32 @@ interface Props {
 const CardTurma: React.FC<Props> = ({ turma }) => {
     const [professor, setProfessor] = useState("");
     const [photo, setPhoto] = useState("");
-    const navigate = useNavigate();
+
     async function fetchProfessor(id: string) {
         const response = api(`/usuarios/getById/${id}`)
         return response;
     }
+
+    let user: any;
+    const storage = localStorage.getItem("user");
+    if (storage) {
+        user = JSON.parse(storage)
+    }
+
     function handleClass() {
-        const storage = localStorage.getItem("user");
-        if (storage) {
-            const user = JSON.parse(storage)
-            api.post(`/turmas/${turma._id}/joinClass`, {
-                userId: String(user._id)
-            }).then((res) => {
-                navigate('/home/')
-            })
-        }
+        api.post(`/turmas/${turma._id}/joinClass`, {
+            userId: String(user._id)
+        }).then((res) => {
+            window.location.href = 'home'
+        })
     }
     useEffect(() => {
         fetchProfessor(turma.professor)
             .then((response) => { setProfessor(response.data.nome); setPhoto(response.data.photo) })
     }, [turma.professor])
+
+    const isInClass = turma.participantes.includes(user._id)
+
     return (
         <div className="turma_card" key={turma._id}>
             <div className="turma_cardHeader">
@@ -46,7 +51,13 @@ const CardTurma: React.FC<Props> = ({ turma }) => {
             <hr color="#DBCCCC" />
             <div className="turmas_cardFooter">
                 <span>{`${turma.participantes.length} Participantes`}</span>
-                <button className="turmas_cardButton" onClick={handleClass}>Entrar</button>
+                <button className="turmas_cardButton" disabled={isInClass} onClick={handleClass}>
+                    {isInClass ?
+                        "Membro"
+                        :
+                        "Entrar"
+                    }
+                </button>
             </div>
         </div >
     )

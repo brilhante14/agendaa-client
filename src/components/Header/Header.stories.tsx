@@ -12,7 +12,7 @@ export const LoggedIn: ComponentStory<typeof Header> = () => (
   <Header
     profile={{
       name: "Usuário de teste",
-      img: "#",
+      img: "https://avatars3.githubusercontent.com/u/53905853?s=460&u=f9f8b8d8f9f8b8d8f9f8b8d8f9f8b8d8f9f8b8d&v=4",
     }}
   />
 );

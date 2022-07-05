@@ -31,6 +31,12 @@
   color: white;
   font-weight: 600;
 }
+.button.success {
+  background-color: green;
+  border-color: green;
+  color: white;
+  font-weight: 600;
+}
 
 .button.noBackground {
   background-color: transparent;

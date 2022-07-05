@@ -22,7 +22,7 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 // Renderer
 export function CloseActivity({ isOpen, handleOpen }: props) {
     return (
-        <Modal isOpen={isOpen} handleOpen={handleOpen}>
+        <Modal handleOpen={handleOpen}>
             <Container>
                 <Row>
                     <Title>

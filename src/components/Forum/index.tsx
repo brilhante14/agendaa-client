@@ -134,9 +134,12 @@ export function Forum({ id }: Props) {
                                     isCommentReply === index ?
                                         <Button title={"Deletar"} onClick={() => { handleDelete(comment._id, id) }} size={{ width: 144, height: 28 }} icon={TrashImage} textColor={'#FB6262'} backgroundColor={'none'} align={'flex-end'} />
                                         :
-                                        comment.userId === user._id &&
                                         <ButtonArea>
-                                            <Button title={"Editar"} onClick={() => { setEditText(comment.text); setIsCommentReply(index); }} size={{ width: 120, height: 28 }} icon={PencilImage} textColor={'#5357B6'} backgroundColor={'none'} align={'flex-end'} />
+                                            {
+                                                comment.userId === user._id &&
+                                                <Button title={"Editar"} onClick={() => { setEditText(comment.text); setIsCommentReply(index); }} size={{ width: 120, height: 28 }} icon={PencilImage} textColor={'#5357B6'} backgroundColor={'none'} align={'flex-end'} />
+
+                                            }
                                             <Button title={"Responder"} onClick={() => { setIsReply(true); setCommentReply(comment._id); }} size={{ width: 120, height: 28 }} icon={ReplyImage} textColor={'#5357B6'} backgroundColor={'none'} align={'flex-end'} />
                                         </ButtonArea>
                                 }

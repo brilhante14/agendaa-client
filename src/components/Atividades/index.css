@@ -2,14 +2,14 @@
    margin: 0 3rem;
    display: flex;
    flex-direction: column;
-   /* flex: 1; */
-   gap: 2rem;
+   flex: 1;
+   gap: 1rem;
 }
 
 .atividades_headerContainer{
    display: flex;
    align-items: center;
-   gap: 80px;
+   justify-content: space-between;
 }
 
 .atividades_carouselArrows{
@@ -27,8 +27,6 @@
 }
 
 .atividades_carrosselContainer{
-   width: 80%;
-   margin: 0 auto;
 }
 
 .switch {
