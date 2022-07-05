@@ -3,9 +3,11 @@
  * */
 
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Header from "../components/Header"
 
 // Components
 import Turmas from "../pages/Turmas";
+import Turma from "../pages/Turma";
 import SelecaoTurma from "../pages/SelecaoTurma";
 import TurmaSelecionada from "../pages/TurmaSelecionada";
 import NenhumaTurma from "../pages/NenhumaTurma";
@@ -14,13 +16,18 @@ import NenhumaTurma from "../pages/NenhumaTurma";
 export default function SignedRoutes() {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
-        <Route path="/" element={<SelecaoTurma />}>
+        <Route path="/home/" element={<SelecaoTurma />}>
           <Route path="" element={<NenhumaTurma />} />
-          <Route path=":id" element={<TurmaSelecionada />} />
+          <Route path=":id" element={<TurmaSelecionada />}>
+            {/* <Route path="/" element={<NenhumaTurma />} /> */}
+            <Route path=":date" element={<NenhumaTurma />} />
+          </Route>
         </Route>
         <Route path="/turmas" element={<Turmas />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/turma/:id" element={<Turma />} />
+        <Route path="*" element={<Navigate to="/turma/62c1d72f1de31d9a6d66e7ff" replace />} />
       </Routes>
     </BrowserRouter>
   );

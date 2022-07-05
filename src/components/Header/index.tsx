@@ -13,7 +13,6 @@ interface userProfile {
  * @component
  * @param {Object} profile Objeto contendo as propriedades do usuário logado
  * @todo aceitar um objeto de perfil mais completo
- * @todo implementar o "Actions Menu Button" conforme ARIA APG
  */
 const Header = (props: { profile?: userProfile }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -22,14 +21,14 @@ const Header = (props: { profile?: userProfile }) => {
   return (
     <header className={styles.header}>
       <h1 className={styles.headerTitle}>AGENDAA</h1>
-      <div
-        className={styles.profileMenu}
-        onMouseEnter={() => setMenuOpen(true)}
-        onFocus={() => setMenuOpen(true)}
-        onMouseLeave={() => setMenuOpen(false)}
-        onBlur={() => setMenuOpen(false)}
-      >
-        {props.profile && (
+      {props.profile && (
+        <div
+          className={styles.profileMenu}
+          onMouseEnter={() => setMenuOpen(true)}
+          onFocus={() => setMenuOpen(true)}
+          onMouseLeave={() => setMenuOpen(false)}
+          onBlur={() => setMenuOpen(false)}
+        >
           <button type="button" className={styles.profileButton}>
             <img className={styles.profileImg} src={props.profile.img} alt="" />
             <h2>
@@ -39,30 +38,30 @@ const Header = (props: { profile?: userProfile }) => {
               </span>
             </h2>
           </button>
-        )}
-        <menu className={`${styles.menu}  ${!isMenuOpen && styles.invisible}`}>
-          {/**
+          <menu className={`${styles.menu}  ${!isMenuOpen && styles.invisible}`}>
+            {/**
            * @todo Implementar funções para navegar de volta ao login e acessar modal de edição de perfil
            */}
-          <li className={styles.menu_item}>
-            <button
-              tabIndex={0}
-              onClick={() => setModalOpen(true)}
-              className={styles.menu_button}
-            >
-              Editar perfil
-            </button>
-          </li>
-          <li className={styles.menu_item}>
-            <button
-              tabIndex={0}
-              className={`${styles.menu_button} ${styles.sair}`}
-            >
-              Sair do AGENDAA
-            </button>
-          </li>
-        </menu>
-      </div>
+            <li className={styles.menu_item}>
+              <button
+                tabIndex={0}
+                onClick={() => setModalOpen(true)}
+                className={styles.menu_button}
+              >
+                Editar perfil
+              </button>
+            </li>
+            <li className={styles.menu_item}>
+              <button
+                tabIndex={0}
+                className={`${styles.menu_button} ${styles.sair}`}
+              >
+                Sair do AGENDAA
+              </button>
+            </li>
+          </menu>
+        </div>
+      )}
       <ProfileModal isOpen={isModalOpen} />
     </header>
   );

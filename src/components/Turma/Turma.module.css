@@ -15,7 +15,9 @@
   margin: 0 1ch;
 }
 .name {
-  font-size: 1.25rem;
+  font-size: 1rem;
+  font-weight: normal;
+  margin: 6px 0;
 }
 .participantes {
   display: flex;
@@ -41,12 +43,6 @@
   position: absolute;
   right: 0;
   width: 0.8rem;
-}
-.imgWrapper.professor::after {
-  background-color: purple;
-}
-.imgWrapper.aluno::after {
-  background-color: black;
 }
 .footer {
   align-items: center;

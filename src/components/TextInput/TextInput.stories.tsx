@@ -16,5 +16,7 @@ SimpleTextInput.args = {
   title: "Campo",
   placeholder: "Exemplo de campo",
   isSecure: false,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+  }
 };

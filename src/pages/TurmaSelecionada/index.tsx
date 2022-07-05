@@ -1,11 +1,28 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Outlet } from "react-router-dom";
+import Calendar from "../../components/Calendar";
 
-interface Props {}
+const TurmaSelecionada: React.FC = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-const TurmaSelecionada: React.FC<Props> = () => {
-  let { id } = useParams();
-  return <>{id}</>;
+  // useEffect(() => {
+  //   api(`/turma/${id}`).then(() => {
+
+  //   })
+  // }, []);
+  const today = new Date();
+
+  return <>
+    <h1>Nome da Turma</h1>
+    <Calendar
+      initialYear={today.getFullYear()}
+      initialMonth={today.getMonth()}
+      navigate={(d: Date) => navigate(`./${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`)}
+    />
+    {id}
+    <Outlet />
+  </>;
 };
 
 export default TurmaSelecionada;

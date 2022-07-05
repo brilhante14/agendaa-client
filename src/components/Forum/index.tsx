@@ -5,6 +5,7 @@ import Image from '../../assets/new_topic.png';
 import ReplyImage from '../../assets/reply.png';
 import TrashImage from '../../assets/trash.png';
 import PencilImage from '../../assets/pencil.png';
+import { handleData } from '../../utils/formatDate';
 // Styles
 import {
     Container,
@@ -57,11 +58,7 @@ export function Forum() {
             })
         }
     }
-    function handleData(data: string) {
-        const date = new Date(data);
-        const day = date.toLocaleString();
-        return day
-    }
+
     function handleReply(commentID: string, userID: string, text: string) {
         api.post("/turmas/replyComment", {
             commentId: commentID,

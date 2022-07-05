@@ -5,6 +5,7 @@ import "./index.css";
 
 import searchIcon from "../../assets/svg/iconSearch.svg";
 import Pagination from "../../components/Pagination";
+import CardTurma from "../../components/CardTurma";
 
 type turmasPaged = {
   data: {
@@ -12,7 +13,7 @@ type turmasPaged = {
     professor: string;
     participantes: string[];
     comments: string[];
-    id: string;
+    _id: string;
   }[];
   numberOfPages: number;
   currentPage: number;
@@ -29,7 +30,8 @@ const Turmas = () => {
       return response;
     }
 
-    fetchData().then((response) => setTurmas(response.data));
+
+    fetchData().then((response) => { setTurmas(response.data) })
   }, [page]);
 
   useEffect(() => {
@@ -45,6 +47,7 @@ const Turmas = () => {
 
   return (
     <div className="turmas_container">
+
       <h1 className="turmas_title">Turmas Cadastradas</h1>
 
       <div className="turmas_searchBar">
@@ -64,23 +67,8 @@ const Turmas = () => {
       </div>
 
       <div className="turma_cardsContainer">
-        {turmas.data.map((turma) => {
-          return (
-            <div className="turma_card" key={turma.id}>
-              <div className="turma_cardHeader">
-                <span className="turma_profilePic" />
-                <span
-                  title={turma.professor}
-                >{`Professor - ${turma.professor}`}</span>
-              </div>
-              <p title={turma.nome}>{turma.nome}</p>
-              <hr color="#DBCCCC" />
-              <div className="turmas_cardFooter">
-                {/* <span>{`${turma.participantes.length} Participantes`}</span> */}
-                <button className="turmas_cardButton">Entrar</button>
-              </div>
-            </div>
-          );
+        {turmas.data.map((turma, index) => {
+          return <CardTurma key={index} turma={turma} />
         })}
       </div>
 

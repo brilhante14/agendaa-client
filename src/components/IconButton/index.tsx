@@ -23,6 +23,7 @@ const IconButton: React.FC<Props> = ({
       className={styles.button + " | " + styles[variant]}
       type={type}
       onClick={onClick}
+      style={{ width: 95, display: "flex", justifyContent: "center" }}
     >
       <>
         <img src={icon} alt={title} />

@@ -41,56 +41,12 @@
 }
 
 .turma_cardsContainer{
-   width: 90%;
-   margin: 3rem auto 0px;
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-   row-gap: 30px;
-}
-
-.turma_card{
-   background-color: #D9DBFF;
-   padding: 8px;
-   width: 192px;
-   border-radius: 12px;
-   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-   font-size: 12px;
+   width: calc((225px + 1rem) * 5);
+   margin: 3rem auto;
    display: flex;
-   flex-direction: column;
-   gap: 0.5rem;
+   justify-content: flex-start;
+   gap: 1rem;
+   flex-wrap: wrap;
+   max-width: 90vw;
 }
 
-.turma_profilePic{
-   height: 25px;
-   width: 25px;
-   background-color: #bbb;
-   border-radius: 50%;
-   display: inline-block;
-}
-
-.turma_cardHeader {
-   display: flex;
-   gap: 8px;
-   align-items: center;
-}
-
-.turma_card p{
-   text-align: center;
-   overflow: hidden;
-   text-overflow: ellipsis;
-   white-space: nowrap;
-}
-
-.turmas_cardFooter{
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-}
-
-.turmas_cardButton{
-   background-color: #656ED3;
-   color: #FFF;
-   border-radius: 99999px;
-   width: 55px;
-   border: none;
-}

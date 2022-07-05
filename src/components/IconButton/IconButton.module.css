@@ -21,8 +21,8 @@
 }
 .button.secondary {
   background-color: #D9DBFF;
-  border-color: #656ED3;
-  color: #656ED3;
+  border-color: #D9DBFF;
+  color: black;
   font-weight: 500;
 }
 .button.alert {

@@ -1,6 +1,6 @@
 .cardParticipante_container{
    width: 345px;
-   height: 57px;
+   height: 80px;
    background-color: #D9DBFF;
    border-radius: 8px;
    display: flex;
@@ -40,6 +40,10 @@
 .cardParticipante_iconContainer{
    display: flex;
    gap: 1rem;
+}
+.cardParticipante_iconContainer > button{
+   border: none;
+   background-color: transparent;
 }
 
 .cardParticipante_icon:hover{

@@ -5,10 +5,9 @@ import navigate_next from "../../assets/svg/navigate_next.svg";
 import navigate_before from "../../assets/svg/navigate_before.svg";
 import IconButton from "../IconButton";
 
-type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 interface Props {
   initialYear: number;
-  initialMonth: Month;
+  initialMonth: number;
   navigate: (d: Date) => void;
 }
 
