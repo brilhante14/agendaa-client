@@ -52,7 +52,6 @@ const SelecaoTurma: React.FC<Props> = ({
       api.post("/turmas/getTurmasByParticipantes/", {
         "userId": user._id
       }).then((turmas) => {
-        console.log(turmas.data)
         Promise.all(turmas.data.map(getClassById)).then((t) => setTurmas(t))
       })
     }

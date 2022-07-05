@@ -1,5 +1,6 @@
-import React from "react";
-import draft from "../../assets/svg/draft.svg";
+import React, { useEffect } from "react";
+import api from "../../api/api";
+import draft from "../../assets/file.png";
 import styles from "./Material.module.css";
 
 interface Props {
@@ -10,17 +11,34 @@ interface Props {
 }
 
 const Material: React.FC<Props> = ({ nome, link, autor, deleteItem }) => {
+  const [name, setName] = React.useState("");
+  const [photo, setPhoto] = React.useState("");
+  function handleName(id: string) {
+    api.get(`/usuarios/getById/${id}`).then((res) => {
+      setName(res.data.nome)
+      setPhoto(res.data.photo)
+    })
+  }
+  useEffect(() => {
+    handleName(autor)
+  })
   return (
-    <a className={styles.material} href={link}>
+    <div className={styles.material}>
       {deleteItem && (
         <button className={styles.delete} onClick={deleteItem}>
           X
         </button>
       )}
-      <img src={draft} alt="" />
-      <span className={styles.name}>{nome}</span>
-      <span className={styles.author}>{autor}</span>
-    </a>
+      <a href={link} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <img src={draft} alt="" style={{ width: 42, height: 42 }} />
+        <span className={styles.name}>{nome}</span>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-start', marginTop: 10 }}>
+          <img src={photo} alt="" style={{ width: 20, height: 20, borderRadius: '50%', marginRight: 5 }} />
+          {/* Analisar overflow */}
+          {name.substring(0, 10) + "..."}
+        </div>
+      </a>
+    </div>
   );
 };
 

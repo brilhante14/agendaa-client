@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 // Remover essa linha, o estilo será provido pelo pai
 export const Container = styled.div`
-    width: 900px;
-    padding: 20px;
+    width: 100%;
 `;
 
 export const Header = styled.div`

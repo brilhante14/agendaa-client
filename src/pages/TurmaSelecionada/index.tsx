@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
-import add from "../../assets/svg/add.svg";
+import add from "../../assets/new_topic_purple.png";
 import api from "../../api/api";
 import styles from "./TurmaSelecionada.module.css";
 import Calendar from "../../components/Calendar";
+import Atividades from "../../components/Atividades";
 import Material from "../../components/Material";
+import { Forum } from "../../components/Forum";
+import { ModalMaterial } from "../../components/Modal/ModalMaterial";
 
 interface Mat {
   nome: string;
-  autor: string;
+  author: string;
   link: string;
-  id: string;
+  _id: string;
 }
 
 const TurmaSelecionada: React.FC = () => {
   const [nome, setNome] = useState("Carregando...");
   const [diasAula, setDiasAula] = useState<Array<number>>([]);
-  const [materials, setMaterials] = useState<Array<Mat>>([
-    {
-      nome: "Material",
-      autor: "Quem sane",
-      link: "https://google.com",
-      id: "12345",
-    },
-  ]);
+  const [materials, setMaterials] = useState<Array<Mat>>([]);
+  const [addMaterial, setAddMaterial] = React.useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -36,27 +33,21 @@ const TurmaSelecionada: React.FC = () => {
           .filter((x: boolean) => x)
       );
       setNome(res.data.nome);
-      api(`/materiais/${id}`).then((res) => {
-        const material = res.data.map((material: any): Mat => {
-          return {
-            nome: material.nome,
-            autor: material.autor,
-            link: material.link,
-            id: material._id,
-          };
-        });
-        setMaterials(material);
-        console.log(res.data);
-      });
-      console.log(res.data);
+      api.get(`/materiais/${id}`).then((res) => {
+        setMaterials(res.data)
+      })
     });
   }, [id]);
+  function handleDelete(id: string) {
+    api.delete(`/materiais/${id}`).then(() => {
+    })
+  }
   const today = new Date();
-
   return (
     <div className={styles.container}>
       <h1 className={styles.className}>{nome}</h1>
-      <div>
+      <h1 className={styles.subtitle}>Faltas Atuais: 3/12 | Média atual: 2.0 </h1>
+      <div style={{ display: "flex" }}>
         <Calendar
           initialYear={today.getFullYear()}
           initialMonth={today.getMonth()}
@@ -65,6 +56,8 @@ const TurmaSelecionada: React.FC = () => {
           }
           weekdays={diasAula}
         />
+
+        <Atividades />
       </div>
       <div>
         <Outlet />
@@ -72,7 +65,7 @@ const TurmaSelecionada: React.FC = () => {
       <div className={styles.materiais}>
         <h2>Materiais</h2>
         <div className={styles.materialList}>
-          <button className={styles.addMaterial}>
+          <button className={styles.addMaterial} onClick={() => { setAddMaterial(true) }}>
             <img src={add} alt="" />
             Adicionar Material
           </button>
@@ -80,12 +73,16 @@ const TurmaSelecionada: React.FC = () => {
             <Material
               nome={material.nome}
               link={material.link}
-              autor={material.autor}
-              deleteItem={() => alert(material.id)}
+              autor={material.author}
+              deleteItem={() => handleDelete(material._id)}
             />
           ))}
         </div>
       </div>
+      <Forum id={id} />
+      {
+        addMaterial && <ModalMaterial isOpen={addMaterial} id={id} />
+      }
     </div>
   );
 };

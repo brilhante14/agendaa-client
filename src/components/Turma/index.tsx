@@ -30,7 +30,7 @@ const Turma: React.FC<Props> = ({ turma, onClick }) => {
               alt={turma.professor}
             />
           </div>
-          <h2>Professor: {turma.professor}</h2>
+          <h2 style={{ color: "black" }}>Professor: {turma.professor}</h2>
         </header>
         <main>
           <h1 className={styles.name}>{turma.nome}</h1>

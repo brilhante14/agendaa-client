@@ -67,7 +67,8 @@ const Calendar: React.FC<Props> = ({
           icon={navigate_before}
           onClick={previousMonth}
           showTitle={false}
-          variant="primary"
+          variant="noBackground"
+          width={40}
         />
         {firstDayOfMonth.toLocaleString("default", {
           month: "long",
@@ -78,7 +79,8 @@ const Calendar: React.FC<Props> = ({
           icon={navigate_next}
           onClick={nextMonth}
           showTitle={false}
-          variant="primary"
+          variant="noBackground"
+          width={40}
         />
       </div>
       <div className={styles.calendarGrid}>

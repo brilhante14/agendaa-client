@@ -46,7 +46,6 @@ const Turma = () => {
          const response = await api.get(`/turmas/${id}`);
          return response;
       }
-      console.log(id);
       fetchData().then((response) => setTurmaInfo(response.data));
    }, [id]);
 
