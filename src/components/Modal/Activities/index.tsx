@@ -19,13 +19,14 @@ import { Button } from '../../Button';
 
 interface props {
     isOpen: boolean;
+    handleOpen: (status: boolean) => void;
 }
 
 // Renderer
-export function Activities({ isOpen }: props) {
+export function Activities({ isOpen, handleOpen }: props) {
     const [endDate, setEndDate] = React.useState<Date | null>(null);
     return (
-        <Modal isOpen={isOpen}>
+        <Modal isOpen={isOpen} handleOpen={handleOpen}>
             <Container>
                 <TextInput onChange={() => { }} placeholder={"Ex.: Lista de exercícios"} title={"Nome da atividade"} />
                 <Separator />

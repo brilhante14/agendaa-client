@@ -13,10 +13,11 @@ import api from '../../../api/api';
 interface props {
     isOpen: boolean;
     id?: string;
+    handleOpen: (status: boolean) => void;
 }
 
 // Renderer
-export function ModalMaterial({ isOpen, id }: props) {
+export function ModalMaterial({ isOpen, id, handleOpen }: props) {
     const [name, setName] = React.useState("");
     const [link, setLink] = React.useState("");
     function handleCreate() {
@@ -31,7 +32,7 @@ export function ModalMaterial({ isOpen, id }: props) {
         }
     }
     return (
-        <Modal isOpen={isOpen}>
+        <Modal isOpen={isOpen} handleOpen={handleOpen}>
             <Container>
                 <TextInput onChange={(e: any) => { setName(e.target.value) }} placeholder={"Ex.: Anotações"} title={"Nome do material"} value={name} />
                 <Separator />
@@ -39,7 +40,7 @@ export function ModalMaterial({ isOpen, id }: props) {
                 <Separator />
                 <Separator />
                 <ButtonContainer>
-                    <Button onClick={handleCreate} size={{ width: 165, height: 39 }} title={"Cadastrar material"} />
+                    <Button onClick={() => { handleCreate(); handleOpen(false) }} size={{ width: 165, height: 39 }} title={"Cadastrar material"} />
                 </ButtonContainer>
             </Container>
         </Modal>

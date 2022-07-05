@@ -9,5 +9,6 @@ export default {
 } as ComponentMeta<typeof Modal>;
 
 export const EdicaoDePerfil: ComponentStory<typeof Modal> = () => (
-  <ProfileModal isOpen={true} />
+  // <ProfileModal isOpen={true} />
+  <></>
 );

@@ -21,7 +21,7 @@ const TurmaSelecionada: React.FC = () => {
   const [diasAula, setDiasAula] = useState<Array<number>>([]);
   const [materials, setMaterials] = useState<Array<Mat>>([]);
   const [addMaterial, setAddMaterial] = React.useState(false);
-
+  const [apiCalled, setApiCalled] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -37,10 +37,22 @@ const TurmaSelecionada: React.FC = () => {
         setMaterials(res.data)
       })
     });
-  }, [id]);
+  }, [id, apiCalled]);
+
+
   function handleDelete(id: string) {
-    api.delete(`/materiais/${id}`).then(() => {
-    })
+    window.confirm("Deseja realmente excluir o material?") &&
+      api.delete(`/materiais/${id}`).then(() => {
+      })
+    setApiCalled(!apiCalled)
+  }
+
+  function handleCreateMaterial(show: boolean) {
+    setAddMaterial(show)
+    setApiCalled(!apiCalled)
+  }
+  function handleTopic() {
+    setApiCalled(!apiCalled)
   }
   const today = new Date();
   return (
@@ -69,19 +81,20 @@ const TurmaSelecionada: React.FC = () => {
             <img src={add} alt="" />
             Adicionar Material
           </button>
-          {materials.map((material) => (
+          {materials.map((material, index) => (
             <Material
               nome={material.nome}
               link={material.link}
               autor={material.author}
               deleteItem={() => handleDelete(material._id)}
+              key={index}
             />
           ))}
         </div>
       </div>
       <Forum id={id} />
       {
-        addMaterial && <ModalMaterial isOpen={addMaterial} id={id} />
+        addMaterial && <ModalMaterial isOpen={addMaterial} id={id} handleOpen={handleCreateMaterial} />
       }
     </div>
   );
