@@ -13,6 +13,7 @@ interface Props {
 
 const CardTurma: React.FC<Props> = ({ turma }) => {
     const [professor, setProfessor] = useState("");
+    const [photo, setPhoto] = useState("");
     const navigate = useNavigate();
     async function fetchProfessor(id: string) {
         const response = api(`/usuarios/getById/${id}`)
@@ -31,12 +32,12 @@ const CardTurma: React.FC<Props> = ({ turma }) => {
     }
     useEffect(() => {
         fetchProfessor(turma.professor)
-            .then((response) => { setProfessor(response.data.nome); })
+            .then((response) => { setProfessor(response.data.nome); setPhoto(response.data.photo) })
     }, [turma.professor])
     return (
         <div className="turma_card" key={turma._id}>
             <div className="turma_cardHeader">
-                <span className="turma_profilePic" />
+                <img src={photo} alt={"Foto de perfil"} style={{ width: 24, height: 24, borderRadius: '50%' }} />
                 <span
                     title={professor}
                 >{professor}</span>

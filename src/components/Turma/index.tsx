@@ -18,8 +18,6 @@ interface Props {
  * @todo obter as imagens dos participantes e do professor dinamicamente
  */
 const Turma: React.FC<Props> = ({ turma, onClick }) => {
-  const imagemProfessor = "#";
-
   return (
     <div className={styles.turma}>
       <div>

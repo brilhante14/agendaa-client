@@ -38,7 +38,7 @@ export function Login() {
 
     function handleLogin() {
         const status = context.handleLogin(authInfo.auth, authInfo.password);
-        if (status !== 200) {
+        if (status !== 200 && status !== 500) {
             setError('Usuário ou senha inválidos');
             setAuthInfo({ auth: '', password: '' });
         }

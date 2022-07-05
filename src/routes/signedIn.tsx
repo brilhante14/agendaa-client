@@ -27,7 +27,7 @@ export default function SignedRoutes() {
         </Route>
         <Route path="/turmas" element={<Turmas />} />
         <Route path="/turma/:id" element={<Turma />} />
-        <Route path="*" element={<Navigate to="/turma/62c1d72f1de31d9a6d66e7ff" replace />} />
+        <Route path="*" element={<Navigate to="/home/" replace />} />
       </Routes>
     </BrowserRouter>
   );

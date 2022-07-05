@@ -16,7 +16,8 @@ import { TextInput } from '../../components/TextInput';
 import {
     Container,
     Separator,
-    RegisterContainer
+    RegisterContainer,
+    ErrorText
 } from './styles';
 
 interface AuthInfos {
@@ -30,6 +31,7 @@ interface AuthInfos {
 export function Register() {
     const [authInfo, setAuthInfo] = React.useState({ name: '', username: '', email: '', password: '' } as AuthInfos);
     const [confirmPassword, setConfirmPassword] = React.useState('');
+    const [error, setError] = React.useState('');
     const navigate = useNavigate();
     function handleValue(value: string, key: string) {
         setAuthInfo({ ...authInfo, [key]: value });
@@ -46,16 +48,18 @@ export function Register() {
                 // TODO: Enviar para home
                 navigate('/turmas');
             }
-            else {
-                if (res.status === 404) {
-                    // TODO: Usuário já existe
-                }
-            }
+        }).catch(() => {
+            setError('Usuário já existe!');
         })
     }
     return (
         <Auth title={"Registre-se"} image={Image} formSide={'right'} children={
             <Container>
+                <Separator />
+                {
+                    error &&
+                    <ErrorText>{error}</ErrorText>
+                }
                 <Separator />
                 <TextInput title={"Nome completo:"} placeholder={"Digite seu nome completo"} onChange={(e: any) => { handleValue(e.target.value, 'name') }} value={authInfo.name} />
                 <Separator />

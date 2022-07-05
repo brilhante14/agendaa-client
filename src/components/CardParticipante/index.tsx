@@ -12,11 +12,13 @@ type propsCardParticipante = {
    email: string;
    isMonitor?: boolean;
    _id: string;
-   turmaId: string
+   turmaId: string;
+   isProfessor?: boolean
+   image?: string;
 }
 
-const CardParticipante = ({ nome, email, _id, isMonitor = false, turmaId }: propsCardParticipante) => {
-   let user;
+const CardParticipante = ({ nome, email, _id, isMonitor = false, turmaId, isProfessor = false, image }: propsCardParticipante) => {
+   let user: any;
    const storage = localStorage.getItem("user");
    if (storage)
       user = JSON.parse(storage);
@@ -33,16 +35,9 @@ const CardParticipante = ({ nome, email, _id, isMonitor = false, turmaId }: prop
       });
    }
 
-   return (
-      <div className="cardParticipante_container">
-         <div className="cardParticipante_profileContainer">
-            <img className="cardParticipante_profilePic" src={`https://i.pravatar.cc/150?img=${Math.round(Math.random() * 50)}`} alt={"Foto de perfil"} />
-            <div className="cardParticipante_info">
-               <p className="cardParticipante_name">{nome}</p>
-               <p className="cardParticipante_email">{email}</p>
-            </div>
-         </div>
-         {user.role !== "aluno" ?
+   const handleButtons = () => {
+      if (user.role !== "aluno")
+         return (
             <div className="cardParticipante_iconContainer">
                <button onClick={alterRole}>
                   <img
@@ -58,21 +53,31 @@ const CardParticipante = ({ nome, email, _id, isMonitor = false, turmaId }: prop
                      className="cardParticipante_icon"
                   />
                </button>
+            </div>)
+      else
+         <div className="cardParticipante_iconContainer">
+            {isMonitor &&
+               <img
+                  src={starFilled}
+                  alt="Ícone de estrela"
+                  className="cardParticipante_icon"
+               />
+            }
+         </div>
+
+   }
+
+   return (
+      <div className="cardParticipante_container">
+         <div className="cardParticipante_profileContainer">
+            <img className="cardParticipante_profilePic" src={image} alt={"Foto de perfil"} />
+            <div className="cardParticipante_info">
+               <p className="cardParticipante_name">{nome}</p>
+               <p className="cardParticipante_email">{email}</p>
             </div>
-            :
-            <div className="cardParticipante_iconContainer">
-               {isMonitor &&
-                  <img
-                     src={starFilled}
-                     alt="Ícone de estrela"
-                     className="cardParticipante_icon"
-                  />
-               }
-            </div>
-         }
+         </div>
 
-
-
+         {!isProfessor && handleButtons()}
       </div>
    );
 }
