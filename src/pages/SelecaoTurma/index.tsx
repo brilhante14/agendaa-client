@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import styles from "./SelecaoTurma.module.css";
 import IconButton from "../../components/IconButton";
-import newClass from "../../assets/new_topic_black.png"
+import newClass from "../../assets/new_topic_black.png";
 import Turma from "../../components/Turma";
 import { useEffect, useState } from "react";
 import { ClassModal } from "../../components/Modal/ClassModal";
@@ -11,17 +11,19 @@ async function getClassById(turma: any) {
   return {
     nome: turma.nome,
     professor: await getParticipanteDetails(turma.professor),
-    participantes: await Promise.all(turma.participantes.map((id: string) => getParticipanteDetails(id))),
+    participantes: await Promise.all(
+      turma.participantes.map((id: string) => getParticipanteDetails(id))
+    ),
     id: turma._id,
   };
 }
 
 async function getParticipanteDetails(id: string) {
-  const participante = (await api.get(`/usuarios/getById/${id}`)).data
+  const participante = (await api.get(`/usuarios/getById/${id}`)).data;
   return {
-    nome: participante.nome,
-    img: participante.photo,
-  }
+    nome: participante?.nome,
+    img: participante?.photo,
+  };
 }
 
 /**
@@ -50,22 +52,29 @@ const SelecaoTurma: React.FC = () => {
   useEffect(() => {
     const storage = localStorage.getItem("user");
     if (storage) {
-      const user = JSON.parse(storage)
-      if (user.role === 'professor') {
+      const user = JSON.parse(storage);
+      if (user.role === "professor") {
         setIsProfessor(true);
-        api.post("/turmas/getTurmasByProfessor/", {
-          "profesorId": user._id
-        }).then((turmas) => {
-          Promise.all(turmas.data.map(getClassById)).then((t) => setTurmas(t))
-        })
+        api
+          .post("/turmas/getTurmasByProfessor/", {
+            profesorId: user._id,
+          })
+          .then((turmas) => {
+            Promise.all(turmas.data.map(getClassById)).then((t) =>
+              setTurmas(t)
+            );
+          });
       } else {
-        api.post("/turmas/getTurmasByParticipantes/", {
-          "userId": user._id
-        }).then((turmas) => {
-          Promise.all(turmas.data.map(getClassById)).then((t) => setTurmas(t))
-        })
+        api
+          .post("/turmas/getTurmasByParticipantes/", {
+            userId: user._id,
+          })
+          .then((turmas) => {
+            Promise.all(turmas.data.map(getClassById)).then((t) =>
+              setTurmas(t)
+            );
+          });
       }
-
     }
   }, []);
   return (
@@ -74,9 +83,7 @@ const SelecaoTurma: React.FC = () => {
         <nav className={styles.sidebar}>
           <div className={styles.sideheader}>
             <h2>
-              {isProfessor
-                ? "Turmas Ministradas"
-                : "Turmas Matriculadas"}
+              {isProfessor ? "Turmas Ministradas" : "Turmas Matriculadas"}
             </h2>
             <IconButton
               icon={newClass}
@@ -101,9 +108,8 @@ const SelecaoTurma: React.FC = () => {
               ))
             ) : (
               <p className={styles.emptyWarning}>
-                Você não está{" "}
-                {isProfessor ? "ministrando" : "matriculado em"} nenhuma
-                disciplina! Use o botão acima para{" "}
+                Você não está {isProfessor ? "ministrando" : "matriculado em"}{" "}
+                nenhuma disciplina! Use o botão acima para{" "}
                 {isProfessor ? "criar" : "entrar em"} uma turma
               </p>
             )}
@@ -113,9 +119,9 @@ const SelecaoTurma: React.FC = () => {
           <Outlet />
         </div>
       </main>
-      {
-        modalTurmasIsOpen && <ClassModal isOpen={modalTurmasIsOpen} handleOpen={setModalTurmas} />
-      }
+      {modalTurmasIsOpen && (
+        <ClassModal isOpen={modalTurmasIsOpen} handleOpen={setModalTurmas} />
+      )}
     </div>
   );
 };
