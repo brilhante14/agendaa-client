@@ -9,6 +9,7 @@
   flex-direction: column;
   padding: 0.5rem;
   position: relative;
+  scroll-snap-align: start;
 }
 .delete {
   background-color: #5616AA;
@@ -26,14 +27,20 @@
   color: black;
   font-size: 1.2rem;
   font-weight: 600;
+  max-width: 100%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
   text-align: center;
+  white-space: nowrap;
 }
 a {
   text-decoration: none;
+  width: 100%;
 }
 .author {
   color: black;
   font-size: 1rem;
+  text-overflow: clip;
 }
 .turma_cardHeader {
   display: flex;

@@ -15,13 +15,13 @@ const Material: React.FC<Props> = ({ nome, link, autor, deleteItem }) => {
   const [photo, setPhoto] = React.useState("");
   function handleName(id: string) {
     api.get(`/usuarios/getById/${id}`).then((res) => {
-      setName(res.data.nome)
-      setPhoto(res.data.photo)
-    })
+      setName(res.data.nome);
+      setPhoto(res.data.photo);
+    });
   }
   useEffect(() => {
-    handleName(autor)
-  })
+    handleName(autor);
+  });
   return (
     <div className={styles.material}>
       {deleteItem && (
@@ -29,13 +29,39 @@ const Material: React.FC<Props> = ({ nome, link, autor, deleteItem }) => {
           X
         </button>
       )}
-      <a href={link} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <a
+        href={link}
+        className={styles.link}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <img src={draft} alt="" style={{ width: 42, height: 42 }} />
         <span className={styles.name}>{nome}</span>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-start', marginTop: 10 }}>
-          <img src={photo} alt="" style={{ width: 20, height: 20, borderRadius: '50%', marginRight: 5 }} />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            alignSelf: "flex-start",
+            marginTop: 10,
+          }}
+        >
+          <img
+            src={photo}
+            alt=""
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: "50%",
+              marginRight: 5,
+            }}
+          />
           {/* Analisar overflow */}
-          {name.substring(0, 10) + "..."}
+          <span className={styles.author}>{name.substring(0, 10) + "..."}</span>
         </div>
       </a>
     </div>
