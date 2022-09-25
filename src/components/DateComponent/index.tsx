@@ -6,17 +6,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // Styles
-import {
-    Title,
-    Separator,
-    DaysContainer,
-    Day,
-    Days,
-    DateContainer,
-    DateSelector,
-} from './styles';
 import { DaysProps } from '../../utils/date';
-
+import './styles.css';
 
 interface Props {
     days: DaysProps;
@@ -31,20 +22,19 @@ interface Props {
     handleEndDate: React.Dispatch<React.SetStateAction<Date | null>>;
 }
 
-// Renderer
 export function DateComponent({ days, startDate, endDate, handleDays, handleStartDate, handleEndDate }: Props) {
     return (
         <>
-            <DaysContainer>
-                <Title>
+            <div className="dateComponentDaysContainer">
+                <p className='dateComponentTitle'>
                     Dias de aula
-                </Title>
-                <Separator />
-                <Days>
+                </p>
+                <div className='dateComponentSeparator' />
+                <div className='dateComponentDays'>
                     {
                         days.map((day, index) => {
                             return (
-                                <Day key={index} selected={day.active} onClick={
+                            <button key={index} className={`dateComponentDay ${day.active ? "dateComponentDayActive" : ""}`} onClick={
                                     () => {
                                         const newDays = [...days];
                                         newDays[index].active = !newDays[index].active;
@@ -52,17 +42,17 @@ export function DateComponent({ days, startDate, endDate, handleDays, handleStar
                                     }
                                 }>
                                     {day.initial}
-                                </Day>
+                                </button>
                             )
                         }
                         )
                     }
-                </Days>
-            </DaysContainer>
-            <Separator />
-            <DateContainer>
-                <DateSelector>
-                    <Separator />
+                </div>
+            </div>
+            <div className='dateComponentSeparator' />
+            <div className='dateComponentDateContainer'>
+                <div className='dateComponentDDateSelector'>
+                    <div className='dateComponentSeparator' />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
                             label="Início da turma"
@@ -77,9 +67,9 @@ export function DateComponent({ days, startDate, endDate, handleDays, handleStar
                             />}
                         />
                     </LocalizationProvider>
-                </DateSelector>
-                <DateSelector>
-                    <Separator />
+                </div>
+                <div className='dateComponentDDateSelector'>
+                    <div className='dateComponentSeparator' />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
                             label="Fim da turma"
@@ -93,8 +83,8 @@ export function DateComponent({ days, startDate, endDate, handleDays, handleStar
                             }} />}
                         />
                     </LocalizationProvider>
-                </DateSelector>
-            </DateContainer>
+                </div>
+            </div>
         </>
     );
 }

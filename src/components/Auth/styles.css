@@ -1,29 +1,24 @@
-import styled from 'styled-components';
-
-export const Container = styled.div`
+.authComponentContainer{
     min-height: 100vh;
     display: flex;
-`;
+}
 
-export const FormArea = styled.div`
+.authComponentFormArea {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-`;
-
-export const ImageArea = styled.div`
+}
+.authComponentImageArea {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: var(--purple);
-`;
+}
 
-export const Image = styled.img``;
-
-export const Title = styled.p`
+.authComponentTitle {
     font-size: 22px;
     font-weight: bold;
-`;
+}

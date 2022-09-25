@@ -1,0 +1,46 @@
+.dateComponentSeparator {
+    height: 10px;
+}
+
+.dateComponentTitle {
+    font-size: 18px;
+}
+
+.dateComponentDaysContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.dateComponentDay{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--purple_dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--purple_light);
+    color: var(--purple_dark);
+}
+
+.dateComponentDayActive{
+    background: var(--purple_dark);
+    color: var(--white);
+}
+
+.dateComponentDays{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dateComponentDateContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dateComponentDateSelector {
+    display: flex;
+    flex-direction: column;
+}

@@ -6,13 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // Styles
-import {
-    Container,
-    Separator,
-    DateContainer,
-    DateSelector,
-    ButtonContainer
-} from './styles';
+import './styles.css';
 import Modal from "..";
 import { TextInput } from '../../TextInput';
 import { Button } from '../../Button';
@@ -74,14 +68,14 @@ export function Activities({ isOpen, handleOpen, isEdit, activityID }: props) {
     }, [activityID, isEdit])
     return (
         <Modal handleOpen={handleOpen}>
-            <Container>
+            <div className='activitiesContainer'>
                 <TextInput onChange={(e: any) => { setName(e.target.value) }} placeholder={"Ex.: Lista de exercícios"} title={"Nome da atividade"} value={name} />
-                <Separator />
+                <div className='activitiesSeparator' />
                 <TextInput onChange={(e: any) => { setDescription(e.target.value) }} placeholder={"Ex.: Revisão para prova 01"} title={"Descrição"} value={description} />
-                <Separator />
-                <Separator />
-                <DateContainer>
-                    <DateSelector>
+                <div className='activitiesSeparator' />
+                <div className='activitiesSeparator' />
+                <div className='activitiesDateContainer'>
+                    <div className='activitiesDateSelector'>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 label="Prazo"
@@ -94,17 +88,17 @@ export function Activities({ isOpen, handleOpen, isEdit, activityID }: props) {
                                 }} />}
                             />
                         </LocalizationProvider>
-                    </DateSelector>
-                </DateContainer>
-                <Separator />
-                <ButtonContainer>
+                    </div>
+                </div>
+                <div className='activitiesSeparator' />
+                <div className='activitiesButtonContainer'>
                     {
                         user.role === "professor" && <Button onClick={handleDeleteActivity} size={{ width: 150, height: 39 }} title={"Remover Atividade"} backgroundColor={"#FB6262"} />
                     }
                     <div style={{ width: 20 }} />
                     <Button onClick={isEdit ? handleEditActivity : handleCreateActivity} size={{ width: 138, height: 39 }} title={isEdit ? "Editar atividade" : "Criar atividade"} />
-                </ButtonContainer>
-            </Container>
+                </div>
+            </div>
         </Modal>
     );
 }

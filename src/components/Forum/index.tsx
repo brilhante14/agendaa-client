@@ -7,27 +7,10 @@ import TrashImage from "../../assets/trash.png";
 import PencilImage from "../../assets/pencil.png";
 import ForumVazio from "../../assets/forum_vazio.png";
 import { handleData } from "../../utils/formatDate";
-// Styles
-import {
-  Container,
-  Header,
-  Title,
-  Comment,
-  CommentHeaderInfo,
-  ProfileImage,
-  DateText,
-  ProfileName,
-  CommentText,
-  Separator,
-  Reply,
-  ReplyText,
-  CommentHeader,
-  ButtonArea,
-  EditButtonArea,
-  EmptyForum,
-} from "./styles";
+import { useForum } from '../../services/useForum';
 import api from "../../api/api";
 
+import "./styles.css";
 interface Props {
   id?: string;
 }
@@ -43,10 +26,6 @@ interface TopLevelComment extends CommentType {
   replies: Array<CommentType>;
 }
 
-async function fetchComments(id: string) {
-  return await api.get(`/turmas/${id}/getComments`);
-}
-
 // Renderer
 export function Forum({ id }: Props) {
   const [isEditReply, setIsEditReply] = React.useState("");
@@ -55,11 +34,12 @@ export function Forum({ id }: Props) {
   const [isReply, setIsReply] = React.useState(false);
   const [commentReply, setCommentReply] = React.useState("");
   const [newTopic, setNewTopic] = React.useState(false);
-  const [comments, setComments] = React.useState<Array<TopLevelComment>>([]);
+  const [comments, setComments] = React.useState<TopLevelComment[]>([]);
   const [users, setUsers] = React.useState<
     Array<{ _id: string; photo: string; nome: string }>
   >([]);
   const [user, setUser] = React.useState({} as any);
+  const useForumService = useForum()
 
   const bottomRef = React.useRef<null | HTMLDivElement>(null);
 
@@ -75,7 +55,10 @@ export function Forum({ id }: Props) {
   }, []);
 
   useEffect(() => {
-    if (id) fetchComments(id).then((res) => setComments(res.data));
+    if(id){
+      const comments = useForumService.getComments(id);
+      // setComments(comments);
+    }
   }, [id]);
 
   function handleEditText(
@@ -121,6 +104,7 @@ export function Forum({ id }: Props) {
         }
       });
   }
+
   function handleDelete(
     commentID: string,
     classID?: string,
@@ -188,6 +172,7 @@ export function Forum({ id }: Props) {
       });
     setEditText("");
   }
+  
   function handleNewTopic(text: string, userID: string, classID?: string) {
     api
       .post(`/turmas/${classID}/commentForum`, {
@@ -210,40 +195,38 @@ export function Forum({ id }: Props) {
     setEditText("");
     setNewTopic(false);
   }
-  function scrollToBottom() {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }
 
   return (
-    <Container>
-      <Header>
-        <Title>Fórum</Title>
+    <div className="commentsContainer">
+      <div className="commentsHeader">
+        <div className="commentsTitle">Fórum</div>
         <Button
           onClick={() => {
             setNewTopic(true);
-            scrollToBottom();
+            bottomRef.current?.scrollIntoView({ behavior: "smooth" });
           }}
           size={{ width: 141, height: 28 }}
           title={"Novo tópico"}
           icon={Image}
           textColor={"#FFFFFF"}
         />
-      </Header>
-      <Separator />
+      </div>
+      <div className="commentsSeparator" />
       {comments.length > 0 &&
         comments.map((comment) => (
+
           <div key={comment._id}>
-            <Comment>
-              <CommentHeader>
-                <CommentHeaderInfo>
-                  <ProfileImage
+            <div className="commentsComment">
+              <div className="commentHeader">
+                <div className="commentsHeaderInfo">
+                  <img className="commentsProfileImage"
                     src={users.find((u) => u._id === comment.userId)?.photo}
                   />
-                  <ProfileName>
+                  <p className="commentsProfileName">
                     {users.find((u) => u._id === comment.userId)?.nome}
-                  </ProfileName>
-                  <DateText>{handleData(comment.createdAt)}</DateText>
-                </CommentHeaderInfo>
+                  </p>
+                  <p className="commentsDateText">{handleData(comment.createdAt)}</p>
+                </div>
                 {isCommentReply === comment._id ? (
                   <Button
                     title={"Deletar"}
@@ -257,7 +240,7 @@ export function Forum({ id }: Props) {
                     align={"flex-end"}
                   />
                 ) : (
-                  <ButtonArea>
+                  <div className="commentsButtonArea">
                     {comment.userId === user._id && (
                       <Button
                         title={"Editar"}
@@ -284,26 +267,27 @@ export function Forum({ id }: Props) {
                       backgroundColor={"none"}
                       align={"flex-end"}
                     />
-                  </ButtonArea>
+                  </div>
                 )}
-              </CommentHeader>
+              </div>
               {isCommentReply === comment._id ? (
                 <>
-                  <Separator />
-                  <ReplyText
+                  <div className="commentsSeparator" />
+                  <textarea className="commentReplyText"
                     onChange={(e: any) => {
                       setEditText(e.target.value);
                     }}
                   >
                     {editText}
-                  </ReplyText>
+                  </textarea>
                 </>
               ) : (
-                <CommentText>{comment.text}</CommentText>
+                <p className="commmentText">{comment.text}</p>
               )}
-              <Separator />
+              <div className="commentsSeparator" />
+
               {isCommentReply === comment._id && (
-                <EditButtonArea>
+                <div className="commentEditButtonArea">
                   <Button
                     title={"Editar"}
                     size={{ width: 121, height: 48 }}
@@ -313,27 +297,30 @@ export function Forum({ id }: Props) {
                       setEditText("");
                     }}
                   />
-                </EditButtonArea>
+                </div>
               )}
-            </Comment>
-            <Separator />
+            </div>
+            <div className="commentsSeparator" />
+
             {comment.replies?.map((reply, index) => (
               <div key={reply._id}>
-                <Reply>
-                  <CommentHeader>
-                    <CommentHeaderInfo>
-                      <ProfileImage
-                        src={
+                <div className="commentReply">
+                  <div className="commentHeader">
+                    <div className="commentsHeaderInfo">
+
+                    <img className="commentsProfileImage"
+                      src={
                           reply.userId === user._id
                             ? user.photo
                             : users.find((u) => u._id === comment.userId)?.photo
                         }
                       />
-                      <ProfileName>
+                      <p className="commentsProfileName">
+
                         {users.find((u) => u._id === reply.userId)?.nome}
-                      </ProfileName>
-                      <DateText>{handleData(reply.createdAt)}</DateText>
-                    </CommentHeaderInfo>
+                      </p>
+                  <p className="commentsDateText">{handleData(reply.createdAt)}</p>
+                    </div>
                     {isEditReply === reply._id ? (
                       <Button
                         title={"Deletar"}
@@ -348,7 +335,7 @@ export function Forum({ id }: Props) {
                       />
                     ) : (
                       reply.userId === user._id && (
-                        <ButtonArea>
+                        <div className="commentsButtonArea">
                           <Button
                             title={"Editar"}
                             onClick={() => {
@@ -361,14 +348,15 @@ export function Forum({ id }: Props) {
                             backgroundColor={"none"}
                             align={"flex-end"}
                           />
-                        </ButtonArea>
+                        </div>
                       )
                     )}
-                  </CommentHeader>
+                  </div>
                   {isEditReply === reply._id ? (
                     <>
-                      <Separator />
-                      <ReplyText
+                      <div className="commentsSeparator" />
+
+                      <textarea className="commentReplyText"
                         onChange={(e: any) => {
                           setEditText(e.target.value);
                         }}
@@ -376,14 +364,15 @@ export function Forum({ id }: Props) {
                         value={editText}
                       >
                         {editText}
-                      </ReplyText>
+                      </textarea>
                     </>
                   ) : (
-                    <CommentText>{reply.text}</CommentText>
+                   <p className="commmentText">{reply.text}</p>
                   )}
-                  <Separator />
+                        <div className="commentsSeparator" />
+
                   {isEditReply === reply._id && (
-                    <EditButtonArea>
+                    <div className="commentEditButtonArea">
                       <Button
                         title={"Editar"}
                         size={{ width: 121, height: 48 }}
@@ -398,25 +387,30 @@ export function Forum({ id }: Props) {
                           setEditText("");
                         }}
                       />
-                    </EditButtonArea>
+                    </div>
                   )}
-                </Reply>
-                <Separator />
+                </div>
+                <div className="commentsSeparator" />
+
               </div>
             ))}
             {isReply && commentReply === comment._id && (
               <>
-                <Reply>
-                  <CommentHeader>
-                    <CommentHeaderInfo>
-                      <ProfileImage src={user.photo} />
-                      <ProfileName>{user.nome}</ProfileName>
-                    </CommentHeaderInfo>
-                  </CommentHeader>
+                <div className="commentReply">
+                  <div className="commentHeader">
+                    <div className="commentsHeaderInfo">
+
+                  <img className="commentsProfileImage"
+                      src={user.photo} />
+                      <p className="commentsProfileName">
+{user.nome}</p>
+                    </div>
+                  </div>
                   {
                     <>
-                      <Separator />
-                      <ReplyText
+                      <div className="commentsSeparator" />
+
+                      <textarea className="commentReplyText"
                         onChange={(e: any) => {
                           setEditText(e.target.value);
                         }}
@@ -424,11 +418,12 @@ export function Forum({ id }: Props) {
                         value={editText}
                       >
                         {editText}
-                      </ReplyText>
+                      </textarea>
                     </>
                   }
-                  <Separator />
-                  <EditButtonArea>
+                        <div className="commentsSeparator" />
+
+                  <div className="commentEditButtonArea">
                     <Button
                       title={"Responder"}
                       size={{ width: 121, height: 48 }}
@@ -437,25 +432,29 @@ export function Forum({ id }: Props) {
                         setIsReply(false);
                       }}
                     />
-                  </EditButtonArea>
-                </Reply>
-                <Separator />
+                  </div>
+                </div>
+                      <div className="commentsSeparator" />
+
               </>
             )}
           </div>
         ))}
       {newTopic && (
-        <Comment>
-          <CommentHeader>
-            <CommentHeaderInfo>
-              <ProfileImage src={user.photo} />
-              <ProfileName>{user.nome}</ProfileName>
-            </CommentHeaderInfo>
-          </CommentHeader>
+        <div className="commentsComment">
+          <div className="commentHeader">
+            <div className="commentsHeaderInfo">
+
+            <img className="commentsProfileImage" src={user.photo} />
+              <p className="commentsProfileName">
+{user.nome}</p>
+            </div>
+          </div>
           {
             <>
-              <Separator />
-              <ReplyText
+                    <div className="commentsSeparator" />
+
+              <textarea className="commentReplyText"
                 onChange={(e: any) => {
                   setEditText(e.target.value);
                 }}
@@ -463,11 +462,12 @@ export function Forum({ id }: Props) {
                 value={editText}
               >
                 {editText}
-              </ReplyText>
+              </textarea>
             </>
           }
-          <Separator />
-          <EditButtonArea>
+                <div className="commentsSeparator" />
+
+          <div className="commentEditButtonArea">
             <Button
               title={"Publicar"}
               size={{ width: 121, height: 48 }}
@@ -477,16 +477,16 @@ export function Forum({ id }: Props) {
                 setEditText("");
               }}
             />
-          </EditButtonArea>
+          </div>
           <div ref={bottomRef} />
-        </Comment>
+        </div>
       )}
       {comments.length <= 0 && !newTopic && (
-        <EmptyForum>
+        <div className="commentsEmptyForum">
           <img src={ForumVazio} alt="" />
           <h3>Fórum Vazio! Crie uma postagem acima</h3>
-        </EmptyForum>
+        </div>
       )}
-    </Container>
+    </div>
   );
 }

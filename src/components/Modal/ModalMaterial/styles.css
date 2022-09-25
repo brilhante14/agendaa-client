@@ -1,0 +1,12 @@
+.modalMaterialContainer{
+    width: 430px;
+}
+
+.modalMaterialSeparator{
+    height: 10px;
+}
+.modalMaterialButtonContainer{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}

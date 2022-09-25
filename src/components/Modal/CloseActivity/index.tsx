@@ -1,12 +1,4 @@
-// Styles
-import {
-    Container,
-    Separator,
-    ButtonContainer,
-    Row,
-    Title,
-    Name
-} from './styles';
+import './styles.css';
 import Modal from "..";
 import { TextInput } from '../../TextInput';
 import { Button } from '../../Button';
@@ -19,33 +11,32 @@ interface props {
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
-// Renderer
 export function CloseActivity({ isOpen, handleOpen }: props) {
     return (
         <Modal handleOpen={handleOpen}>
-            <Container>
-                <Row>
-                    <Title>
+            <div className='closeActivityContainer'>
+                <div className='closeActivityRow'>
+                    <p className='closeActivityTitle'>
                         Nome da atividade:
-                    </Title>
-                    <Name>
+                    </p>
+                    <p className='closeActivityName'>
                         Compilador de Javascripto
-                    </Name>
-                </Row>
-                <Separator />
-                <Row>
-                    <Title>
+                    </p>
+                </div>
+                <div className='closeActivitySeparator' />
+                <div className='closeActivityRow'>
+                    <p className='closeActivityTitle'>
                         A atividade impactou na média?
-                    </Title>
+                    </p>
                     <Switch {...label} />
-                </Row>
+                </div>
                 <TextInput onChange={() => { }} placeholder={"+/- pontuação"} />
-                <Separator />
-                <Separator />
-                <ButtonContainer>
+                <div className='closeActivitySeparator' />
+                <div className='closeActivitySeparator' />
+                <div className='closeActivityButtonContainer'>
                     <Button onClick={() => { }} size={{ width: 165, height: 39 }} title={"Concluir atividade"} />
-                </ButtonContainer>
-            </Container>
+                </div>
+            </div>
         </Modal>
     );
 }

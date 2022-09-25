@@ -1,0 +1,8 @@
+.forgotPasswordContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.forgotPasswordSeparator{
+    height: 24px;
+}

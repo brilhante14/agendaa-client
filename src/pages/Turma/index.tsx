@@ -50,6 +50,7 @@ const Turma = () => {
    const storage = localStorage.getItem("user");
    if (storage)
       user = JSON.parse(storage);
+
    useEffect(() => {
       async function fetchData() {
          const response = await api.get(`/turmas/${id}`);
@@ -96,8 +97,8 @@ const Turma = () => {
          cronograma,
          nome: editedName ? editedName : turmaInfo?.nome
       })
-
-      navigate(`/home/${id}`)
+      
+      setEdit(false)
    }
 
    const handleFinishClass = () => {

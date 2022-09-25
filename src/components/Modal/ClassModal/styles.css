@@ -1,0 +1,17 @@
+.classModalContainer{
+    width: 430px;
+}
+
+.classModalTitle{
+    font-size: 18px;
+}
+
+.classModalSeparator{
+    height: 10px;
+}
+
+.classModalButtonContainer{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}

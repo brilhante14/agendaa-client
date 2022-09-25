@@ -1,20 +1,16 @@
-// Libs
 import React from 'react';
 
-// Styles
-import { Container } from './styles';
+import './styles.css';
 
-// Types
 interface Props {
     title?: string;
     onClick: () => void;
 }
 
-// Renderer
 export function TextButton({ title, onClick }: Props) {
     return (
-        <Container onClick={onClick}>
+        <button className='textButtonComponentContainer' onClick={onClick}>
             {title}
-        </Container>
+        </button>
     );
 }

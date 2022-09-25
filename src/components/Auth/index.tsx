@@ -1,19 +1,9 @@
-// Libs
 import React from 'react';
 
-// Hooks
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 
-// Styles
-import {
-    Container,
-    FormArea,
-    ImageArea,
-    Image,
-    Title
-} from './styles';
+import './styles.css';
 
-// Types
 interface Props {
     title: string;
     children: React.ReactNode;
@@ -21,35 +11,34 @@ interface Props {
     formSide: 'left' | 'right';
 }
 
-// Renderer
 export function Auth({ title, children, image, formSide }: Props) {
     const { width } = useWindowDimensions();
     return (
-        <Container>
+        <div className='authComponentContainer'>
             {
                 formSide === 'left' &&
-                <FormArea>
-                    <Title>
+                <div className='authComponentFormArea'>
+                    <p className='authComponentTitle'>
                         {title}
-                    </Title>
+                    </p>
                     {children}
-                </FormArea>
+                </div>
             }
             {
                 width > 1366 &&
-                <ImageArea>
-                    <Image src={image} />
-                </ImageArea>
+                <div className='authComponentImageArea'>
+                    <img src={image} />
+                </div>
             }
             {
                 formSide === 'right' &&
-                <FormArea>
-                    <Title>
+                <div className='authComponentFormArea'>
+                    <p className='authComponentTitle'>
                         {title}
-                    </Title>
+                    </p>
                     {children}
-                </FormArea>
+                </div>
             }
-        </Container>
+      </div>
     );
 }

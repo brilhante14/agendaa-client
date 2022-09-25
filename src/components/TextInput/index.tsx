@@ -1,10 +1,7 @@
-// Libs
 import React from "react";
 
-// Styles
-import { Container, Title, Input } from "./styles";
+import "./styles.css";
 
-// Types
 interface Props {
   title?: string;
   error?: boolean;
@@ -14,7 +11,6 @@ interface Props {
   isSecure?: boolean;
 }
 
-// Renderer
 export function TextInput({
   title,
   error,
@@ -24,14 +20,15 @@ export function TextInput({
   isSecure,
 }: Props) {
   return (
-    <Container>
-      <Title>{title}</Title>
-      <Input
+    <div>
+      <p className="textInputComponentTitle">{title}</p>
+      <input
+        className="textInputComponentInput"
         placeholder={placeholder}
         onChange={onChange}
         value={value}
         {...(isSecure && { type: "password" })}
       />
-    </Container>
+    </div>
   );
 }

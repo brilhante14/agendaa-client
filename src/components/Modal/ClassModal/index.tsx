@@ -1,14 +1,7 @@
-// Libs
 import React from 'react';
 import Slider from '@mui/material/Slider';
-// Styles
-import {
-    Container,
-    SliderContainer,
-    Title,
-    Separator,
-    ButtonContainer,
-} from './styles';
+
+import './styles.css';
 import Modal from "..";
 import { TextInput } from '../../TextInput';
 import { Button } from '../../Button';
@@ -21,7 +14,6 @@ interface props {
     handleOpen: (status: boolean) => void;
 }
 
-// Renderer
 export function ClassModal({ isOpen, handleOpen }: props) {
     const [days, setDays] = React.useState(allDays);
     const [startDate, setStartDate] = React.useState<Date | null>(null);
@@ -53,13 +45,13 @@ export function ClassModal({ isOpen, handleOpen }: props) {
     };
     return (
         <Modal handleOpen={handleOpen}>
-            <Container>
+            <div className='classModalContainer'>
                 <TextInput onChange={(e: any) => { setNome(e.target.value) }} placeholder={"Ex.: Matématica discreta"} title={"Nome da turma:"} />
-                <Separator />
-                <SliderContainer>
-                    <Title>
+                <div className='classModalSeparator' />
+                <div>
+                    <p className='classModalTitle'>
                         Faltas Permitidas
-                    </Title>
+                    </p>
                     <Slider
                         size="small"
                         defaultValue={5}
@@ -73,13 +65,18 @@ export function ClassModal({ isOpen, handleOpen }: props) {
                         value={faltas}
                         onChange={handleChange}
                     />
-                </SliderContainer>
+                </div>
                 <DateComponent days={days} startDate={startDate} endDate={endDate} handleDays={setDays} handleStartDate={setStartDate} handleEndDate={setEndDate} />
-                <Separator />
-                <ButtonContainer>
-                    <Button onClick={handleCreate} size={{ width: 117, height: 39 }} title={"Criar turma"} />
-                </ButtonContainer>
-            </Container>
+                <div className='classModalSeparator' />
+                <div className='classModalButtonContainer'>
+                    <Button 
+                        isDisabled={!nome || !days.some(day => day.active) || !startDate || !endDate} 
+                        onClick={handleCreate} 
+                        size={{ width: 117, height: 39 }} 
+                        title={"Criar turma"} 
+                    />
+                </div>
+            </div>
         </Modal>
     );
 }

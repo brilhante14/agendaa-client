@@ -1,0 +1,16 @@
+.buttonComponentContainer {
+    background: var(--purple);
+    border-radius: 12px;
+    border: 0;
+    font-size: 16px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+
+.buttonComponentContainer:hover {
+    background: var(--purple_dark);
+}

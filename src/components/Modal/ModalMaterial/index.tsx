@@ -1,14 +1,9 @@
-// Styles
-import {
-    Container,
-    Separator,
-    ButtonContainer
-} from './styles';
+import React from 'react';
 import Modal from "..";
 import { TextInput } from '../../TextInput';
 import { Button } from '../../Button';
-import React from 'react';
 import api from '../../../api/api';
+import './styles.css';
 
 interface props {
     isOpen: boolean;
@@ -33,16 +28,16 @@ export function ModalMaterial({ isOpen, id, handleOpen }: props) {
     }
     return (
         <Modal handleOpen={handleOpen}>
-            <Container>
+            <div className='modalMaterialContainer'>
                 <TextInput onChange={(e: any) => { setName(e.target.value) }} placeholder={"Ex.: Anotações"} title={"Nome do material"} value={name} />
-                <Separator />
+                <div className='modalMaterialSeparator' />
                 <TextInput onChange={(e: any) => { setLink(e.target.value) }} placeholder={"Ex.: google.com"} title={"Link do material"} value={link} />
-                <Separator />
-                <Separator />
-                <ButtonContainer>
+                <div className='modalMaterialSeparator' />
+                <div className='modalMaterialSeparator' />
+                <div className='modalMaterialButtonContainer'>
                     <Button onClick={() => { handleCreate(); handleOpen(false) }} size={{ width: 165, height: 39 }} title={"Cadastrar material"} />
-                </ButtonContainer>
-            </Container>
+                </div>
+            </div>
         </Modal>
     );
 }

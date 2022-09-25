@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ProfileModal from "../Modal/ProfileModal/index";
 import styles from "./header.module.css";
 
@@ -17,9 +18,10 @@ interface userProfile {
 const Header = (props: { profile?: userProfile }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  let navigate = useNavigate();
   return (
     <header className={styles.header}>
-      <h1 className={styles.headerTitle}>AGENDAA</h1>
+      <div onClick={() => {navigate('/home/')}}><h1 className={styles.headerTitle}>AGENDAA</h1></div>
       {props.profile && (
         <div
           className={styles.profileMenu}
@@ -35,9 +37,6 @@ const Header = (props: { profile?: userProfile }) => {
             </h2>
           </button>
           {isMenuOpen && (<menu className={styles.menu}>
-            {/**
-           * @todo Implementar funções para navegar de volta ao login e acessar modal de edição de perfil
-           */}
             <li className={styles.menu_item}>
               <button
                 tabIndex={0}

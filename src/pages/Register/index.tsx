@@ -1,24 +1,15 @@
-// Libs
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/api';
 
-// Assets
 import Image from '../../assets/svg/register.svg';
 
-// Components
 import { Auth } from '../../components/Auth';
 import { Button } from '../../components/Button';
 import { TextButton } from '../../components/TextButton';
 import { TextInput } from '../../components/TextInput';
 
-// Styles
-import {
-    Container,
-    Separator,
-    RegisterContainer,
-    ErrorText
-} from './styles';
+import './styles.css';
 
 interface AuthInfos {
     name: string;
@@ -27,7 +18,6 @@ interface AuthInfos {
     password: string;
 }
 
-// Renderer
 export function Register() {
     const [authInfo, setAuthInfo] = React.useState({ name: '', username: '', email: '', password: '' } as AuthInfos);
     const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -61,28 +51,28 @@ export function Register() {
     }
     return (
         <Auth title={"Registre-se"} image={Image} formSide={'right'} children={
-            <Container>
-                <Separator />
+            <div className='registerContainer'>
+                <div className='registerSeparator' />
                 {
                     error &&
-                    <ErrorText>{error}</ErrorText>
+                    <div className='registerErrorText'>{error}</div>
                 }
-                <Separator />
+                <div className='registerSeparator' />
                 <TextInput title={"Nome completo:"} placeholder={"Digite seu nome completo"} onChange={(e: any) => { handleValue(e.target.value, 'name') }} value={authInfo.name} />
-                <Separator />
+                <div className='registerSeparator' />
                 <TextInput title={"Usuário:"} placeholder={"Digite seu usuário"} onChange={(e: any) => { handleValue(e.target.value, 'username') }} value={authInfo.username} />
-                <Separator />
+                <div className='registerSeparator' />
                 <TextInput title={"Email:"} placeholder={"Digite seu email"} onChange={(e: any) => { handleValue(e.target.value, 'email') }} value={authInfo.email} />
-                <Separator />
+                <div className='registerSeparator' />
                 <TextInput title={"Senha:"} placeholder={"Digite sua senha"} onChange={(e: any) => { handleValue(e.target.value, 'password') }} value={authInfo.password} isSecure />
-                <Separator />
+                <div className='registerSeparator' />
                 <TextInput title={"Confirme sua senha:"} placeholder={"Repita sua senha"} onChange={(e: any) => { setConfirmPassword(e.target.value) }} value={confirmPassword} isSecure />
-                <Separator />
+                <div className='registerSeparator' />
                 <Button title={"Registrar"} onClick={handleRegister} size={{ width: 400, height: 50 }} />
-                <RegisterContainer>
+                <div className='registerLoginContainer'>
                     Já possui uma conta? <TextButton onClick={() => { navigate('/login') }} title={"Login"} />
-                </RegisterContainer>
-            </Container>
+                </div>
+            </div>
         } />
     );
 }

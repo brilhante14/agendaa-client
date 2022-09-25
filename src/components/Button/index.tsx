@@ -1,10 +1,7 @@
-// Libs
 import React from 'react';
 
-// Styles
-import { Container } from './styles';
+import './styles.css';
 
-// Types
 interface Props {
     title?: string;
     onClick: () => void;
@@ -13,12 +10,22 @@ interface Props {
     textColor?: string;
     backgroundColor?: string;
     align?: string;
+    isDisabled?: boolean
 }
 
-// Renderer
-export function Button({ title, onClick, size, icon, textColor, backgroundColor, align }: Props) {
+export function Button({ title, isDisabled = false, onClick, size, icon, textColor, backgroundColor, align }: Props) {
     return (
-        <Container onClick={onClick} size={size} textColor={textColor} backgroundColor={backgroundColor} align={align}>
+        <button 
+        style={{ 
+            width: `${size.width}px`, 
+            height: `${size.height}px`, 
+            background: backgroundColor ? backgroundColor : '', 
+            color: textColor ? textColor : '', 
+            justifyContent: align ? align : '' 
+        }} 
+        disabled={isDisabled}
+        onClick={onClick}
+        >
             {
                 icon &&
                 <>
@@ -27,6 +34,6 @@ export function Button({ title, onClick, size, icon, textColor, backgroundColor,
                 </>
             }
             {title}
-        </Container>
+        </button>
     );
 }

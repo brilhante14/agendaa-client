@@ -1,0 +1,29 @@
+.closeActivityContainer{
+    width: 430px;
+}
+
+.closeActivityTitle{
+    font-size: 18px;
+}
+
+.closeActivitySeparator {
+    height: 10px;
+}
+
+.closeActivityButtonContainer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.closeActivityRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.closeActivityName{
+    font-size: 16px;
+    font-weight: 400;
+}
