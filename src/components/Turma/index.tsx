@@ -16,12 +16,6 @@ interface Props {
   onClick: MouseEventHandler;
 }
 
-/**
- * Componente para ser mostrado na seleção de turmas
- *
- * @component
- * @param turma objeto contendo detalhes da turma
- */
 const Turma: React.FC<Props> = ({ turma, onClick }) => {
   return (
     <div className={styles.turma}>

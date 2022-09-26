@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import api from "../../api/api";
 import CardParticipante from "../../components/CardParticipante";
 
@@ -10,7 +10,6 @@ import { DateComponent } from "../../components/DateComponent";
 import { allDays } from "../../utils/date";
 import { Button } from "../../components/Button";
 import { TextInput } from "../../components/TextInput";
-import { ClassModal } from "../../components/Modal/ClassModal";
 
 type turmaProps = {
    nome: string;
@@ -42,7 +41,6 @@ const Turma = () => {
    const [editedName, setEditedName] = React.useState("");
    const [startDate, setStartDate] = React.useState<Date | null>(null);
    const [endDate, setEndDate] = React.useState<Date | null>(null);
-   const navigate = useNavigate();
 
    const { id } = useParams();
 

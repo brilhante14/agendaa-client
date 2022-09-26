@@ -26,8 +26,6 @@ export default function SignedRoutes() {
         <Route path="/home/" element={<SelecaoTurma />}>
           <Route path="" element={<NenhumaTurma />} />
           <Route path=":id/" element={<TurmaSelecionada />}>
-            <Route path="" element={<></>} />
-            <Route path=":date" element={<NenhumaTurma />} />
           </Route>
         </Route>
         <Route path="/turmas" element={<Turmas />} />

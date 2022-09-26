@@ -2,7 +2,7 @@
     background: var(--purple);
     border-radius: 12px;
     border: 0;
-    font-size: 16px;
+    font-size: 14px;
     color: var(--white);
     display: flex;
     align-items: center;
@@ -12,5 +12,7 @@
 
 
 .buttonComponentContainer:hover {
-    background: var(--purple_dark);
+    /* background: var(--purple_dark); */
+    opacity: 0.9;
+    transition: 0.5s;
 }

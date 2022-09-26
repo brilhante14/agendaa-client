@@ -94,12 +94,14 @@ const ProfileModal = ({ handleOpen }: props) => {
             title="Deletar Perfil"
             onClick={handleDelete}
             size={{
-              width: 180,
+              width: 260,
               height: 48,
             }}
             backgroundColor="#f44336"
+            textColor="#FFF"
           />
           <Button
+            isDisabled={!name || !username || !email}
             title="Confirmar Alterações"
             onClick={handleEdit}
             size={{

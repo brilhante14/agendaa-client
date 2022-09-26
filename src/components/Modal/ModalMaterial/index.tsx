@@ -35,7 +35,12 @@ export function ModalMaterial({ isOpen, id, handleOpen }: props) {
                 <div className='modalMaterialSeparator' />
                 <div className='modalMaterialSeparator' />
                 <div className='modalMaterialButtonContainer'>
-                    <Button onClick={() => { handleCreate(); handleOpen(false) }} size={{ width: 165, height: 39 }} title={"Cadastrar material"} />
+                    <Button 
+                    onClick={() => { handleCreate(); handleOpen(false) }} 
+                    size={{ width: 165, height: 39 }} 
+                    title={"Cadastrar material"} 
+                    isDisabled={!name || !link}
+                    />
                 </div>
             </div>
         </Modal>

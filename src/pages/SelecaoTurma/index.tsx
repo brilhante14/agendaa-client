@@ -26,10 +26,6 @@ async function getParticipanteDetails(id: string) {
   };
 }
 
-/**
- * @todo Substituir o fakeClass por função da API
- * @todo Adicionar modal de criação de turma
- */
 const SelecaoTurma: React.FC = () => {
   let navigate = useNavigate();
   let [turmas, setTurmas] = useState<
@@ -82,7 +78,7 @@ const SelecaoTurma: React.FC = () => {
       <main className={styles.mainContent}>
         <nav className={styles.sidebar}>
           <div className={styles.sideheader}>
-            <h2>
+            <h2 className={styles.componentTitle}>
               {isProfessor ? "Turmas Ministradas" : "Turmas Matriculadas"}
             </h2>
             <IconButton

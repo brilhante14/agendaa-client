@@ -27,7 +27,6 @@ const Calendar: React.FC<Props> = ({
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState<number>(initialMonth);
   const [currentYear, setCurrentYear] = useState<number>(initialYear);
-  // const weekdaysClasses = [1, 5];
 
   function nextMonth() {
     if (currentMonth === 11) {

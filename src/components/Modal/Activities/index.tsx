@@ -80,10 +80,10 @@ export function Activities({ isOpen, handleOpen, isEdit, activityID }: props) {
                             <DatePicker
                                 label="Prazo"
                                 value={endDate}
-                                onChange={(newValue) => {
+                                onChange={(newValue: any) => {
                                     setEndDate(newValue);
                                 }}
-                                renderInput={(params) => <TextField {...params} sx={{
+                                renderInput={(params: any) => <TextField {...params} sx={{
                                     width: 200
                                 }} />}
                             />

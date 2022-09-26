@@ -6,7 +6,7 @@ import { ClassModal } from "../../components/Modal/ClassModal";
 const NenhumaTurma = () => {
   return (
     <div className={styles.content}>
-      <img src={thinking} alt="" />
+      <img width={'257px'} height={'304px'} src={thinking} alt="" />
       <h3 className={styles.title}>Nenhuma Turma Selecionada</h3>
       <h4>Selecione uma para ver os detalhes!</h4>
     </div>

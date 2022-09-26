@@ -11,18 +11,19 @@ import { Activities } from "../Modal/Activities";
 import api from "../../api/api";
 import { useParams } from "react-router-dom";
 
-interface Atividade {
+interface AtividadeProps {
     nome: string,
     prazo: Date,
     nota?: string,
     _id: string,
 }
 interface Props {
-    atividades?: Array<Atividade>;
+    atividades?: Array<AtividadeProps>;
     data?: Date,
 }
 
 const Atividades: React.FC<Props> = () => {
+    const selectedDay = new Date();
     const [isModalOpen, setModal] = React.useState(false);
     const [createActivity, setCreateActivity] = React.useState(false);
     const [activities, setActivities] = React.useState([] as any);
@@ -48,11 +49,11 @@ const Atividades: React.FC<Props> = () => {
     return (
         <div className="atividades_Container">
             <div className="atividades_headerContainer">
-                <h1 className="atividades_day">3 de Maio</h1>
+                <h1 className="atividades_day">{`${selectedDay.toLocaleDateString()}`}</h1>
             </div>
             <div className="atividades_carrosselContainer">
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <h2 style={{ marginBottom: 10 }}>Atividades do Dia</h2>
+                    <h2 style={{ marginBottom: 10, fontSize: '1rem' }}>Atividades do Dia</h2>
                     {
                         user.role === 'professor' &&
                         <IconButton
@@ -66,7 +67,7 @@ const Atividades: React.FC<Props> = () => {
                 </div>
                 {activities.length > 0 ?
                     activities.map(
-                        (atividade: Atividade) => {
+                        (atividade: AtividadeProps) => {
                             return <Atividade nome={atividade.nome}
                                 prazo={atividade.prazo}
                                 nota={!!atividade.nota}
@@ -74,8 +75,8 @@ const Atividades: React.FC<Props> = () => {
                         })
                     :
                     <div className="atividades__empty">
-                        <img src={SemAtividade} alt="" />
-                        <h3>Não existem atividades neste dia</h3>
+                        <img width='210px' height='210px' src={SemAtividade} alt="" />
+                        <h3>Sem atividades cadastradas</h3>
                     </div>}
             </div>
             {

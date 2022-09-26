@@ -12,10 +12,15 @@
 }
 .sidebar {
   border-right: solid 1px #827AA0;
-  min-width: 45vmin;
+  min-width: 25%;
   height: 100%;
   overflow-y: auto;
 }
+
+.componentTitle {
+  font-size: 16px;
+}
+
 .selectedTurma {
   height: 100%;
   overflow-y: auto;

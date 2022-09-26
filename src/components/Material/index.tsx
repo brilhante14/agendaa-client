@@ -30,6 +30,8 @@ const Material: React.FC<Props> = ({ nome, link, autor, deleteItem }) => {
         </button>
       )}
       <a
+        target="_blank" 
+        rel="noopener noreferrer"
         href={link}
         className={styles.link}
         style={{
@@ -38,18 +40,9 @@ const Material: React.FC<Props> = ({ nome, link, autor, deleteItem }) => {
           alignItems: "center",
         }}
       >
-        <img src={draft} alt="" style={{ width: 42, height: 42 }} />
+        <img src={draft} alt="" width='25px' height='25px' />
         <span className={styles.name}>{nome}</span>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            alignSelf: "flex-start",
-            marginTop: 10,
-          }}
-        >
+        <div className={styles.authorContainer}>
           <img
             src={photo}
             alt=""
@@ -60,8 +53,7 @@ const Material: React.FC<Props> = ({ nome, link, autor, deleteItem }) => {
               marginRight: 5,
             }}
           />
-          {/* Analisar overflow */}
-          <span className={styles.author}>{name.substring(0, 10) + "..."}</span>
+          <span title={name} className={styles.author}>{name}</span>
         </div>
       </a>
     </div>

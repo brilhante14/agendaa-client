@@ -24,6 +24,7 @@
   border-color: #D9DBFF;
   color: black;
   font-weight: 500;
+  font-size: 14px;
 }
 .button.alert {
   background-color: #FB6262;
@@ -47,4 +48,5 @@
 .button.noBackground {
   background-color: transparent;
   border-color: transparent;
+  box-shadow: none;
 }

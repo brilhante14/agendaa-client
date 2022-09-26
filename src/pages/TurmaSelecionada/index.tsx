@@ -76,7 +76,6 @@ const TurmaSelecionada: React.FC = () => {
           initialYear={today.getFullYear()}
           initialMonth={today.getMonth()}
           navigate={(d: Date) =>
-
             navigate(`./${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`)
           }
           weekdays={diasAula}
@@ -84,17 +83,14 @@ const TurmaSelecionada: React.FC = () => {
 
         <Atividades />
       </div>
-      <div>
-        <Outlet />
-      </div>
       <div className={styles.materiais}>
-        <h2>Materiais</h2>
+        <h2 className={styles.materiaisTitle}>Materiais</h2>
         <div className={styles.materialList}>
+          <div className={styles.materialsCarousel}>
           <button className={styles.addMaterial} onClick={() => { setAddMaterial(true) }}>
-            <img src={add} alt="" />
+            <img width='25px' height='25px' src={add} alt="" />
             Adicionar Material
           </button>
-          <div className={styles.materialsCarousel}>
             {materials.map((material, index) => (
               <Material
                 nome={material.nome}

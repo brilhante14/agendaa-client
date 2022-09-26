@@ -1,5 +1,4 @@
-export function handleData(data) {
-   const date = new Date(data);
-   const day = date.toLocaleString();
+export function handleDate(date) {
+   const day = new Date(date).toLocaleString();
    return day
 }

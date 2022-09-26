@@ -14,7 +14,7 @@
 .modalComponentContainer {
     background-color: var(--purple_light);
     box-shadow: 0px 2px 5px #00000014;
-    padding: 30px;
+    padding: 1rem;
     border-radius: 8px;
 }
 

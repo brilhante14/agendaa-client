@@ -3,8 +3,9 @@
   border-radius: 9999px;
   border: 1px solid #5616AA;
   color: #5616AA;
-  height: 2em;
-  width: 2em;
+  height: 1.8em;
+  width: 1.8em;
+  cursor: default;
 }
 .day.hasClass {
   background-color: #5616AA;

@@ -16,6 +16,7 @@ interface Props {
 export function Button({ title, isDisabled = false, onClick, size, icon, textColor, backgroundColor, align }: Props) {
     return (
         <button 
+        className='buttonComponentContainer'
         style={{ 
             width: `${size.width}px`, 
             height: `${size.height}px`, 

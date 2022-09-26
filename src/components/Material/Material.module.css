@@ -5,7 +5,8 @@
   box-shadow: 0 4px 4px #0003;
   display: flex;
   justify-content: center;
-  width: 146px;
+  height: 100px;
+  width: 100px;
   flex-direction: column;
   padding: 0.5rem;
   position: relative;
@@ -25,7 +26,7 @@
 }
 .name {
   color: black;
-  font-size: 1.2rem;
+  font-size: 0.85rem;
   font-weight: 600;
   max-width: 100%;
   overflow-x: hidden;
@@ -37,10 +38,22 @@ a {
   text-decoration: none;
   width: 100%;
 }
+
+.authorContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  margin-top: 5px;
+}
 .author {
   color: black;
-  font-size: 1rem;
-  text-overflow: clip;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .turma_cardHeader {
   display: flex;

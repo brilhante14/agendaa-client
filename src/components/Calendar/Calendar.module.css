@@ -1,6 +1,7 @@
 .calendar {
-  width: 350px;
-  height: 300px;
+  min-width: 260px;
+  width: 30%;
+  height: 40%;
   border-radius: 1em;
   border: 1px solid var(--purple_dark);
 }
@@ -10,6 +11,7 @@
   border-radius: 1em 1em 0 0;
   color: white;
   display: flex;
+  font-size: 0.85rem;
   font-weight: 600;
   justify-content: space-between;
   padding: 0.5em 1em;

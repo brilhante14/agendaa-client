@@ -3,7 +3,7 @@ import check_circle from "../../assets/svg/check_circle.svg"
 import edit from "../../assets/svg/edit.svg";
 import styles from "./Atividade.module.css";
 import IconButton from "../IconButton";
-import { handleData } from "../../utils/formatDate";
+import { handleDate } from "../../utils/formatDate";
 
 interface Props {
     nome: string;
@@ -26,7 +26,7 @@ const Atividade: React.FC<Props> = ({ nome, prazo, nota, onClick }) => {
     return (<div className={styles.atividade}>
         <h3>{nome}</h3>
         <div className={styles.atividadeFooter}>
-            <div>{`Prazo: ${handleData(prazo)}`}</div>
+            <div>{`Prazo: ${handleDate(prazo)}`}</div>
             <IconButton
                 title={isProfessor ? "Editar Atividade" : isFinished ? "Concluída" : "Marcar como Concluída"}
                 icon={isProfessor ? edit : check_circle}

@@ -6,16 +6,18 @@ import ReplyImage from "../../assets/reply.png";
 import TrashImage from "../../assets/trash.png";
 import PencilImage from "../../assets/pencil.png";
 import ForumVazio from "../../assets/forum_vazio.png";
-import { handleData } from "../../utils/formatDate";
+import { handleDate } from "../../utils/formatDate";
 import { useForum } from '../../services/useForum';
 import api from "../../api/api";
+import { CreateTopic } from "./CreateTopic"
+import { Comment } from "./Comment"
 
 import "./styles.css";
 interface Props {
   id?: string;
 }
 
-interface CommentType {
+export interface CommentType {
   _id: string;
   createdAt: Date;
   text: string;
@@ -26,7 +28,6 @@ interface TopLevelComment extends CommentType {
   replies: Array<CommentType>;
 }
 
-// Renderer
 export function Forum({ id }: Props) {
   const [isEditReply, setIsEditReply] = React.useState("");
   const [isCommentReply, setIsCommentReply] = React.useState("");
@@ -55,7 +56,7 @@ export function Forum({ id }: Props) {
   }, []);
 
   useEffect(() => {
-    if(id){
+    if (id) {
       const comments = useForumService.getComments(id);
       // setComments(comments);
     }
@@ -107,13 +108,12 @@ export function Forum({ id }: Props) {
 
   function handleDelete(
     commentID: string,
-    classID?: string,
     parentID?: string,
     isReply?: boolean
   ) {
     if (window.confirm("Tem certeza que deseja excluir?")) {
       api
-        .delete(`/turmas/${classID}/deleteComment`, {
+        .delete(`/turmas/${id}/deleteComment`, {
           data: {
             commentId: commentID,
             ...(parentID && { parentCommentId: parentID }),
@@ -172,7 +172,7 @@ export function Forum({ id }: Props) {
       });
     setEditText("");
   }
-  
+
   function handleNewTopic(text: string, userID: string, classID?: string) {
     api
       .post(`/turmas/${classID}/commentForum`, {
@@ -196,14 +196,40 @@ export function Forum({ id }: Props) {
     setNewTopic(false);
   }
 
+  const handlePublish = (text: string, userId: string) => {
+    handleNewTopic(text, userId, id);
+    setNewTopic(false);
+  }
+
+  const handlePublishReply = (text: string, userId: string, commentId: string = "") => {
+    handleReply(commentId, userId, text);
+    setIsReply(false); 
+  }
+
+  const setCommentEdit = (commentId: string) => {
+    // setIsEditReply(commentId);
+    setIsCommentReply(commentId);
+  }
+  // const handleCommentDelete = () => {}
+  // const handleCommentDelete = () => {}
+
+
+  if(comments.length <= 0 && !newTopic)
+    return (
+      <div className="commentsEmptyForum">
+        <img src={ForumVazio} alt="" />
+        <h3>Fórum Vazio! Crie uma postagem acima</h3>
+      </div>
+    );
+
   return (
     <div className="commentsContainer">
       <div className="commentsHeader">
-        <div className="commentsTitle">Fórum</div>
+        <h2 className="commentsTitle">Fórum</h2>
         <Button
           onClick={() => {
             setNewTopic(true);
-            bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+            setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
           }}
           size={{ width: 141, height: 28 }}
           title={"Novo tópico"}
@@ -213,280 +239,213 @@ export function Forum({ id }: Props) {
       </div>
       <div className="commentsSeparator" />
       {comments.length > 0 &&
-        comments.map((comment) => (
+        comments.map(comment => {
+          const commentUser = users.find((u) => u._id === comment.userId);
+          return (
+            <div key={comment._id}>
+              {/* <div className="commentsComment">
+                <div className="commentsHeader">
+                  <div className="commentsHeaderInfo">
+                    <img className="commentsProfileImage" alt="User profile" src={commentUser?.photo} />
+                    <p className="commentsProfileName">{commentUser?.nome}</p>
+                    <p className="commentsDateText">{handleDate(comment.createdAt)}</p>
+                  </div>
 
-          <div key={comment._id}>
-            <div className="commentsComment">
-              <div className="commentHeader">
-                <div className="commentsHeaderInfo">
-                  <img className="commentsProfileImage"
-                    src={users.find((u) => u._id === comment.userId)?.photo}
-                  />
-                  <p className="commentsProfileName">
-                    {users.find((u) => u._id === comment.userId)?.nome}
-                  </p>
-                  <p className="commentsDateText">{handleData(comment.createdAt)}</p>
-                </div>
-                {isCommentReply === comment._id ? (
-                  <Button
-                    title={"Deletar"}
-                    onClick={() => {
-                      handleDelete(comment._id, id);
-                    }}
-                    size={{ width: 144, height: 28 }}
-                    icon={TrashImage}
-                    textColor={"#FB6262"}
-                    backgroundColor={"none"}
-                    align={"flex-end"}
-                  />
-                ) : (
-                  <div className="commentsButtonArea">
-                    {comment.userId === user._id && (
+                  {isCommentReply === comment._id ? (
+                    <Button
+                      title={"Deletar"}
+                      onClick={() => {
+                        handleDelete(comment._id);
+                      }}
+                      size={{ width: 144, height: 28 }}
+                      icon={TrashImage}
+                      textColor={"#FB6262"}
+                      backgroundColor={"none"}
+                      align={"flex-end"}
+                    />
+                  ) : (
+                    <div className="commentsButtonArea">
+                      {comment.userId === user._id && (
+                        <Button
+                          title={"Editar"}
+                          onClick={() => {
+                            setEditText(comment.text);
+                            setIsCommentReply(comment._id);
+                          }}
+                          size={{ width: 120, height: 28 }}
+                          icon={PencilImage}
+                          textColor={"#5357B6"}
+                          backgroundColor={"none"}
+                          align={"flex-end"}
+                        />
+                      )}
                       <Button
-                        title={"Editar"}
+                        title={"Responder"}
                         onClick={() => {
-                          setEditText(comment.text);
-                          setIsCommentReply(comment._id);
+                          setIsReply(true);
+                          setCommentReply(comment._id);
                         }}
                         size={{ width: 120, height: 28 }}
-                        icon={PencilImage}
+                        icon={ReplyImage}
                         textColor={"#5357B6"}
                         backgroundColor={"none"}
                         align={"flex-end"}
                       />
-                    )}
-                    <Button
-                      title={"Responder"}
-                      onClick={() => {
-                        setIsReply(true);
-                        setCommentReply(comment._id);
-                      }}
-                      size={{ width: 120, height: 28 }}
-                      icon={ReplyImage}
-                      textColor={"#5357B6"}
-                      backgroundColor={"none"}
-                      align={"flex-end"}
-                    />
-                  </div>
-                )}
-              </div>
-              {isCommentReply === comment._id ? (
-                <>
-                  <div className="commentsSeparator" />
-                  <textarea className="commentReplyText"
-                    onChange={(e: any) => {
-                      setEditText(e.target.value);
-                    }}
-                  >
-                    {editText}
-                  </textarea>
-                </>
-              ) : (
-                <p className="commmentText">{comment.text}</p>
-              )}
-              <div className="commentsSeparator" />
-
-              {isCommentReply === comment._id && (
-                <div className="commentEditButtonArea">
-                  <Button
-                    title={"Editar"}
-                    size={{ width: 121, height: 48 }}
-                    onClick={() => {
-                      handleEditText(editText, comment._id);
-                      setIsCommentReply("");
-                      setEditText("");
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="commentsSeparator" />
-
-            {comment.replies?.map((reply, index) => (
-              <div key={reply._id}>
-                <div className="commentReply">
-                  <div className="commentHeader">
-                    <div className="commentsHeaderInfo">
-
-                    <img className="commentsProfileImage"
-                      src={
-                          reply.userId === user._id
-                            ? user.photo
-                            : users.find((u) => u._id === comment.userId)?.photo
-                        }
-                      />
-                      <p className="commentsProfileName">
-
-                        {users.find((u) => u._id === reply.userId)?.nome}
-                      </p>
-                  <p className="commentsDateText">{handleData(reply.createdAt)}</p>
                     </div>
-                    {isEditReply === reply._id ? (
-                      <Button
-                        title={"Deletar"}
-                        onClick={() => {
-                          handleDelete(reply._id, id, comment._id, true);
-                        }}
-                        size={{ width: 144, height: 28 }}
-                        icon={TrashImage}
-                        textColor={"#FB6262"}
-                        backgroundColor={"none"}
-                        align={"flex-end"}
-                      />
-                    ) : (
-                      reply.userId === user._id && (
-                        <div className="commentsButtonArea">
-                          <Button
-                            title={"Editar"}
-                            onClick={() => {
-                              setIsEditReply(reply._id);
-                              setEditText(reply.text);
-                            }}
-                            size={{ width: 120, height: 28 }}
-                            icon={PencilImage}
-                            textColor={"#5357B6"}
-                            backgroundColor={"none"}
-                            align={"flex-end"}
-                          />
-                        </div>
-                      )
-                    )}
-                  </div>
-                  {isEditReply === reply._id ? (
-                    <>
-                      <div className="commentsSeparator" />
-
-                      <textarea className="commentReplyText"
-                        onChange={(e: any) => {
-                          setEditText(e.target.value);
-                        }}
-                        placeholder={"Escreva sua resposta"}
-                        value={editText}
-                      >
-                        {editText}
-                      </textarea>
-                    </>
-                  ) : (
-                   <p className="commmentText">{reply.text}</p>
                   )}
-                        <div className="commentsSeparator" />
+                </div>
 
-                  {isEditReply === reply._id && (
+                {isCommentReply === comment._id ? (
+                  <>
+                    <div className="commentsSeparator" />
+
+                    <textarea className="commentReplyText" onChange={e => setEditText(e.target.value)}>
+                      {editText}
+                    </textarea>
+
+                    <div className="commentsSeparator" />
+
                     <div className="commentEditButtonArea">
                       <Button
+                        isDisabled={!editText}
                         title={"Editar"}
-                        size={{ width: 121, height: 48 }}
+                        size={{ width: 121, height: 28 }}
                         onClick={() => {
-                          handleEditText(
-                            editText,
-                            reply._id,
-                            comment._id,
-                            true
-                          );
-                          setIsEditReply("");
+                          handleEditText(editText, comment._id);
+                          setIsCommentReply("");
                           setEditText("");
                         }}
                       />
                     </div>
-                  )}
-                </div>
-                <div className="commentsSeparator" />
+                  </>
+                ) : (
+                  <p className="commmentText">{comment.text}</p>
+                )}
+              </div> */}
 
-              </div>
-            ))}
-            {isReply && commentReply === comment._id && (
-              <>
-                <div className="commentReply">
-                  <div className="commentHeader">
-                    <div className="commentsHeaderInfo">
+              <Comment 
+                comment={comment} 
+                commentUser={commentUser} 
+                isAuthor={comment.userId === user._id} 
+                handleDelete={handleDelete}  
+                handleEdit={() => {}}  
+                handleReply={() => {}}  
+                setEdit={setCommentEdit}  
+                isEditing={isCommentReply === comment._id}
+              />
 
-                  <img className="commentsProfileImage"
-                      src={user.photo} />
-                      <p className="commentsProfileName">
-{user.nome}</p>
+              <div className="commentsSeparator" />
+
+              {comment.replies?.map(reply => {
+                const replyUser = users.find((u) => u._id === reply.userId);
+                return(
+                <div key={reply._id}>
+                  {/* <div className="commentReply">
+                    <div className="commentsHeader">
+                      <div className="commentsHeaderInfo">
+                        <img className="commentsProfileImage" alt="User profile" src={replyUser?.photo} />
+                        <p className="commentsProfileName">{replyUser?.nome}</p>
+                        <p className="commentsDateText">{handleDate(reply.createdAt)}</p>
+                      </div>
+
+                      {isEditReply === reply._id ? (
+                        <Button
+                          title={"Deletar"}
+                          onClick={() => {
+                            handleDelete(reply._id, comment._id, true);
+                          }}
+                          size={{ width: 144, height: 28 }}
+                          icon={TrashImage}
+                          textColor={"#FB6262"}
+                          backgroundColor={"none"}
+                          align={"flex-end"}
+                        />
+                      ) : (
+                        reply.userId === user._id && (
+                          <div className="commentsButtonArea">
+                            <Button
+                              title={"Editar"}
+                              onClick={() => {
+                                setIsEditReply(reply._id);
+                                setEditText(reply.text);
+                              }}
+                              size={{ width: 120, height: 28 }}
+                              icon={PencilImage}
+                              textColor={"#5357B6"}
+                              backgroundColor={"none"}
+                              align={"flex-end"}
+                            />
+                          </div>
+                        )
+                      )}
                     </div>
-                  </div>
-                  {
-                    <>
-                      <div className="commentsSeparator" />
 
-                      <textarea className="commentReplyText"
-                        onChange={(e: any) => {
-                          setEditText(e.target.value);
-                        }}
-                        placeholder={"Escreva sua resposta"}
-                        value={editText}
-                      >
-                        {editText}
-                      </textarea>
-                    </>
-                  }
+                    {isEditReply === reply._id ? (
+                      <>
                         <div className="commentsSeparator" />
 
-                  <div className="commentEditButtonArea">
-                    <Button
-                      title={"Responder"}
-                      size={{ width: 121, height: 48 }}
-                      onClick={() => {
-                        handleReply(commentReply, user._id, editText);
-                        setIsReply(false);
-                      }}
-                    />
-                  </div>
-                </div>
-                      <div className="commentsSeparator" />
+                        <textarea className="commentReplyText" 
+                          onChange={e => setEditText(e.target.value)}
+                          value={editText}
+                          placeholder={"Escreva sua resposta"}
+                          >
+                          {editText}
+                        </textarea>
+                        <div className="commentsSeparator" />
+                        <div className="commentEditButtonArea">
+                        <Button
+                          title={"Editar"}
+                          isDisabled={!editText}
+                          size={{ width: 121, height: 28 }}
+                          onClick={() => {
+                            handleEditText(
+                              editText,
+                              reply._id,
+                              comment._id,
+                              true
+                            );
+                            setIsEditReply("");
+                            setEditText("");
+                          }}
+                        />
+                      </div>
 
-              </>
-            )}
-          </div>
-        ))}
-      {newTopic && (
-        <div className="commentsComment">
-          <div className="commentHeader">
-            <div className="commentsHeaderInfo">
-
-            <img className="commentsProfileImage" src={user.photo} />
-              <p className="commentsProfileName">
-{user.nome}</p>
-            </div>
-          </div>
-          {
-            <>
+                      </>
+                    ) : (
+                      <p className="commmentText">{reply.text}</p>
+                    )}
                     <div className="commentsSeparator" />
+                  </div> */}
+                  <Comment 
+                    comment={reply} 
+                    commentUser={replyUser} 
+                    isAuthor={reply.userId === user._id} 
+                    handleDelete={handleDelete}  
+                    handleEdit={() => {}}  
+                    handleReply={() => {}}  
+                    setEdit={setCommentEdit}  
+                    isEditing={isCommentReply === reply._id}
+                    isReply
+                  />
+                  <div className="commentsSeparator" />
 
-              <textarea className="commentReplyText"
-                onChange={(e: any) => {
-                  setEditText(e.target.value);
-                }}
-                placeholder={"Escreva sua resposta"}
-                value={editText}
-              >
-                {editText}
-              </textarea>
-            </>
-          }
-                <div className="commentsSeparator" />
+                </div>
+              )})}
 
-          <div className="commentEditButtonArea">
-            <Button
-              title={"Publicar"}
-              size={{ width: 121, height: 48 }}
-              onClick={() => {
-                handleNewTopic(editText, user._id, id);
-                setNewTopic(false);
-                setEditText("");
-              }}
-            />
-          </div>
-          <div ref={bottomRef} />
-        </div>
-      )}
-      {comments.length <= 0 && !newTopic && (
-        <div className="commentsEmptyForum">
-          <img src={ForumVazio} alt="" />
-          <h3>Fórum Vazio! Crie uma postagem acima</h3>
-        </div>
-      )}
+
+              {isReply && commentReply === comment._id && (
+                <CreateTopic comment={comment} title="Responder" commentUser={user} handlePublish={handlePublishReply} isReply />
+              )}
+            </div>
+          )
+        })}
+
+      {newTopic && 
+      <>
+        <CreateTopic title="Publicar" handlePublish={handlePublish} commentUser={user} />
+        <div ref={bottomRef} />
+      </>
+      }
     </div>
   );
 }
