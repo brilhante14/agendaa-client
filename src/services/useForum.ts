@@ -1,15 +1,18 @@
 import api from "../api/api";
+import { TopLevelComment } from "../components/Forum";
 
 export const useForum = () => {
 
-    async function getComments(id: string) {
+    const getComments = async (id: string) :Promise<TopLevelComment[]>=> {
         const url = `/turmas/${id}/getComments`;
         try {
-            const comments = await api.get(url);
-    
-            return comments;
+            const { data } = await api.get(url);
+
+            return data;
         } catch (error) {
             console.log(error)
+
+            return [];
         }
     }
 

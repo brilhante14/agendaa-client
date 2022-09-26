@@ -13,7 +13,7 @@ interface ICommentProps {
    comment: CommentType,
    setEdit: (commentId: string) => void,
    handleReply: (commentId: string) => void,
-   handleEdit: (text: string, commentId: string) => void,
+   handleEdit: (text: string, commentId: string, parentID?: string, isReply?: boolean) => void,
    handleDelete: (commentId: string, parentID?: string, isReply?: boolean) => void,
    parentId?: string,
    isEditing?: boolean,
@@ -53,8 +53,6 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                         onClick={() => {
                            setEditText(comment.text);
                            setEdit(comment._id);
-                           // setEditText(comment.text);
-                           // setIsCommentReply(comment._id);
                         }}
                         size={{ width: 120, height: 28 }}
                         icon={PencilImage}
@@ -68,8 +66,6 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                         title={"Responder"}
                         onClick={() => {
                            handleReply(comment._id);
-                           // setIsReply(true);
-                           // setCommentReply(comment._id);
                         }}
                         size={{ width: 120, height: 28 }}
                         icon={ReplyImage}
@@ -99,7 +95,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                      title={"Cancelar"}
                      size={{ width: 121, height: 28 }}
                      onClick={() => {
-                        setEdit("")
+                        setEdit("");
                      }}
                   />
                   <Button
@@ -107,10 +103,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                      title={"Editar"}
                      size={{ width: 121, height: 28 }}
                      onClick={() => {
-                        handleEdit(editText, comment._id)
-                        // handleEditText(editText, comment._id);
-                        // setIsCommentReply("");
-                        // setEditText("");
+                        handleEdit(editText, comment._id, parentId, isReply);
                      }}
                   />
                </div>

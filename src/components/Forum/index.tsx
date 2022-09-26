@@ -24,14 +24,13 @@ export interface CommentType {
   userId: string;
 }
 
-interface TopLevelComment extends CommentType {
+export interface TopLevelComment extends CommentType {
   replies: Array<CommentType>;
 }
 
-export function Forum({ id }: Props) {
+export function Forum({ id = "" }: Props) {
   const [isEditReply, setIsEditReply] = React.useState("");
   const [isCommentReply, setIsCommentReply] = React.useState("");
-  const [editText, setEditText] = React.useState("");
   const [isReply, setIsReply] = React.useState(false);
   const [commentReply, setCommentReply] = React.useState("");
   const [newTopic, setNewTopic] = React.useState(false);
@@ -56,11 +55,14 @@ export function Forum({ id }: Props) {
   }, []);
 
   useEffect(() => {
-    if (id) {
-      const comments = useForumService.getComments(id);
-      // setComments(comments);
-    }
+    if (id) refreshForum();
   }, [id]);
+
+  const refreshForum = () => {
+    useForumService.getComments(id).then(commentsResult => {
+      setComments(commentsResult);
+    })
+  }
 
   function handleEditText(
     text: string,
@@ -76,33 +78,8 @@ export function Forum({ id }: Props) {
         ...(isReply && { isReply: true }),
       })
       .then(() => {
-        if (!isReply) {
-          setComments(
-            comments.map((comment) => {
-              if (comment._id === commentID) {
-                return { ...comment, text: text };
-              }
-              return comment;
-            })
-          );
-        } else {
-          setComments(
-            comments.map((comment) => {
-              if (comment._id === parentID) {
-                return {
-                  ...comment,
-                  replies: comment.replies.map((reply) => {
-                    if (reply._id === commentID) {
-                      return { ...reply, text: text };
-                    }
-                    return reply;
-                  }),
-                };
-              }
-              return comment;
-            })
-          );
-        }
+        refreshForum();
+        setIsCommentReply("");
       });
   }
 
@@ -121,79 +98,32 @@ export function Forum({ id }: Props) {
           },
         })
         .then(() => {
-          if (!isReply) {
-            setComments(comments.filter((c) => c._id !== commentID));
-          } else if (parentID) {
-            setComments(
-              comments.map((comment) => {
-                if (comment._id === parentID) {
-                  return {
-                    ...comment,
-                    replies: comment.replies.filter((c) => c._id !== commentID),
-                  };
-                }
-                return comment;
-              })
-            );
-          }
+          refreshForum();
+          setIsEditReply("");
+          setIsCommentReply("");
         });
-      setEditText("");
-      setIsEditReply("");
-      setIsCommentReply("");
     }
   }
 
   function handleReply(commentID: string, userID: string, text: string) {
-    api
-      .post("/turmas/replyComment", {
+    api.post("/turmas/replyComment", {
         commentId: commentID,
         userId: userID,
         text: text,
-      })
-      .then((res) => {
-        setComments(
-          comments.map((comment) => {
-            if (comment._id === commentID) {
-              return {
-                ...comment,
-                replies: comment.replies.concat([
-                  {
-                    _id: res.data.reply_id,
-                    createdAt: new Date(),
-                    text: text,
-                    userId: userID,
-                  },
-                ]),
-              };
-            }
-            return comment;
-          })
-        );
+      }).then(() => {
+        refreshForum();
       });
-    setEditText("");
   }
 
   function handleNewTopic(text: string, userID: string, classID?: string) {
-    api
-      .post(`/turmas/${classID}/commentForum`, {
+    api.post(`/turmas/${classID}/commentForum`, {
         text: text,
         userId: userID,
       })
-      .then((res) => {
-        setComments(
-          comments.concat([
-            {
-              userId: userID,
-              replies: [],
-              _id: res.data.comment_id,
-              createdAt: new Date(),
-              text: text,
-            },
-          ])
-        );
+      .then(() => {
+        refreshForum();
+        setNewTopic(false);
       });
-    setEditText("");
-    setNewTopic(false);
   }
 
   const handlePublish = (text: string, userId: string) => {
@@ -210,9 +140,17 @@ export function Forum({ id }: Props) {
     // setIsEditReply(commentId);
     setIsCommentReply(commentId);
   }
-  // const handleCommentDelete = () => {}
-  // const handleCommentDelete = () => {}
 
+  const handleCommentReply = (commentId: string) => {
+    setIsReply(true);
+    setCommentReply(commentId);
+  }
+
+  const cancelPublish = () => {
+    setIsReply(false);
+    setNewTopic(false);
+    setCommentReply('');
+  }
 
   if(comments.length <= 0 && !newTopic)
     return (
@@ -243,93 +181,13 @@ export function Forum({ id }: Props) {
           const commentUser = users.find((u) => u._id === comment.userId);
           return (
             <div key={comment._id}>
-              {/* <div className="commentsComment">
-                <div className="commentsHeader">
-                  <div className="commentsHeaderInfo">
-                    <img className="commentsProfileImage" alt="User profile" src={commentUser?.photo} />
-                    <p className="commentsProfileName">{commentUser?.nome}</p>
-                    <p className="commentsDateText">{handleDate(comment.createdAt)}</p>
-                  </div>
-
-                  {isCommentReply === comment._id ? (
-                    <Button
-                      title={"Deletar"}
-                      onClick={() => {
-                        handleDelete(comment._id);
-                      }}
-                      size={{ width: 144, height: 28 }}
-                      icon={TrashImage}
-                      textColor={"#FB6262"}
-                      backgroundColor={"none"}
-                      align={"flex-end"}
-                    />
-                  ) : (
-                    <div className="commentsButtonArea">
-                      {comment.userId === user._id && (
-                        <Button
-                          title={"Editar"}
-                          onClick={() => {
-                            setEditText(comment.text);
-                            setIsCommentReply(comment._id);
-                          }}
-                          size={{ width: 120, height: 28 }}
-                          icon={PencilImage}
-                          textColor={"#5357B6"}
-                          backgroundColor={"none"}
-                          align={"flex-end"}
-                        />
-                      )}
-                      <Button
-                        title={"Responder"}
-                        onClick={() => {
-                          setIsReply(true);
-                          setCommentReply(comment._id);
-                        }}
-                        size={{ width: 120, height: 28 }}
-                        icon={ReplyImage}
-                        textColor={"#5357B6"}
-                        backgroundColor={"none"}
-                        align={"flex-end"}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {isCommentReply === comment._id ? (
-                  <>
-                    <div className="commentsSeparator" />
-
-                    <textarea className="commentReplyText" onChange={e => setEditText(e.target.value)}>
-                      {editText}
-                    </textarea>
-
-                    <div className="commentsSeparator" />
-
-                    <div className="commentEditButtonArea">
-                      <Button
-                        isDisabled={!editText}
-                        title={"Editar"}
-                        size={{ width: 121, height: 28 }}
-                        onClick={() => {
-                          handleEditText(editText, comment._id);
-                          setIsCommentReply("");
-                          setEditText("");
-                        }}
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <p className="commmentText">{comment.text}</p>
-                )}
-              </div> */}
-
               <Comment 
                 comment={comment} 
                 commentUser={commentUser} 
                 isAuthor={comment.userId === user._id} 
                 handleDelete={handleDelete}  
-                handleEdit={() => {}}  
-                handleReply={() => {}}  
+                handleEdit={handleEditText}  
+                handleReply={handleCommentReply}  
                 setEdit={setCommentEdit}  
                 isEditing={isCommentReply === comment._id}
               />
@@ -340,91 +198,16 @@ export function Forum({ id }: Props) {
                 const replyUser = users.find((u) => u._id === reply.userId);
                 return(
                 <div key={reply._id}>
-                  {/* <div className="commentReply">
-                    <div className="commentsHeader">
-                      <div className="commentsHeaderInfo">
-                        <img className="commentsProfileImage" alt="User profile" src={replyUser?.photo} />
-                        <p className="commentsProfileName">{replyUser?.nome}</p>
-                        <p className="commentsDateText">{handleDate(reply.createdAt)}</p>
-                      </div>
-
-                      {isEditReply === reply._id ? (
-                        <Button
-                          title={"Deletar"}
-                          onClick={() => {
-                            handleDelete(reply._id, comment._id, true);
-                          }}
-                          size={{ width: 144, height: 28 }}
-                          icon={TrashImage}
-                          textColor={"#FB6262"}
-                          backgroundColor={"none"}
-                          align={"flex-end"}
-                        />
-                      ) : (
-                        reply.userId === user._id && (
-                          <div className="commentsButtonArea">
-                            <Button
-                              title={"Editar"}
-                              onClick={() => {
-                                setIsEditReply(reply._id);
-                                setEditText(reply.text);
-                              }}
-                              size={{ width: 120, height: 28 }}
-                              icon={PencilImage}
-                              textColor={"#5357B6"}
-                              backgroundColor={"none"}
-                              align={"flex-end"}
-                            />
-                          </div>
-                        )
-                      )}
-                    </div>
-
-                    {isEditReply === reply._id ? (
-                      <>
-                        <div className="commentsSeparator" />
-
-                        <textarea className="commentReplyText" 
-                          onChange={e => setEditText(e.target.value)}
-                          value={editText}
-                          placeholder={"Escreva sua resposta"}
-                          >
-                          {editText}
-                        </textarea>
-                        <div className="commentsSeparator" />
-                        <div className="commentEditButtonArea">
-                        <Button
-                          title={"Editar"}
-                          isDisabled={!editText}
-                          size={{ width: 121, height: 28 }}
-                          onClick={() => {
-                            handleEditText(
-                              editText,
-                              reply._id,
-                              comment._id,
-                              true
-                            );
-                            setIsEditReply("");
-                            setEditText("");
-                          }}
-                        />
-                      </div>
-
-                      </>
-                    ) : (
-                      <p className="commmentText">{reply.text}</p>
-                    )}
-                    <div className="commentsSeparator" />
-                  </div> */}
                   <Comment 
                     comment={reply} 
                     commentUser={replyUser} 
                     isAuthor={reply.userId === user._id} 
                     handleDelete={handleDelete}  
-                    handleEdit={() => {}}  
-                    handleReply={() => {}}  
+                    handleEdit={handleEditText}  
+                    handleReply={handleCommentReply}  
                     setEdit={setCommentEdit}  
                     isEditing={isCommentReply === reply._id}
+                    parentId={comment._id}
                     isReply
                   />
                   <div className="commentsSeparator" />
@@ -434,17 +217,20 @@ export function Forum({ id }: Props) {
 
 
               {isReply && commentReply === comment._id && (
-                <CreateTopic comment={comment} title="Responder" commentUser={user} handlePublish={handlePublishReply} isReply />
-              )}
+                <>
+                <CreateTopic comment={comment} title="Responder" commentUser={user} handlePublish={handlePublishReply} cancelPublish={cancelPublish} isReply />
+                <div className="commentsSeparator" />
+                </>
+                )}
             </div>
           )
         })}
 
       {newTopic && 
-      <>
-        <CreateTopic title="Publicar" handlePublish={handlePublish} commentUser={user} />
-        <div ref={bottomRef} />
-      </>
+        <>
+          <CreateTopic title="Publicar" handlePublish={handlePublish} cancelPublish={cancelPublish} commentUser={user} />
+          <div ref={bottomRef} />
+        </>
       }
     </div>
   );
