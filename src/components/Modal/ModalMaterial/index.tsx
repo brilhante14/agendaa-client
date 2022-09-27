@@ -4,6 +4,7 @@ import { TextInput } from '../../TextInput';
 import { Button } from '../../Button';
 import api from '../../../api/api';
 import './styles.css';
+import InputFile from '../../InputFile';
 
 interface props {
     isOpen: boolean;
@@ -31,7 +32,8 @@ export function ModalMaterial({ isOpen, id, handleOpen }: props) {
             <div className='modalMaterialContainer'>
                 <TextInput onChange={(e: any) => { setName(e.target.value) }} placeholder={"Ex.: Anotações"} title={"Nome do material"} value={name} />
                 <div className='modalMaterialSeparator' />
-                <TextInput onChange={(e: any) => { setLink(e.target.value) }} placeholder={"Ex.: google.com"} title={"Link do material"} value={link} />
+                <InputFile  />
+            {/*     <TextInput onChange={(e: any) => { setLink(e.target.value) }} placeholder={"Ex.: google.com"} title={"Link do material"} value={link} /> */}
                 <div className='modalMaterialSeparator' />
                 <div className='modalMaterialSeparator' />
                 <div className='modalMaterialButtonContainer'>
