@@ -6,6 +6,7 @@ import "./styles.css";
 
 function InputFile() {
   const [file, setFile] = useState<any>({});
+  const [fileBase64, setFileBase64] = useState<any>({});
 
   const getBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -17,12 +18,12 @@ function InputFile() {
 
   const handleAddBanner = async (event: any) => {
     const captureFile = event.target.files[0];
-
+    setFile(captureFile)
     const convert = await getBase64(captureFile);
 
     if (convert) {
-      console.log("convert", convert)
-      setFile(convert);
+      console.log("convert", fileBase64)
+      setFileBase64(convert);
     }
   };
 
@@ -36,9 +37,11 @@ function InputFile() {
           id="formId"
           hidden
         />
-        Download
-        <BsFillFileEarmarkArrowDownFill color="#5616AA" />
-        {file?.name}
+       
+        
+        {file?.name ? `Arquivo ${file?.name}` :' Faça o upload do arquivo'}
+        {!file?.name&& <BsFillFileEarmarkArrowDownFill color="#5616AA" />}
+    
       </div>
     </label>
   );
