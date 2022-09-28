@@ -9,6 +9,7 @@ import Material from "../../components/Material";
 import { Forum } from "../../components/Forum";
 import { ModalMaterial } from "../../components/Modal/ModalMaterial";
 import settingIcon from "../../assets/svg/settings.svg";
+import ControlaFaltas from "../../components/ControlaFaltas";
 
 interface Mat {
   nome: string;
@@ -37,32 +38,33 @@ const TurmaSelecionada: React.FC = () => {
       setFaltas(res.data.faltasPermitidas);
       setNome(res.data.nome);
       api.get(`/materiais/${id}`).then((res) => {
-        setMaterials(res.data)
-      })
+        setMaterials(res.data);
+      });
     });
   }, [id, apiCalled]);
 
-
   function handleDelete(id: string) {
     window.confirm("Deseja realmente excluir o material?") &&
-      api.delete(`/materiais/${id}`).then(() => {
-      })
-    setApiCalled(!apiCalled)
+      api.delete(`/materiais/${id}`).then(() => {});
+    setApiCalled(!apiCalled);
   }
 
   function handleCreateMaterial(show: boolean) {
-    setAddMaterial(show)
-    setApiCalled(!apiCalled)
+    setAddMaterial(show);
+    setApiCalled(!apiCalled);
   }
   function handleTopic() {
-    setApiCalled(!apiCalled)
+    setApiCalled(!apiCalled);
   }
   const today = new Date();
   return (
     <div className={styles.container}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h1 className={styles.className}>{nome}</h1>
-        <button style={{ backgroundColor: "transparent", border: "none" }} onClick={() => navigate(`/turma/${id}`)}>
+        <button
+          style={{ backgroundColor: "transparent", border: "none" }}
+          onClick={() => navigate(`/turma/${id}`)}
+        >
           <img
             src={settingIcon}
             alt="Setting Button"
@@ -70,8 +72,11 @@ const TurmaSelecionada: React.FC = () => {
           />
         </button>
       </div>
-      <h1 className={styles.subtitle}>Faltas Permitidas: {faltas} </h1>
-      <div style={{ display: "flex", width: '100%' }}>
+      <div className={styles.containerFaltas}>
+      
+        <ControlaFaltas faltasPermitidas={faltas} idTurma={Number(id) ?? 0} />
+      </div>
+      <div style={{ display: "flex", width: "100%" }}>
         <Calendar
           initialYear={today.getFullYear()}
           initialMonth={today.getMonth()}
@@ -87,10 +92,15 @@ const TurmaSelecionada: React.FC = () => {
         <h2 className={styles.materiaisTitle}>Materiais</h2>
         <div className={styles.materialList}>
           <div className={styles.materialsCarousel}>
-          <button className={styles.addMaterial} onClick={() => { setAddMaterial(true) }}>
-            <img width='25px' height='25px' src={add} alt="" />
-            Adicionar Material
-          </button>
+            <button
+              className={styles.addMaterial}
+              onClick={() => {
+                setAddMaterial(true);
+              }}
+            >
+              <img width="25px" height="25px" src={add} alt="" />
+              Adicionar Material
+            </button>
             {materials.map((material, index) => (
               <Material
                 nome={material.nome}
@@ -104,9 +114,9 @@ const TurmaSelecionada: React.FC = () => {
         </div>
       </div>
       <Forum id={id} />
-      {
-        addMaterial && <ModalMaterial isOpen={addMaterial} id={id} handleOpen={handleCreateMaterial} />
-      }
+      {addMaterial && (
+        <ModalMaterial id={id} handleOpen={handleCreateMaterial} />
+      )}
     </div>
   );
 };

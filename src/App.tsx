@@ -1,5 +1,5 @@
 // Styles
-import AuthContext, { AuthProvider } from "./context/auth";
+import  { AuthProvider } from "./context/auth";
 import UserRoutes from "./routes";
 import { GlobalStyle } from "./styles/global";
 

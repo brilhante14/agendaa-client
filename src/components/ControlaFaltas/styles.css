@@ -1,0 +1,33 @@
+.container-ControlaFaltas {
+  display: flex;
+}
+
+.container-ControlaFaltas > h1 {
+  color: #827aa0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 28px;
+}
+.container-buttons {
+    display: flex;
+    align-items:center;
+}
+.container-ControlaFaltas  .content-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: none;
+  background: transparent;
+  color: var(--purple);
+  padding: 5px;
+  border-radius: 50%;
+
+  height: 25px;
+  width: 25px;
+}
+.p {
+  margin: 0;
+  font-size: 1.3rem;
+}
