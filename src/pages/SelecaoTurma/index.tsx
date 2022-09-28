@@ -14,7 +14,7 @@ async function getClassById(turma: any) {
     participantes: await Promise.all(
       turma.participantes.map((id: string) => getParticipanteDetails(id))
     ),
-    id: turma._id,
+    id: turma.id,
   };
 }
 
@@ -28,20 +28,7 @@ async function getParticipanteDetails(id: string) {
 
 const SelecaoTurma: React.FC = () => {
   let navigate = useNavigate();
-  let [turmas, setTurmas] = useState<
-    Array<{
-      nome: string;
-      professor: {
-        nome: string;
-        img: string;
-      };
-      participantes: Array<{
-        nome: string;
-        img: string;
-      }>;
-      id: string;
-    }>
-  >([]);
+  let [turmas, setTurmas] = useState<any>([]);
   const [isProfessor, setIsProfessor] = useState(false);
   let [modalTurmasIsOpen, setModalTurmas] = useState(false);
 
@@ -53,7 +40,7 @@ const SelecaoTurma: React.FC = () => {
         setIsProfessor(true);
         api
           .post("/turmas/getTurmasByProfessor/", {
-            profesorId: user._id,
+            profesorId: user.id,
           })
           .then((turmas) => {
             Promise.all(turmas.data.map(getClassById)).then((t) =>
@@ -61,14 +48,14 @@ const SelecaoTurma: React.FC = () => {
             );
           });
       } else {
+        console.log("entrouuuuuuuu", user)
         api
           .post("/turmas/getTurmasByParticipantes/", {
-            userId: user._id,
+            userId: user.userId,
           })
-          .then((turmas) => {
-            Promise.all(turmas.data.map(getClassById)).then((t) =>
-              setTurmas(t)
-            );
+          .then(({data}) => {
+          console.log("teste", data);
+          setTurmas(data)
           });
       }
     }
@@ -94,10 +81,10 @@ const SelecaoTurma: React.FC = () => {
             />
           </div>
           <div className={styles.classList}>
-            {turmas.length > 0 ? (
-              turmas.map((turma) => (
+            {turmas?.length > 0 ? (
+              turmas.map((turma: any) => (
                 <Turma
-                  turma={turma}
+                turma={turma}
                   onClick={() => navigate(`./${turma.id}`)}
                   key={turma.id}
                 />

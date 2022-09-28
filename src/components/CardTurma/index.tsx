@@ -1,66 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import api from '../../api/api';
+import React, { useState, useEffect } from "react";
+import api from "../../api/api";
+import { PropsParticipantes, PropsProfessor, PropsTurma } from "../../types";
+
 import "./index.css";
-interface Props {
-    turma: {
-        _id: string,
-        professor: string,
-        nome: string,
-        participantes: Array<string>,
-    }
-}
 
-const CardTurma: React.FC<Props> = ({ turma }) => {
-    const [professor, setProfessor] = useState("");
-    const [photo, setPhoto] = useState("");
 
-    async function fetchProfessor(id: string) {
-        const response = api(`/usuarios/getById/${id}`)
-        return response;
-    }
 
-    let user: any;
-    const storage = localStorage.getItem("user");
-    if (storage) {
-        user = JSON.parse(storage)
-    }
 
-    function handleClass() {
-        api.post(`/turmas/${turma._id}/joinClass`, {
-            userId: String(user._id)
-        }).then((res) => {
-            window.location.href = 'home'
-        })
-    }
-    useEffect(() => {
-        fetchProfessor(turma.professor)
-            .then((response) => { setProfessor(response.data.nome); setPhoto(response.data.photo) })
-    }, [turma.professor])
 
-    const isInClass = turma.participantes.includes(user._id)
+const CardTurma: React.FC<PropsTurma> = ( turma ) => {
+  const [professor, setProfessor] = useState<PropsProfessor>(
+    {} as PropsProfessor
+  );
+  const [photo, setPhoto] = useState("");
+  const [participantes, setParticipantes] = useState<PropsParticipantes>(
+    [] as PropsParticipantes
+  );
 
-    return (
-        <div className="turma_card" key={turma._id}>
-            <div className="turma_cardHeader">
-                <img src={photo} alt={"Foto de perfil"} style={{ width: 24, height: 24, borderRadius: '50%' }} />
-                <span
-                    title={professor}
-                >{professor}</span>
-            </div>
-            <p title={turma.nome}>{turma.nome}</p>
-            <hr color="#DBCCCC" />
-            <div className="turmas_cardFooter">
-                <span>{`${turma.participantes.length} Participantes`}</span>
-                <button className="turmas_cardButton" disabled={isInClass} onClick={handleClass}>
-                    {isInClass ?
-                        "Membro"
-                        :
-                        "Entrar"
-                    }
-                </button>
-            </div>
-        </div >
-    )
-}
+  let user: any;
+  const storage = localStorage.getItem("user");
+  if (storage) {
+    user = JSON.parse(storage);
+  }
+
+  function handleClass() {
+    api
+      .post(`/turmas/${turma.id}/joinClass`, {
+        userId: String(user.id),
+      })
+      .then(() => {
+        window.location.href = "home";
+      });
+  }
+
+  useEffect(() => {
+    api
+      .post("/usuarios/getParticipantes", {
+        idTurma: turma.id,
+      })
+      .then((response) => {
+        console.log("response", response.data);
+        setParticipantes(response.data.participantes);
+        setProfessor(response.data.professor[0]);
+        setPhoto(response.data.professor[0].photo);
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const isInClass = participantes.some(
+    (participante: any) => participante.userId === user.id
+  );
+
+  return (
+    <div className="turma_card" key={turma.id}>
+      <div className="turma_cardHeader">
+        <img
+          src={photo}
+          alt={"Foto de perfil"}
+          style={{ width: 24, height: 24, borderRadius: "50%" }}
+        />
+        <span title={professor.name}>{professor.name}</span>
+      </div>
+      <p title={turma.name}>{turma.name}</p>
+      <hr color="#DBCCCC" />
+      <div className="turmas_cardFooter">
+        <span>{`${participantes.length} Participantes`}</span>
+        <button
+          className="turmas_cardButton"
+          disabled={isInClass}
+          onClick={handleClass}
+        >
+          {isInClass ? "Membro" : "Entrar"}
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default CardTurma;
