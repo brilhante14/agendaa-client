@@ -4,9 +4,12 @@ import { BsFillFileEarmarkArrowDownFill } from "react-icons/bs";
 
 import "./styles.css";
 
-function InputFile() {
+type PropsInputFile = {
+  onHandleFile: (file: any) => void
+}
+function InputFile({onHandleFile}: PropsInputFile) {
   const [file, setFile] = useState<any>({});
-  const [fileBase64, setFileBase64] = useState<any>({});
+ 
 
   const getBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -22,8 +25,8 @@ function InputFile() {
     const convert = await getBase64(captureFile);
 
     if (convert) {
-      console.log("convert", fileBase64)
-      setFileBase64(convert);
+
+      onHandleFile(convert);
     }
   };
 

@@ -10,6 +10,11 @@
   font-size: 20px;
 }
 
+.containerFaltas {
+  display: flex;
+  
+}
+
 .subtitle{
   color: #827AA0;
   font-style: normal;
