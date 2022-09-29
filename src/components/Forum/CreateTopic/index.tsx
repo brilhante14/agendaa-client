@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { CommentType } from "..";
+import { CommentType, IUser } from "..";
+import { IGeneralForum } from "../../../services/useForum";
 import { Button } from "../../Button";
 
 import "../styles.css"
 
 interface ICreateTopicProps {
-  commentUser: { _id: string; photo: string; nome: string },
-  handlePublish: (text: string, userId: string, commentId?: string) => void,
+  commentUser: IUser,
+  handlePublish: (text: string, userId: number, commentId?: number) => void,
   cancelPublish: () => void,
   title: string,
   isReply?: boolean,
-  comment?: CommentType,
+  comment?: IGeneralForum,
 }
 
 export function CreateTopic({ comment, isReply = false, commentUser, title, handlePublish, cancelPublish }: ICreateTopicProps) {
@@ -21,7 +22,7 @@ export function CreateTopic({ comment, isReply = false, commentUser, title, hand
       <div className="commentHeader">
         <div className="commentsHeaderInfo">
           <img alt="User profile" className="commentsProfileImage" src={commentUser.photo} />
-          <p className="commentsProfileName">{commentUser.nome}</p>
+          <p className="commentsProfileName">{commentUser.name}</p>
         </div>
       </div>
       <div className="commentsSeparator" />
@@ -43,7 +44,7 @@ export function CreateTopic({ comment, isReply = false, commentUser, title, hand
           title={title}
           isDisabled={!editText}
           size={{ width: 121, height: 28 }}
-          onClick={() => handlePublish(editText, commentUser._id, comment?._id)}
+          onClick={() => handlePublish(editText, commentUser.userId, comment?.id)}
         />
       </div>
     </div>

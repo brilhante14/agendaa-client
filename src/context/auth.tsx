@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: any) => {
     async function handleLogin(user: string, password: string) {
         let status = 200;
         await api.post('/usuarios/signin', {
-            user: user,
+            userName: user,
             password: password
         }).then((res) => {
             localStorage.setItem('token', res.data.token);

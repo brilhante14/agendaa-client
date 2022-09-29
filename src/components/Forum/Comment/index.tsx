@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CommentType } from "..";
+import { CommentType, IUser } from "..";
 import { handleDate } from "../../../utils/formatDate";
 import { Button } from "../../Button";
 import ReplyImage from "../../../assets/reply.png";
@@ -7,15 +7,16 @@ import TrashImage from "../../../assets/trash.png";
 import PencilImage from "../../../assets/pencil.png";
 
 import "../styles.css"
+import { IGeneralForum } from "../../../services/useForum";
 
 interface ICommentProps {
-   commentUser?: { _id: string; photo: string; nome: string },
-   comment: CommentType,
-   setEdit: (commentId: string) => void,
-   handleReply: (commentId: string) => void,
-   handleEdit: (text: string, commentId: string, parentID?: string, isReply?: boolean) => void,
-   handleDelete: (commentId: string, parentID?: string, isReply?: boolean) => void,
-   parentId?: string,
+   commentUser?: IUser,
+   comment: IGeneralForum,
+   setEdit: (commentId: number) => void,
+   handleReply: (commentId: number) => void,
+   handleEdit: (text: string, commentId: number, parentID?: number, isReply?: boolean) => void,
+   handleDelete: (commentId: number, parentID?: number, isReply?: boolean) => void,
+   parentId?: number,
    isEditing?: boolean,
    isReply?: boolean,
    isAuthor?: boolean,
@@ -29,7 +30,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
          <div className="commentsHeader">
             <div className="commentsHeaderInfo">
                <img alt="User profile" className="commentsProfileImage" src={commentUser?.photo} />
-               <p className="commentsProfileName">{commentUser?.nome}</p>
+               <p className="commentsProfileName">{commentUser?.name}</p>
                <p className="commentsDateText">{handleDate(comment.createdAt)}</p>
             </div>
 
@@ -37,7 +38,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                <Button
                   title={"Deletar"}
                   onClick={() => {
-                     handleDelete(comment._id, parentId, isReply);
+                     handleDelete(comment.id, parentId, isReply);
                   }}
                   size={{ width: 144, height: 28 }}
                   icon={TrashImage}
@@ -52,7 +53,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                         title={"Editar"}
                         onClick={() => {
                            setEditText(comment.text);
-                           setEdit(comment._id);
+                           setEdit(comment.id);
                         }}
                         size={{ width: 120, height: 28 }}
                         icon={PencilImage}
@@ -65,7 +66,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                      <Button
                         title={"Responder"}
                         onClick={() => {
-                           handleReply(comment._id);
+                           handleReply(comment.id);
                         }}
                         size={{ width: 120, height: 28 }}
                         icon={ReplyImage}
@@ -95,7 +96,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                      title={"Cancelar"}
                      size={{ width: 121, height: 28 }}
                      onClick={() => {
-                        setEdit("");
+                        setEdit(0);
                      }}
                   />
                   <Button
@@ -103,7 +104,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                      title={"Editar"}
                      size={{ width: 121, height: 28 }}
                      onClick={() => {
-                        handleEdit(editText, comment._id, parentId, isReply);
+                        handleEdit(editText, comment.id, parentId, isReply);
                      }}
                   />
                </div>
