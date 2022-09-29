@@ -45,7 +45,7 @@ const TurmaSelecionada: React.FC = () => {
 
   function handleDelete(id: string) {
     window.confirm("Deseja realmente excluir o material?") &&
-      api.delete(`/materiais/${id}`).then(() => {});
+      api.delete(`/materiais/${id}`).then(() => { });
     setApiCalled(!apiCalled);
   }
 
@@ -73,7 +73,7 @@ const TurmaSelecionada: React.FC = () => {
         </button>
       </div>
       <div className={styles.containerFaltas}>
-      
+
         <ControlaFaltas faltasPermitidas={faltas} idTurma={Number(id) ?? 0} />
       </div>
       <div style={{ display: "flex", width: "100%" }}>
@@ -113,7 +113,7 @@ const TurmaSelecionada: React.FC = () => {
           </div>
         </div>
       </div>
-      <Forum id={id} />
+      <Forum id={Number(id)} />
       {addMaterial && (
         <ModalMaterial id={id} handleOpen={handleCreateMaterial} />
       )}

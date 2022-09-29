@@ -21,7 +21,7 @@ export const useForum = () => {
 
             const commentsArray: IComment[] = [];
 
-            const result: IComment[] = data.map((comment: any) => {
+            data.forEach((comment: any) => {
                 if (comment["Replies_id"]) {
                     const commentExits = commentsArray.findIndex(commentToFilter => commentToFilter.id === comment.Comments_id);
                     if (commentExits > 0) {
@@ -65,10 +65,10 @@ export const useForum = () => {
                         replies: []
                     })
                 }
-                return result;
+                // return result;
             })
 
-            return result;
+            return commentsArray;
         } catch (error) {
             console.log(error)
 

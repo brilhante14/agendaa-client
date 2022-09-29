@@ -12,10 +12,10 @@ import { IGeneralForum } from "../../../services/useForum";
 interface ICommentProps {
    commentUser?: IUser,
    comment: IGeneralForum,
-   setEdit: (commentId: number) => void,
+   setEdit: (commentId: number, isReply: boolean) => void,
    handleReply: (commentId: number) => void,
-   handleEdit: (text: string, commentId: number, parentID?: number, isReply?: boolean) => void,
-   handleDelete: (commentId: number, parentID?: number, isReply?: boolean) => void,
+   handleEdit: (text: string, commentId: number, isReply?: boolean) => void,
+   handleDelete: (commentId: number, isReply?: boolean) => void,
    parentId?: number,
    isEditing?: boolean,
    isReply?: boolean,
@@ -38,7 +38,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                <Button
                   title={"Deletar"}
                   onClick={() => {
-                     handleDelete(comment.id, parentId, isReply);
+                     handleDelete(comment.id, isReply);
                   }}
                   size={{ width: 144, height: 28 }}
                   icon={TrashImage}
@@ -53,7 +53,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                         title={"Editar"}
                         onClick={() => {
                            setEditText(comment.text);
-                           setEdit(comment.id);
+                           setEdit(comment.id, isReply);
                         }}
                         size={{ width: 120, height: 28 }}
                         icon={PencilImage}
@@ -96,7 +96,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                      title={"Cancelar"}
                      size={{ width: 121, height: 28 }}
                      onClick={() => {
-                        setEdit(0);
+                        setEdit(0, isReply);
                      }}
                   />
                   <Button
@@ -104,7 +104,7 @@ export function Comment({ comment, isReply = false, isEditing = false, isAuthor 
                      title={"Editar"}
                      size={{ width: 121, height: 28 }}
                      onClick={() => {
-                        handleEdit(editText, comment.id, parentId, isReply);
+                        handleEdit(editText, comment.id, isReply);
                      }}
                   />
                </div>

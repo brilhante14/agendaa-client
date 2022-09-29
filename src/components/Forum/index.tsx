@@ -26,13 +26,9 @@ export interface IUser {
   name: string;
 }
 
-export interface TopLevelComment extends CommentType {
-  replies: Array<CommentType>;
-}
-
 export function Forum({ id = 0 }: Props) {
-  const [isEditReply, setIsEditReply] = React.useState("");
-  const [isCommentReply, setIsCommentReply] = React.useState(0);
+  const [isEditingComment, setIsEditingComment] = React.useState(0);
+  const [isEditingReply, setIsEditingReply] = React.useState(0);
   const [isReply, setIsReply] = React.useState(false);
   const [commentReply, setCommentReply] = React.useState(0);
   const [newTopic, setNewTopic] = React.useState(false);
@@ -61,53 +57,42 @@ export function Forum({ id = 0 }: Props) {
   const refreshForum = () => {
     useForumService.getComments(id).then((commentsResult) => {
       setComments(commentsResult);
+      console.log(commentsResult);
     });
   };
 
   function handleEditText(
     text: string,
     commentID: number,
-    parentID?: number,
     isReply?: boolean
   ) {
     api
-      .patch("/turmas/editComment", {
-        text: text,
-        commentId: commentID,
-        ...(parentID && { parentCommentId: parentID }),
-        ...(isReply && { isReply: true }),
-      })
+      .patch(`/turmas/${isReply ? 'reply' : 'comment'}/${commentID}`, { text })
       .then(() => {
         refreshForum();
-        setIsCommentReply(0);
+        setIsEditingComment(0);
+        setIsEditingReply(0);
       });
   }
 
   function handleDelete(
     commentID: number,
-    parentID?: number,
     isReply?: boolean
   ) {
     if (window.confirm("Tem certeza que deseja excluir?")) {
       api
-        .delete(`/turmas/${id}/deleteComment`, {
-          data: {
-            commentId: commentID,
-            ...(parentID && { parentCommentId: parentID }),
-            ...(isReply && { isReply: true }),
-          },
-        })
+        .delete(`/turmas/${isReply ? 'reply' : 'comment'}/${commentID}`)
         .then(() => {
           refreshForum();
-          setIsEditReply("");
-          setIsCommentReply(0);
+          setIsEditingComment(0);
+          setIsEditingReply(0);
         });
     }
   }
 
   function handleReply(commentID: number, userID: number, text: string) {
     api
-      .post("/turmas/replyComment", {
+      .post("/turmas/reply", {
         commentId: commentID,
         userId: userID,
         text: text,
@@ -119,9 +104,10 @@ export function Forum({ id = 0 }: Props) {
 
   function handleNewTopic(text: string, userID: number, classID?: number) {
     api
-      .post(`/turmas/${classID}/commentForum`, {
+      .post(`/turmas/comment`, {
         text: text,
         userId: userID,
+        turmaId: classID
       })
       .then(() => {
         refreshForum();
@@ -143,9 +129,11 @@ export function Forum({ id = 0 }: Props) {
     setIsReply(false);
   };
 
-  const setCommentEdit = (commentId: number) => {
-    // setIsEditReply(commentId);
-    setIsCommentReply(commentId);
+  const setCommentEdit = (commentId: number, isReply: boolean) => {
+    isReply ?
+      setIsEditingReply(commentId)
+      :
+      setIsEditingComment(commentId);
   };
 
   const handleCommentReply = (commentId: number) => {
@@ -198,7 +186,7 @@ export function Forum({ id = 0 }: Props) {
                     handleEdit={handleEditText}
                     handleReply={handleCommentReply}
                     setEdit={setCommentEdit}
-                    isEditing={isCommentReply === comment.id}
+                    isEditing={isEditingComment === comment.id}
                   />
 
                   <div className="commentsSeparator" />
@@ -215,7 +203,7 @@ export function Forum({ id = 0 }: Props) {
                           handleEdit={handleEditText}
                           handleReply={handleCommentReply}
                           setEdit={setCommentEdit}
-                          isEditing={isCommentReply === reply.id}
+                          isEditing={isEditingReply === reply.id}
                           parentId={comment.id}
                           isReply
                         />
