@@ -52,7 +52,7 @@ function ControlaFaltas({
       if (response.status === 200) {
         const data = response.data;
    /*      setFaltas(data.Faltas); */
-   setFaltas(0)
+   setFaltas(data.Faltas)
       }else {
           alert('Erro ao buscar faltas!')
       }
