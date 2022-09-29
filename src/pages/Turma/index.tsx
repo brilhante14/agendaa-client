@@ -24,7 +24,7 @@ type turmaProps = {
 
 type user = {
    nome: string,
-   user: string,
+   user: string, 
    email: string,
    role: string,
    _id: string,
@@ -60,11 +60,14 @@ const Turma = () => {
    }, [id]);
 
    useEffect(() => {
-      async function fetchParticipantes() {
+      
+/* 
+async function fetchParticipantes() {
          const response = await api.post("usuarios/getParticipantes", {
             idProfessor: turmaInfo?.professor,
             listParticipantes: turmaInfo?.participantes
          })
+         console.log("response",response)
          return response;
       }
 
@@ -72,7 +75,6 @@ const Turma = () => {
          setProfessor(response.data.professor);
          setParticipantes(response.data.participantes)
       })
-
       const daysToChange = days;
       turmaInfo?.cronograma.forEach((day, index) => {
          days[index].active = day;
@@ -82,12 +84,26 @@ const Turma = () => {
       if (turmaInfo) {
          setStartDate(new Date(turmaInfo.inicio));
          setEndDate(new Date(turmaInfo.fim));
-      }
+      } */
    }, [turmaInfo])
+
+   useEffect(() => {
+      api
+        .post("/usuarios/getParticipantes", {
+          idTurma: id,
+        })
+        .then((response) => {
+   
+          setParticipantes(response.data.participantes);
+          setProfessor(response.data.professor[0]);
+         
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [turmaInfo]);
 
    const handlePatchingClass = () => {
       const cronograma: Boolean[] = [];
-      days.forEach((day) => cronograma.push(day.active));
+      days.forEach((day) => cronograma?.push(day.active));
 
       api.patch(`/turmas/${id}/editTurma`, {
          inicio: startDate,
@@ -106,7 +122,7 @@ const Turma = () => {
    if (!turmaInfo || !professor || !participantes) return (<p>Loading</p>)
    return (
       <div className="turma_container">
-         <div className="turma_titleContainer">
+  {/*        <div className="turma_titleContainer">
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                {
                   edit ?
@@ -136,7 +152,7 @@ const Turma = () => {
                   </div>
                </div>
             }
-         </div>
+         </div> */}
 
          <span className="turma_categories">Professor</span>
          <CardParticipante email={professor.email} nome={professor.nome} _id={professor._id} turmaId={id || ""} isProfessor={true} image={professor.photo} />

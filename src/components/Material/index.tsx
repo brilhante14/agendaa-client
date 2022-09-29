@@ -6,22 +6,26 @@ import styles from "./Material.module.css";
 interface Props {
   nome: string;
   link: string;
-  autor: string;
+  authorId: number;
   deleteItem?: () => void;
 }
 
-const Material: React.FC<Props> = ({ nome, link, autor, deleteItem }) => {
+const Material: React.FC<Props> = ({ nome, link, authorId, deleteItem }) => {
   const [name, setName] = React.useState("");
   const [photo, setPhoto] = React.useState("");
-  function handleName(id: string) {
-    api.get(`/usuarios/getById/${id}`).then((res) => {
-      setName(res.data.nome);
-      setPhoto(res.data.photo);
-    });
+  function handleName(id: number) {
+  
+    api.get(`/usuarios/${id}`).then((res) => {
+ 
+
+      const user = res.data[0]
+      setName(user.name);
+      setPhoto(user.photo);
+    })
   }
   useEffect(() => {
-    handleName(autor);
-  });
+    handleName(authorId);
+  }, [authorId]);
   return (
     <div className={styles.material}>
       {deleteItem && (

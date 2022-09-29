@@ -19,35 +19,40 @@ function ControlaFaltas({
    const storage = localStorage.getItem("user");
    if (storage)
       user = JSON.parse(storage);
-
-  const updateFaltas = async (method: string) => {
+  
+  const updateFaltas = async (method: string, qtdFaltas: number) => {
+   if(qtdFaltas < 0)  return
     api
-      .post(`/${idTurma}/setFaltas`, {
-        userId: user?._id,
-        faltas,
+      .post(`turmas/${idTurma}/setFaltas`, {
+        userId: user?.userId,
+        faltas:qtdFaltas,
       })
       .then((response) => {
         if (response.status === 200) {
           if (method === "add") {
-            setFaltas(faltas !== 8 ? faltas + 1 : faltas);
+            setFaltas(qtdFaltas !== faltasPermitidas ? qtdFaltas : faltas);
           }else {
-            setFaltas(faltas !== 0 ? faltas - 1 : 0)
+            setFaltas(qtdFaltas === 0 ?   0 :qtdFaltas)
           }
         }else {
             alert('Erro ao atualizar faltas!')
         }
       });
   };
+  
 
   const handleGetFaltas = async () => {
+   
     api
-    .post(`/${idTurma}/getFaltas`, {
-      userId: user?._id,
+    .post(`turmas/${idTurma}/getFaltas`, {
+      userId: user?.userId,
     })
     .then((response) => {
+
       if (response.status === 200) {
         const data = response.data;
-        setFaltas(data.Faltas);
+   /*      setFaltas(data.Faltas); */
+   setFaltas(0)
       }else {
           alert('Erro ao buscar faltas!')
       }
@@ -57,8 +62,9 @@ function ControlaFaltas({
 
   useEffect(()=> {
     handleGetFaltas()
+ 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [idTurma])
 
 
   return (
@@ -67,14 +73,14 @@ function ControlaFaltas({
       <div className="container-buttons">
         <button
           className="content-button"
-          onClick={() =>updateFaltas('') }
+          onClick={() =>updateFaltas('', faltas - 1) }
         >
           <p className="p">-</p>
         </button>{" "}
         <span>
           {faltas} / {faltasPermitidas}
         </span>{" "}
-        <button className="content-button" onClick={() =>updateFaltas('add')}>
+        <button className="content-button" onClick={() =>updateFaltas('add' , faltas +1)}>
           <p className="p">+</p>
         </button>
       </div>
