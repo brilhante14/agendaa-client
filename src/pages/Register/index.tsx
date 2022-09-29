@@ -36,10 +36,10 @@ export function Register() {
             return;
         }
         api.post('/usuarios/signup', {
-            user: authInfo.username,
-            nome: authInfo.name,
+            userName: authInfo.username,
             email: authInfo.email,
-            password: authInfo.password
+            password: authInfo.password,
+            nome: authInfo.name
         }).then((res) => {
             if (res.status === 200) {
                 localStorage.setItem('token', res.data.token);
