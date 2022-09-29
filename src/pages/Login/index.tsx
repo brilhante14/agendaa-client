@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Image from '../../assets/svg/login.svg';
+// import Image from '../../assets/svg/login.svg';
+import Image from '../../assets/svg/pencilBackground.svg';
 
 import { Auth } from '../../components/Auth';
 import { Button } from '../../components/Button';
