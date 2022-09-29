@@ -9,11 +9,15 @@ import CardTurma from "../../components/CardTurma";
 
 type turmasPaged = {
   data: {
-    nome: string;
-    professor: string;
-    participantes: string[];
-    comments: string[];
-    _id: string;
+    name: string;
+    professorId: number;
+    id: number;
+    cronograma: null;
+    inicio: any;
+    fim: any;
+    isFinished: number;
+    faltasPermitidas: number;
+    mediaMinima: number;
   }[];
   numberOfPages: number;
   currentPage: number;
@@ -22,6 +26,7 @@ type turmasPaged = {
 const Turmas = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+
   const [turmas, setTurmas] = useState<turmasPaged>();
 
   useEffect(() => {
@@ -30,8 +35,9 @@ const Turmas = () => {
       return response;
     }
 
-
-    fetchData().then((response) => { setTurmas(response.data) })
+    fetchData().then((response) => {
+      setTurmas(response.data);
+    });
   }, [page]);
 
   useEffect(() => {
@@ -43,11 +49,10 @@ const Turmas = () => {
     fetchData().then((response) => setTurmas(response.data));
   }, [search]);
 
-  if (!turmas) return <div>Loading</div>;
+  if (!turmas) return <div>Loading...</div>;
 
   return (
     <div className="turmas_container">
-
       <h1 className="turmas_title">Turmas Cadastradas</h1>
 
       <div className="turmas_searchBar">
@@ -68,7 +73,7 @@ const Turmas = () => {
 
       <div className="turma_cardsContainer">
         {turmas.data.map((turma, index) => {
-          return <CardTurma key={index} turma={turma} />
+          return <CardTurma key={index} {...turma} />;
         })}
       </div>
 
