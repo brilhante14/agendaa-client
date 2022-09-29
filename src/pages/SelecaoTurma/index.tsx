@@ -48,14 +48,12 @@ const SelecaoTurma: React.FC = () => {
             );
           });
       } else {
-        console.log("entrouuuuuuuu", user)
         api
           .post("/turmas/getTurmasByParticipantes/", {
             userId: user.userId,
           })
-          .then(({data}) => {
-          console.log("teste", data);
-          setTurmas(data)
+          .then(({ data }) => {
+            setTurmas(data);
           });
       }
     }
@@ -84,7 +82,7 @@ const SelecaoTurma: React.FC = () => {
             {turmas?.length > 0 ? (
               turmas.map((turma: any) => (
                 <Turma
-                turma={turma}
+                  turma={turma}
                   onClick={() => navigate(`./${turma.id}`)}
                   key={turma.id}
                 />

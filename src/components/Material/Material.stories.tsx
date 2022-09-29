@@ -10,7 +10,7 @@ export default {
 export const Default: ComponentStory<typeof Material> = () => (
   <Material
     nome="Material"
-    autor="Fulano de Tal"
+    authorId={56}
     link="#"
     deleteItem={() => alert("Item deletado")}
   />

@@ -39,7 +39,7 @@ const CardTurma: React.FC<PropsTurma> = ( turma ) => {
         idTurma: turma.id,
       })
       .then((response) => {
-        console.log("response", response.data);
+      
         setParticipantes(response.data.participantes);
         setProfessor(response.data.professor[0]);
         setPhoto(response.data.professor[0].photo);
