@@ -7,7 +7,7 @@ import "./styles.css";
 import InputFile from "../../InputFile";
 
 interface props {
-
+ 
   id?: string;
   handleOpen: (status: boolean) => void;
 }
@@ -16,7 +16,7 @@ interface props {
 export function ModalMaterial({  id, handleOpen }: props) {
 
   const [fileBase64, setFileBase64] = useState<any>(null);
-  
+
   function handleCreate() {
     const storage = localStorage.getItem("user");
     if (storage) {
@@ -25,14 +25,17 @@ export function ModalMaterial({  id, handleOpen }: props) {
         `/materiais/${id}`,
         {
           file: fileBase64,
-          userId: user.id,
+     
+          userId: user.userId,
         },
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
-      );
+      ).then((res) => {
+        if(res.status === 201) alert('Material enviado com sucesso!')
+      })
     }
   }
 

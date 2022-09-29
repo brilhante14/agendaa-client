@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Outlet } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import add from "../../assets/new_topic_purple.png";
 import api from "../../api/api";
 import styles from "./TurmaSelecionada.module.css";
@@ -13,9 +13,9 @@ import ControlaFaltas from "../../components/ControlaFaltas";
 
 interface Mat {
   nome: string;
-  author: string;
+  authorId: number;
   link: string;
-  _id: string;
+  id: number;
 }
 
 const TurmaSelecionada: React.FC = () => {
@@ -25,25 +25,33 @@ const TurmaSelecionada: React.FC = () => {
   const [materials, setMaterials] = useState<Array<Mat>>([]);
   const [addMaterial, setAddMaterial] = React.useState(false);
   const [apiCalled, setApiCalled] = useState(false);
+  
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    api(`/turmas/${id}`).then((res) => {
-      setDiasAula(
-        res.data.cronograma
-          .map((x: boolean, i: number) => (x ? i + 1 : x))
-          .filter((x: boolean) => x)
-      );
-      setFaltas(res.data.faltasPermitidas);
-      setNome(res.data.nome);
-      api.get(`/materiais/${id}`).then((res) => {
-        setMaterials(res.data);
-      });
-    });
-  }, [id, apiCalled]);
+   
+    api.get(`/turmas/${id}`).then((res) => {
+      const turma = res.data[0]
 
-  function handleDelete(id: string) {
+      setFaltas(turma.faltasPermitidas);
+      setNome(turma.name);
+
+      if (turma.cronograma) {
+        setDiasAula(
+          turma?.cronograma
+            .map((x: boolean, i: number) => (x ? i + 1 : x))
+            .filter((x: boolean) => x)
+        );
+      }
+    });
+    api.get(`/materiais/${id}`).then((res) => {
+
+      setMaterials(res.data);
+    });
+  }, [id, apiCalled, addMaterial]);
+
+  function handleDelete(id: number) {
     window.confirm("Deseja realmente excluir o material?") &&
       api.delete(`/materiais/${id}`).then(() => {});
     setApiCalled(!apiCalled);
@@ -73,7 +81,6 @@ const TurmaSelecionada: React.FC = () => {
         </button>
       </div>
       <div className={styles.containerFaltas}>
-      
         <ControlaFaltas faltasPermitidas={faltas} idTurma={Number(id) ?? 0} />
       </div>
       <div style={{ display: "flex", width: "100%" }}>
@@ -105,8 +112,8 @@ const TurmaSelecionada: React.FC = () => {
               <Material
                 nome={material.nome}
                 link={material.link}
-                autor={material.author}
-                deleteItem={() => handleDelete(material._id)}
+                authorId={material.authorId}
+                deleteItem={() => handleDelete(material.id)}
                 key={index}
               />
             ))}
@@ -115,7 +122,7 @@ const TurmaSelecionada: React.FC = () => {
       </div>
       <Forum id={id} />
       {addMaterial && (
-        <ModalMaterial id={id} handleOpen={handleCreateMaterial} />
+        <ModalMaterial  id={id} handleOpen={handleCreateMaterial} />
       )}
     </div>
   );

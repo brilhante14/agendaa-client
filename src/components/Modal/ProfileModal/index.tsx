@@ -21,34 +21,39 @@ interface props {
 const ProfileModal = ({ handleOpen }: props) => {
   const storage = localStorage.getItem("user");
   const user = storage ? JSON.parse(storage) : {};
-  const [name, setName] = React.useState(user.nome);
+  const [name, setName] = React.useState(user.name);
   const [email, setEmail] = React.useState(user.email);
-  const [username, setUsername] = React.useState(user.user);
+  const [username, setUsername] = React.useState(user.username);
 
   function handleEdit() {
-    api.patch(`/usuarios/editUser/${user._id}`, {
+    const body = {
       nome: name,
+      role: user.role,
       email: email,
-      user: username
-    })
-    handleOpen(false)
-    alert("Perfil editado com sucesso!")
-    localStorage.setItem("user", JSON.stringify({
-      ...user,
-      nome: name,
-      email: email,
-      user: username
-    }))
-    window.location.reload();
+      user: username,
+    }
+    api.patch(`/usuarios/${user.userId}`,body );
+    handleOpen(false);
+    alert("Perfil editado com sucesso!");
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...user,
+        nome: name,
+        email: email,
+        user: username,
+      })
+    );
+    /*     window.location.reload(); */
   }
 
   function handleDelete() {
     if (window.confirm("Tem certeza que deseja deletar sua conta?")) {
-      api.delete(`/usuarios/deleteUser/${user._id}`)
-      handleOpen(false)
-      alert("Perfil deletado com sucesso!")
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      api.delete(`/usuarios/deleteUser/${user.userId}`);
+      handleOpen(false);
+      alert("Perfil deletado com sucesso!");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       window.location.reload();
     }
   }
@@ -69,24 +74,34 @@ const ProfileModal = ({ handleOpen }: props) => {
             <TextInput
               title="Nome"
               placeholder="Nome de usuário"
-              onChange={(e: any) => { setName(e.target.value) }}
+              onChange={(e: any) => {
+                setName(e.target.value);
+              }}
               value={name}
             />
 
             <TextInput
               title="Usuário"
               placeholder="Usuário"
-              onChange={(e: any) => { setUsername(e.target.value) }}
+              onChange={(e: any) => {
+                setUsername(e.target.value);
+              }}
               value={username}
             />
 
             <TextInput
               title="Email"
               placeholder="mail@example.com"
-              onChange={(e: any) => { setEmail(e.target.value) }}
+              onChange={(e: any) => {
+                setEmail(e.target.value);
+              }}
               value={email}
             />
-            <Button onClick={() => { }} size={{ width: '100%', height: 48 }} title={"Redefinir senha"} />
+            <Button
+              onClick={() => {}}
+              size={{ width: "100%", height: 48 }}
+              title={"Redefinir senha"}
+            />
           </div>
         </div>
         <div className={styles.buttons}>
