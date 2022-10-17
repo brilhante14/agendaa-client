@@ -2,19 +2,15 @@
 import React, { useEffect } from "react";
 import { Button } from "../Button";
 import Image from "../../assets/new_topic.png";
-import ReplyImage from "../../assets/reply.png";
-import TrashImage from "../../assets/trash.png";
-import PencilImage from "../../assets/pencil.png";
 import ForumVazio from "../../assets/forum_vazio.png";
-import { handleDate } from "../../utils/formatDate";
-import { useForum } from "../../services/useForum";
+import { useForum, IComment } from "../../services/useForum";
 import api from "../../api/api";
 import { CreateTopic } from "./CreateTopic";
 import { Comment } from "./Comment";
 
 import "./styles.css";
 interface Props {
-  id?: string;
+  id?: number;
 }
 
 export interface CommentType {
@@ -24,27 +20,27 @@ export interface CommentType {
   userId: string;
 }
 
-export interface TopLevelComment extends CommentType {
-  replies: Array<CommentType>;
+export interface IUser {
+  userId: number;
+  photo: string;
+  name: string;
 }
 
-export function Forum({ id = "" }: Props) {
-  const [isEditReply, setIsEditReply] = React.useState("");
-  const [isCommentReply, setIsCommentReply] = React.useState("");
+export function Forum({ id = 0 }: Props) {
+  const [isEditingComment, setIsEditingComment] = React.useState(0);
+  const [isEditingReply, setIsEditingReply] = React.useState(0);
   const [isReply, setIsReply] = React.useState(false);
-  const [commentReply, setCommentReply] = React.useState("");
+  const [commentReply, setCommentReply] = React.useState(0);
   const [newTopic, setNewTopic] = React.useState(false);
-  const [comments, setComments] = React.useState<TopLevelComment[]>([]);
-  const [users, setUsers] = React.useState<
-    Array<{ _id: string; photo: string; nome: string }>
-  >([]);
-  const [user, setUser] = React.useState({} as any);
+  const [comments, setComments] = React.useState<IComment[]>([]);
+  const [users, setUsers] = React.useState<IUser[]>([]);
+  const [user, setUser] = React.useState<IUser>({} as any);
   const useForumService = useForum();
 
   const bottomRef = React.useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    api.get("/usuarios/getAll").then((res) => {
+    api.get("/usuarios/").then((res) => {
       setUsers(res.data);
     });
     const storage = localStorage.getItem("user");
@@ -61,53 +57,42 @@ export function Forum({ id = "" }: Props) {
   const refreshForum = () => {
     useForumService.getComments(id).then((commentsResult) => {
       setComments(commentsResult);
+      console.log(commentsResult);
     });
   };
 
   function handleEditText(
     text: string,
-    commentID: string,
-    parentID?: string,
+    commentID: number,
     isReply?: boolean
   ) {
     api
-      .patch("/turmas/editComment", {
-        text: text,
-        commentId: commentID,
-        ...(parentID && { parentCommentId: parentID }),
-        ...(isReply && { isReply: true }),
-      })
+      .patch(`/turmas/${isReply ? 'reply' : 'comment'}/${commentID}`, { text })
       .then(() => {
         refreshForum();
-        setIsCommentReply("");
+        setIsEditingComment(0);
+        setIsEditingReply(0);
       });
   }
 
   function handleDelete(
-    commentID: string,
-    parentID?: string,
+    commentID: number,
     isReply?: boolean
   ) {
     if (window.confirm("Tem certeza que deseja excluir?")) {
       api
-        .delete(`/turmas/${id}/deleteComment`, {
-          data: {
-            commentId: commentID,
-            ...(parentID && { parentCommentId: parentID }),
-            ...(isReply && { isReply: true }),
-          },
-        })
+        .delete(`/turmas/${isReply ? 'reply' : 'comment'}/${commentID}`)
         .then(() => {
           refreshForum();
-          setIsEditReply("");
-          setIsCommentReply("");
+          setIsEditingComment(0);
+          setIsEditingReply(0);
         });
     }
   }
 
-  function handleReply(commentID: string, userID: string, text: string) {
+  function handleReply(commentID: number, userID: number, text: string) {
     api
-      .post("/turmas/replyComment", {
+      .post("/turmas/reply", {
         commentId: commentID,
         userId: userID,
         text: text,
@@ -117,11 +102,12 @@ export function Forum({ id = "" }: Props) {
       });
   }
 
-  function handleNewTopic(text: string, userID: string, classID?: string) {
+  function handleNewTopic(text: string, userID: number, classID?: number) {
     api
-      .post(`/turmas/${classID}/commentForum`, {
+      .post(`/turmas/comment`, {
         text: text,
         userId: userID,
+        turmaId: classID
       })
       .then(() => {
         refreshForum();
@@ -129,26 +115,28 @@ export function Forum({ id = "" }: Props) {
       });
   }
 
-  const handlePublish = (text: string, userId: string) => {
+  const handlePublish = (text: string, userId: number) => {
     handleNewTopic(text, userId, id);
     setNewTopic(false);
   };
 
   const handlePublishReply = (
     text: string,
-    userId: string,
-    commentId: string = ""
+    userId: number,
+    commentId: number = 0
   ) => {
     handleReply(commentId, userId, text);
     setIsReply(false);
   };
 
-  const setCommentEdit = (commentId: string) => {
-    // setIsEditReply(commentId);
-    setIsCommentReply(commentId);
+  const setCommentEdit = (commentId: number, isReply: boolean) => {
+    isReply ?
+      setIsEditingReply(commentId)
+      :
+      setIsEditingComment(commentId);
   };
 
-  const handleCommentReply = (commentId: string) => {
+  const handleCommentReply = (commentId: number) => {
     setIsReply(true);
     setCommentReply(commentId);
   };
@@ -156,7 +144,7 @@ export function Forum({ id = "" }: Props) {
   const cancelPublish = () => {
     setIsReply(false);
     setNewTopic(false);
-    setCommentReply("");
+    setCommentReply(0);
   };
 
   return (
@@ -187,36 +175,36 @@ export function Forum({ id = "" }: Props) {
           <div className="commentsSeparator" />
           {comments.length > 0 &&
             comments.map((comment) => {
-              const commentUser = users.find((u) => u._id === comment.userId);
+              const commentUser = users.find((u) => u.userId === comment.userId);
               return (
-                <div key={comment._id}>
+                <div key={comment.id}>
                   <Comment
                     comment={comment}
                     commentUser={commentUser}
-                    isAuthor={comment.userId === user._id}
+                    isAuthor={comment.userId === user.userId}
                     handleDelete={handleDelete}
                     handleEdit={handleEditText}
                     handleReply={handleCommentReply}
                     setEdit={setCommentEdit}
-                    isEditing={isCommentReply === comment._id}
+                    isEditing={isEditingComment === comment.id}
                   />
 
                   <div className="commentsSeparator" />
 
                   {comment.replies?.map((reply) => {
-                    const replyUser = users.find((u) => u._id === reply.userId);
+                    const replyUser = users.find((u) => u.userId === reply.userId);
                     return (
-                      <div key={reply._id}>
+                      <div key={reply.id}>
                         <Comment
                           comment={reply}
                           commentUser={replyUser}
-                          isAuthor={reply.userId === user._id}
+                          isAuthor={reply.userId === user.userId}
                           handleDelete={handleDelete}
                           handleEdit={handleEditText}
                           handleReply={handleCommentReply}
                           setEdit={setCommentEdit}
-                          isEditing={isCommentReply === reply._id}
-                          parentId={comment._id}
+                          isEditing={isEditingReply === reply.id}
+                          parentId={comment.id}
                           isReply
                         />
                         <div className="commentsSeparator" />
@@ -224,7 +212,7 @@ export function Forum({ id = "" }: Props) {
                     );
                   })}
 
-                  {isReply && commentReply === comment._id && (
+                  {isReply && commentReply === comment.id && (
                     <>
                       <CreateTopic
                         comment={comment}
