@@ -13,7 +13,7 @@ import { Button } from '../../Button';
 import api from '../../../api/api';
 import { useParams } from 'react-router-dom';
 
-interface props {
+interface IModalActivitiesProps {
     isOpen: boolean;
     handleOpen: (status: boolean) => void;
     isEdit?: boolean;
@@ -21,7 +21,7 @@ interface props {
 }
 
 // Renderer
-export function Activities({ isOpen, handleOpen, isEdit, activityID }: props) {
+export function Activities({ isOpen, handleOpen, isEdit, activityID }: IModalActivitiesProps) {
     const [endDate, setEndDate] = React.useState<Date | null>(null);
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');

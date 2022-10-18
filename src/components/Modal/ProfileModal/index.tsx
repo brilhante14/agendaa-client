@@ -6,19 +6,12 @@ import { TextInput } from "../../TextInput";
 import { Button } from "../../Button";
 import api from "../../../api/api";
 
-interface props {
+interface IModalProfileProps {
   isOpen: boolean;
   handleOpen: (status: boolean) => void;
 }
-/**
- * Modal contendo o formulário de edição de perfil
- *
- * @component
- * @param {boolean} isOpen controla se o modal deve estar aberto
- * @todo realizar o envio das infromações
- * @todo receber objeto contendo perfil do usuário
- */
-const ProfileModal = ({ handleOpen }: props) => {
+
+const ProfileModal = ({ handleOpen }: IModalProfileProps) => {
   const storage = localStorage.getItem("user");
   const user = storage ? JSON.parse(storage) : {};
   const [name, setName] = React.useState(user.nome);

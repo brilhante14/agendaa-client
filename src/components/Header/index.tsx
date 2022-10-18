@@ -3,19 +3,12 @@ import { useNavigate } from "react-router-dom";
 import ProfileModal from "../Modal/ProfileModal/index";
 import styles from "./header.module.css";
 
-interface userProfile {
+interface IUserProfile {
   img: string;
   name: string;
 }
 
-/**
- * Componente de cabeçalho para todas as páginas
- *
- * @component
- * @param {Object} profile Objeto contendo as propriedades do usuário logado
- * @todo aceitar um objeto de perfil mais completo
- */
-const Header = (props: { profile?: userProfile }) => {
+const Header = (props: { profile?: IUserProfile }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   let navigate = useNavigate();

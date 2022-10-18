@@ -55,16 +55,17 @@ const CardParticipante = ({ nome, email, _id, isMonitor = false, turmaId, isProf
                </button>
             </div>)
       else
-         <div className="cardParticipante_iconContainer">
-            {isMonitor &&
-               <img
-                  src={starFilled}
-                  alt="Ícone de estrela"
-                  className="cardParticipante_icon"
-               />
-            }
-         </div>
-
+         return (
+            <div className="cardParticipante_iconContainer">
+               {isMonitor &&
+                  <img
+                     src={starFilled}
+                     alt="Ícone de estrela"
+                     className="cardParticipante_icon"
+                  />
+               }
+            </div>
+         )
    }
 
    return (

@@ -23,12 +23,22 @@ const Atividade: React.FC<Props> = ({ nome, prazo, nota, onClick }) => {
             setIsProfessor(user.role === "professor");
         }
     }, [])
+
+    function getTitle() {
+        if(isProfessor)
+            return "Editar Atividade";
+        if(isFinished)
+            return "Concluída";
+
+        return "Marcar como Concluída"
+    }
+
     return (<div className={styles.atividade}>
         <h3>{nome}</h3>
         <div className={styles.atividadeFooter}>
             <div>{`Prazo: ${handleDate(prazo)}`}</div>
             <IconButton
-                title={isProfessor ? "Editar Atividade" : isFinished ? "Concluída" : "Marcar como Concluída"}
+                title={getTitle()}
                 icon={isProfessor ? edit : check_circle}
                 showTitle
                 variant={"toggleable"}

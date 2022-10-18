@@ -27,7 +27,7 @@ export function Auth({ title, children, image, formSide }: Props) {
             {
                 width > 1366 &&
                 <div className='authComponentImageArea'>
-                    <img src={image} />
+                    <img src={image} height={"50%"}/>
                 </div>
             }
             {

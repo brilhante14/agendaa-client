@@ -86,7 +86,7 @@ const Turma = () => {
    }, [turmaInfo])
 
    const handlePatchingClass = () => {
-      const cronograma: Boolean[] = [];
+      const cronograma: boolean[] = [];
       days.forEach((day) => cronograma.push(day.active));
 
       api.patch(`/turmas/${id}/editTurma`, {
