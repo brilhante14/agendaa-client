@@ -8,7 +8,7 @@ import "./index.css";
 
 
 
-const CardTurma: React.FC<PropsTurma> = ( turma ) => {
+const CardTurma: React.FC<PropsTurma> = (turma) => {
   const [professor, setProfessor] = useState<PropsProfessor>(
     {} as PropsProfessor
   );
@@ -26,7 +26,7 @@ const CardTurma: React.FC<PropsTurma> = ( turma ) => {
   function handleClass() {
     api
       .post(`/turmas/${turma.id}/joinClass`, {
-        userId: String(user.id),
+        userId: String(user.userId),
       })
       .then(() => {
         window.location.href = "home";
@@ -39,12 +39,12 @@ const CardTurma: React.FC<PropsTurma> = ( turma ) => {
         idTurma: turma.id,
       })
       .then((response) => {
-      
+
         setParticipantes(response.data.participantes);
         setProfessor(response.data.professor[0]);
         setPhoto(response.data.professor[0].photo);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isInClass = participantes.some(
