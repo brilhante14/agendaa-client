@@ -10,10 +10,11 @@ interface props {
  
   id?: string;
   handleOpen: (status: boolean) => void;
+  refreshPage: () => void;
 }
 
 // Renderer
-export function ModalMaterial({  id, handleOpen }: props) {
+export function ModalMaterial({  id, handleOpen, refreshPage }: props) {
 
   const [fileBase64, setFileBase64] = useState<any>(null);
 
@@ -35,6 +36,7 @@ export function ModalMaterial({  id, handleOpen }: props) {
         }
       ).then((res) => {
         if(res.status === 201) alert('Material enviado com sucesso!')
+        refreshPage();
       })
     }
   }
