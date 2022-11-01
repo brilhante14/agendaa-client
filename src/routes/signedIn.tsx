@@ -23,7 +23,7 @@ export default function SignedRoutes() {
         img: user.photo,
       }} />
       <Routes>
-        <Route path="/home/" element={<SelecaoTurma />}>
+        <Route path="/home/" element={<TurmaSelecionada />}>
           <Route path="" element={<NenhumaTurma />} />
           <Route path=":id/" element={<TurmaSelecionada />}>
           </Route>

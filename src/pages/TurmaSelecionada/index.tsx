@@ -26,24 +26,34 @@ const TurmaSelecionada: React.FC = () => {
   const [addMaterial, setAddMaterial] = React.useState(false);
   const [apiCalled, setApiCalled] = useState(false);
 
-  const { id } = useParams();
+  const id = "9";
   const navigate = useNavigate();
 
   useEffect(() => {
 
     api.get(`/turmas/${id}`).then((res) => {
-      const turma = res.data[0]
+      const turma = {
+        "name": "Computacao Movel IV",
+        "professorId": 9,
+        "id": 9,
+        "cronograma": null,
+        "inicio": "2022-08-11T00:00:00.000Z",
+        "fim": "2023-01-25T00:00:00.000Z",
+        "isFinished": 0,
+        "faltasPermitidas": 25,
+        "mediaMinima": 7
+      }
 
       setFaltas(turma.faltasPermitidas);
       setNome(turma.name);
 
-      if (turma.cronograma) {
-        setDiasAula(
-          turma?.cronograma
-            .map((x: boolean, i: number) => (x ? i + 1 : x))
-            .filter((x: boolean) => x)
-        );
-      }
+      // if (turma.cronograma) {
+      //   setDiasAula(
+      //     turma?.cronograma
+      //       .map((x: boolean, i: number) => (x ? i + 1 : x))
+      //       .filter((x: boolean) => x)
+      //   );
+      // }
     });
     api.get(`/materiais/${id}`).then((res) => {
 
@@ -120,7 +130,7 @@ const TurmaSelecionada: React.FC = () => {
                 nome={material.nome}
                 link={material.link}
                 authorId={material.authorId}
-                deleteItem={() => {handleDelete(material.id);}}
+                deleteItem={() => { handleDelete(material.id); }}
                 key={index}
               />
             ))}
