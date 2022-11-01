@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../api/api';
 
-import Image from '../../assets/svg/pencilBackground.svg';
+import Image from '../../assets/svg/register.svg';
 
 import { Auth } from '../../components/Auth';
 import { Button } from '../../components/Button';

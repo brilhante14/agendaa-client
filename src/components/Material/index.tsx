@@ -14,9 +14,9 @@ const Material: React.FC<Props> = ({ nome, link, authorId, deleteItem }) => {
   const [name, setName] = React.useState("");
   const [photo, setPhoto] = React.useState("");
   function handleName(id: number) {
-  
+
     api.get(`/usuarios/${id}`).then((res) => {
- 
+
 
       const user = res.data[0]
       setName(user.name);
@@ -34,7 +34,7 @@ const Material: React.FC<Props> = ({ nome, link, authorId, deleteItem }) => {
         </button>
       )}
       <a
-        target="_blank" 
+        target="_blank"
         rel="noopener noreferrer"
         href={link}
         className={styles.link}
