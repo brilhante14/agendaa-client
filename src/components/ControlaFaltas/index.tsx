@@ -21,8 +21,11 @@ function ControlaFaltas({
       user = JSON.parse(storage);
   
   const updateFaltas = async (method: string, qtdFaltas: number) => {
-   if(qtdFaltas < 0)  return
-    api
+    if(qtdFaltas < 0) {
+      return;
+    }
+    
+    await api
       .post(`turmas/${idTurma}/setFaltas`, {
         userId: user?.userId,
         faltas:qtdFaltas,
