@@ -36,7 +36,7 @@ const Material: React.FC<Props> = ({ nome, link, authorId, deleteItem }) => {
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={link}
+        href={link.replace("minio", "localhost")}
         className={styles.link}
         style={{
           display: "flex",

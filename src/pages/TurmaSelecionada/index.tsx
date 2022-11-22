@@ -51,17 +51,20 @@ const TurmaSelecionada: React.FC = () => {
     });
   }, [id, apiCalled, addMaterial]);
 
-  function refreshMaterials() {
-    api.get(`/materiais/${id}`).then((res) => {
-
+  async function refreshMaterials() {
+    await api.get(`/materiais/${id}`).then((res) => {
       setMaterials(res.data);
     });
   }
 
-  function handleDelete(id: number) {
-    window.confirm("Deseja realmente excluir o material?") &&
-      api.delete(`/materiais/${id}`).then(() => { refreshMaterials() });
-    setApiCalled(!apiCalled);
+  async function handleDelete(id: number) {
+    if(window.confirm("Deseja realmente excluir o material?")){
+      api.delete(`/materiais/${id}`).then((res) => {
+        if(res.status === 201) alert('Material enviado com sucesso!')
+        refreshMaterials(); 
+      } 
+     )
+    }
   }
 
   function handleCreateMaterial(show: boolean) {

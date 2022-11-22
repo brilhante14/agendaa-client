@@ -10,16 +10,16 @@ import { ClassModal } from "../../components/Modal/ClassModal";
 async function getClassById(turma: any) {
   return {
     nome: turma.nome,
-    professor: await getParticipanteDetails(turma.professor),
-    participantes: await Promise.all(
-      turma.participantes.map((id: string) => getParticipanteDetails(id))
-    ),
+    professor: await getParticipanteDetails(turma.professorId),
+    // participantes: await Promise.all(
+    //   turma.participantes.map((id: string) => getParticipanteDetails(id))
+    // ),
     id: turma.id,
   };
 }
 
 async function getParticipanteDetails(id: string) {
-  const participante = (await api.get(`/usuarios/getById/${id}`)).data;
+  const participante = (await api.get(`/usuarios/${id}`)).data;
   return {
     nome: participante?.nome,
     img: participante?.photo,
@@ -40,7 +40,7 @@ const SelecaoTurma: React.FC = () => {
         setIsProfessor(true);
         api
           .post("/turmas/getTurmasByProfessor/", {
-            profesorId: user.id,
+            professorId: user.userId,
           })
           .then((turmas) => {
             Promise.all(turmas.data.map(getClassById)).then((t) =>
