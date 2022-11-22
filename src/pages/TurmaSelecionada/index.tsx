@@ -26,23 +26,13 @@ const TurmaSelecionada: React.FC = () => {
   const [addMaterial, setAddMaterial] = React.useState(false);
   const [apiCalled, setApiCalled] = useState(false);
 
-  const id = "9";
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
 
     api.get(`/turmas/${id}`).then((res) => {
-      const turma = {
-        "name": "Computacao Movel IV",
-        "professorId": 9,
-        "id": 9,
-        "cronograma": null,
-        "inicio": "2022-08-11T00:00:00.000Z",
-        "fim": "2023-01-25T00:00:00.000Z",
-        "isFinished": 0,
-        "faltasPermitidas": 25,
-        "mediaMinima": 7
-      }
+      const turma = res.data[0];
 
       setFaltas(turma.faltasPermitidas);
       setNome(turma.name);
